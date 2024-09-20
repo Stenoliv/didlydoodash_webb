@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { navData } from "../lib/navData";
+import React, { ReactNode, useState } from "react";
 import styles from "../styles/sidebar.module.css";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
+
+import CorporateFareIcon from "@mui/icons-material/CorporateFare";
+import FolderIcon from "@mui/icons-material/Folder";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export default function SideBar() {
 	const [open, setopen] = useState(true);
@@ -21,16 +24,56 @@ export default function SideBar() {
 					<KeyboardDoubleArrowRightIcon />
 				)}
 			</button>
-			{navData.map((item) => {
-				return (
-					<NavLink key={item.id} className={styles.sideitem} to={item.link}>
-						{item.icon}
-						<span className={open ? styles.linkText : styles.linkTextClosed}>
-							{item.text}
-						</span>
-					</NavLink>
-				);
-			})}
+			<>
+				<NavItem
+					to="/organisations"
+					text="Organisations"
+					icon={<CorporateFareIcon />}
+					open={open}
+				/>
+				<NavItem
+					to="/projects"
+					text="Projects"
+					icon={<FolderIcon />}
+					open={open}
+				/>
+			</>
+			<div style={{ flex: 1 }} />
+			<>
+				<NavItem
+					to="/profile"
+					text="Profile"
+					icon={<AccountCircleIcon />}
+					open={open}
+				/>
+			</>
 		</div>
+	);
+}
+
+export type NavItemProps = {
+	to: string;
+	icon: ReactNode;
+	text: string;
+	open: boolean;
+};
+
+export function NavItem(props: NavItemProps) {
+	const location = useLocation();
+	const { to, icon, text, open } = props;
+
+	const isActive = location.pathname === to;
+
+	return (
+		<NavLink
+			key={0}
+			className={`${styles.sideitem} ${isActive ? styles.active : ""}`}
+			to={to}
+		>
+			{icon}
+			<span className={open ? styles.linkText : styles.linkTextClosed}>
+				{text}
+			</span>
+		</NavLink>
 	);
 }

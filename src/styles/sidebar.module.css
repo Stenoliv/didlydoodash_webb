@@ -1,7 +1,9 @@
 .sidenav {
 	width: 250px;
-	transition: width 0.3s ease-in-out;
 	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	transition: width 0.3s ease-in-out;
 	background-color: rgb(10, 25, 41);
 }
 
@@ -9,6 +11,10 @@
 	composes: sidenav;
 	transition: width 0.3s ease-in-out;
 	width: 60px;
+}
+
+.menuItems {
+	display: flex;
 }
 
 .sideitem {
@@ -20,6 +26,15 @@
 	text-decoration: none;
 }
 
+.sideitem:hover {
+	background-color: #244f7d1c;
+}
+
+.active {
+	background-color: #2a87eb1c; /* Example active style */
+	font-weight: bold; /* Example of making the active link stand out */
+}
+
 .linkText {
 	padding-left: 16px;
 }
@@ -27,10 +42,6 @@
 .linkTextClosed {
 	composes: linkText;
 	visibility: hidden;
-}
-
-.sideitem:hover {
-	background-color: #244f7d1c;
 }
 
 .menuBtn {
@@ -42,4 +53,8 @@
 	border: none;
 	cursor: pointer;
 	padding-left: 20px;
+}
+
+.profileMenu {
+	display: flex;
 }

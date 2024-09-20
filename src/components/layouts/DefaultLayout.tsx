@@ -6,16 +6,8 @@ export default function DefaultLayout() {
 		<>
 			<header className="header">
 				<Link to={"/"}>
-					<h1 className="header-name">Didlydoodash</h1>
+					<h1 className="header-name">DidlydooDash</h1>
 				</Link>
-				<nav className="header-nav">
-					<li>
-						<Link to={"/signin"}>Login</Link>
-					</li>
-					<li>
-						<Link to={"/signup"}>Register</Link>
-					</li>
-				</nav>
 			</header>
 			<main>
 				<Outlet />
