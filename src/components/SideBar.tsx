@@ -8,6 +8,9 @@ import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 import FolderIcon from "@mui/icons-material/Folder";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+
 export default function SideBar() {
 	const [open, setopen] = useState(true);
 
@@ -25,29 +28,73 @@ export default function SideBar() {
 				)}
 			</button>
 			<>
-				<NavItem
+				<ExpandableNavItem
 					to="/organisations"
 					text="Organisations"
 					icon={<CorporateFareIcon />}
 					open={open}
+					subItems={[
+						{ to: "/organisations", text: "Overview" },
+						{ to: "/organisations/chats", text: "Chats" },
+					]}
 				/>
-				<NavItem
+				<ExpandableNavItem
 					to="/projects"
 					text="Projects"
 					icon={<FolderIcon />}
 					open={open}
+					subItems={[
+						{ to: "/projects/create", text: "Create Project" },
+						{ to: "/projects", text: "Active Projects" },
+						{ to: "/projects/completed", text: "Completed Projects" },
+					]}
 				/>
 			</>
 			<div style={{ flex: 1 }} />
-			<>
-				<NavItem
-					to="/profile"
-					text="Profile"
-					icon={<AccountCircleIcon />}
-					open={open}
-				/>
-			</>
+			{ProfileNav(open, toggleOpen)}
 		</div>
+	);
+}
+
+function ProfileNav(open: boolean, toggleOpen: () => void) {
+	const location = useLocation().pathname.split("/")[1];
+	const active = `/${location}` === "/profile" ? true : false;
+
+	return (
+		<>
+			{open ? (
+				<div className={`${styles.profileDiv} ${active ? styles.active : ""}`}>
+					<NavLink
+						to={"/profile"}
+						className={`${styles.profileRow} ${active ? styles.active : ""}`}
+					>
+						<img
+							className={styles.profilePic}
+							src="https://i.pinimg.com/originals/ae/ec/c2/aeecc22a67dac7987a80ac0724658493.jpg"
+						/>
+						<h4>Username</h4>
+					</NavLink>
+					<button>
+						<span>Logout</span>
+					</button>
+				</div>
+			) : (
+				<NavLink
+					to="/profile"
+					className={`${styles.sideitem} ${active ? styles.active : ""}`}
+					onClick={() => {
+						if (!open) {
+							toggleOpen();
+						}
+					}}
+				>
+					{<AccountCircleIcon />}
+					<span className={open ? styles.linkText : styles.linkTextClosed}>
+						Profile
+					</span>
+				</NavLink>
+			)}
+		</>
 	);
 }
 
@@ -75,5 +122,53 @@ export function NavItem(props: NavItemProps) {
 				{text}
 			</span>
 		</NavLink>
+	);
+}
+
+export type ExpandableNavItemProps = NavItemProps & {
+	subItems?: { to: string; text: string }[];
+};
+
+// Expandable navigation item with sub-items
+export function ExpandableNavItem(props: ExpandableNavItemProps) {
+	const location = useLocation().pathname.split("/")[1];
+	const { to, text, icon, open, subItems } = props;
+	const [expanded, setExpanded] = useState(false);
+
+	const active = `/${location}` === to ? true : false;
+
+	const toggleExpand = () => {
+		setExpanded(!expanded);
+	};
+
+	return (
+		<div className={styles.expandableItem}>
+			<div
+				className={`${styles.sideitem} ${active ? styles.active : ""}`}
+				onClick={toggleExpand}
+			>
+				{icon}
+				<span className={open ? styles.linkText : styles.linkTextClosed}>
+					{text}
+				</span>
+				{open && (
+					<span className={styles.expandIcon}>
+						{expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+					</span>
+				)}
+			</div>
+			{/* Sub-items */}
+			{expanded &&
+				open &&
+				subItems?.map((subItem, index) => (
+					<NavItem
+						key={index}
+						to={subItem.to}
+						text={subItem.text}
+						icon={null} // Optional: no icon for sub-items
+						open={open}
+					/>
+				))}
+		</div>
 	);
 }

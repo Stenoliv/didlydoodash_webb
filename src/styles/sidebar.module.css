@@ -17,6 +17,26 @@
 	display: flex;
 }
 
+.expandableItem {
+	display: flex;
+	flex-direction: column;
+}
+
+.parentItem {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	padding: 10px;
+}
+
+.expandIcon {
+	margin-left: auto;
+}
+
+.subItem {
+	padding-left: 20px; /* Indentation for sub-items */
+}
+
 .sideitem {
 	display: flex;
 	align-items: center;
@@ -55,6 +75,30 @@
 	padding-left: 20px;
 }
 
-.profileMenu {
+.profileDiv {
 	display: flex;
+	flex-direction: column;
+	cursor: pointer;
+	color: #b2bac2;
+	text-decoration: none;
+	background-color: rgb(18, 49, 80);
+}
+
+.profileDiv .profileRow:hover {
+	background-color: #216cbd94;
+}
+
+.profileRow {
+	flex: 1;
+	padding: 0px 20px;
+	margin: 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.profilePic {
+	width: 50px;
+	height: 50px;
+	border-radius: 25px;
 }
