@@ -1,57 +1,65 @@
 import { Route, Routes } from "react-router-dom";
 import "./styles/App.css";
 import "./styles/MainHeader.css";
-import NoMatchPage from "./pages/nomatch";
+import NoMatchPage from "./pages/main/NoMatch";
 import DefaultLayout from "./components/layouts/DefaultLayout";
 import ProfileLayout from "./components/layouts/ProfileLayout";
-import HomePage from "./pages/home";
-import LoginPage from "./pages/login";
-import RegisterPage from "./pages/register";
-import MainSideBar from "./components/SideBar";
-import ProfilePage from "./pages/profile";
+import HomePage from "./pages/main/Home";
+import ProfilePage from "./pages/main/Profile";
 import ProjectLayout from "./components/layouts/ProjectLayout";
-import ProjectPage from "./pages/project";
+import ProjectPage from "./pages/main/Project";
 import OrganisationLayout from "./components/layouts/OrganisationLayout";
-import OrganisationPage from "./pages/organisation";
-import ChatsPage from "./pages/organisation/chats";
-import CreateProjectPage from "./pages/project/create";
-import CompletedProjectsPage from "./pages/project/completed";
+import OrganisationPage from "./pages/main/Organisation";
+import ChatsPage from "./pages/main/Organisation/Chats";
+import CreateProjectPage from "./pages/main/Project/Create";
+import CompletedProjectsPage from "./pages/main/Project/Completed";
+import AuthProvider from "./components/context/AuthContext";
+import SigninPage from "./pages/auth/Signin";
+import SignupPage from "./pages/auth/Signup";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
 	return (
 		<div className="App">
-			<MainSideBar />
-			<main>
+			<AuthProvider>
 				<Routes>
-					<Route path="/" element={<DefaultLayout />}>
-						<Route index element={<HomePage />} />
-						<Route path="/signin" element={<LoginPage />} />
-						<Route path="/signup" element={<RegisterPage />} />
+					{/** Public routes */}
+					<Route path="/signin" element={<SigninPage />} />
+					<Route path="/signup" element={<SignupPage />} />
 
-						{/** Project routes */}
-						<Route path="/projects" element={<ProjectLayout />}>
-							<Route index element={<ProjectPage />} />
-							<Route path="/projects/create" element={<CreateProjectPage />} />
-							<Route
-								path="/projects/completed"
-								element={<CompletedProjectsPage />}
-							/>
-						</Route>
+					{/** Signed in routes */}
+					<Route element={<PrivateRoute />}>
+						<Route path="/" element={<DefaultLayout />}>
+							<Route index element={<HomePage />} />
 
-						{/** Organisation routes */}
-						<Route path="/organisations" element={<OrganisationLayout />}>
-							<Route index element={<OrganisationPage />} />
-							<Route path="/organisations/chats" element={<ChatsPage />} />
-						</Route>
+							{/** Project routes */}
+							<Route path="/projects" element={<ProjectLayout />}>
+								<Route index element={<ProjectPage />} />
+								<Route
+									path="/projects/create"
+									element={<CreateProjectPage />}
+								/>
+								<Route
+									path="/projects/completed"
+									element={<CompletedProjectsPage />}
+								/>
+							</Route>
 
-						{/** Profile routes */}
-						<Route path="/profile" element={<ProfileLayout />}>
-							<Route index element={<ProfilePage />} />
+							{/** Organisation routes */}
+							<Route path="/organisations" element={<OrganisationLayout />}>
+								<Route index element={<OrganisationPage />} />
+								<Route path="/organisations/chats" element={<ChatsPage />} />
+							</Route>
+
+							{/** Profile routes */}
+							<Route path="/profile" element={<ProfileLayout />}>
+								<Route index element={<ProfilePage />} />
+							</Route>
+							<Route path="*" element={<NoMatchPage />} />
 						</Route>
-						<Route path="*" element={<NoMatchPage />} />
 					</Route>
 				</Routes>
-			</main>
+			</AuthProvider>
 		</div>
 	);
 }
