@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export type AuthContextType = {
 	user: User | null;
-	login: (username: User) => void;
+	login: (user: User) => void;
 	logout: () => void;
 };
 
@@ -18,8 +18,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 	const [user, setUser] = useState<User | null>(null);
 	const navigate = useNavigate();
 
-	const login = (username: User) => {
-		setUser(username);
+	const login = (user: User) => {
+		setUser(user);
 		navigate("/");
 	};
 

@@ -10,6 +10,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import { useAuth } from "./context/AuthContext";
 
 export default function SideBar() {
 	const [open, setopen] = useState(true);
@@ -45,8 +46,14 @@ export default function SideBar() {
 					open={open}
 					subItems={[
 						{ to: "/projects/create", text: "Create Project" },
-						{ to: "/projects", text: "Active Projects" },
-						{ to: "/projects/completed", text: "Completed Projects" },
+						{
+							to: "/projects",
+							text: "Active Projects",
+						},
+						{
+							to: "/projects/completed",
+							text: "Completed Projects",
+						},
 					]}
 				/>
 			</>
@@ -60,6 +67,8 @@ function ProfileNav(open: boolean, toggleOpen: () => void) {
 	const location = useLocation().pathname.split("/")[1];
 	const active = `/${location}` === "/profile" ? true : false;
 
+	const { user } = useAuth();
+
 	return (
 		<>
 			{open ? (
@@ -72,7 +81,7 @@ function ProfileNav(open: boolean, toggleOpen: () => void) {
 							className={styles.profilePic}
 							src="https://i.pinimg.com/originals/ae/ec/c2/aeecc22a67dac7987a80ac0724658493.jpg"
 						/>
-						<h4>Username</h4>
+						<h4>{user?.username}</h4>
 					</NavLink>
 					<button>
 						<span>Logout</span>
@@ -125,8 +134,14 @@ export function NavItem(props: NavItemProps) {
 	);
 }
 
+export interface ItemProperties {
+	to: string;
+	text: string;
+	icon?: ReactNode | null;
+}
+
 export type ExpandableNavItemProps = NavItemProps & {
-	subItems?: { to: string; text: string }[];
+	subItems?: ItemProperties[];
 };
 
 // Expandable navigation item with sub-items
@@ -160,15 +175,17 @@ export function ExpandableNavItem(props: ExpandableNavItemProps) {
 			{/* Sub-items */}
 			{expanded &&
 				open &&
-				subItems?.map((subItem, index) => (
-					<NavItem
-						key={index}
-						to={subItem.to}
-						text={subItem.text}
-						icon={null} // Optional: no icon for sub-items
-						open={open}
-					/>
-				))}
+				subItems?.map((subItem, index) => {
+					return (
+						<NavItem
+							key={index}
+							to={subItem.to}
+							text={subItem.text}
+							icon={subItem.icon} // Optional: no icon for sub-items
+							open={open}
+						/>
+					);
+				})}
 		</div>
 	);
 }

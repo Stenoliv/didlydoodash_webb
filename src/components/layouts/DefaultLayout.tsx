@@ -1,18 +1,12 @@
-import { Link, Outlet } from "react-router-dom";
-import MainSideBar from "@/components/SideBar";
+import { Outlet } from "react-router-dom";
+import AuthProvider from "../context/AuthContext";
 
 export default function DefaultLayout() {
 	return (
 		<>
-			<MainSideBar />
-			<main>
-				<header className="header">
-					<Link to={"/"}>
-						<h1 className="header-name">DidlydooDash</h1>
-					</Link>
-				</header>
+			<AuthProvider>
 				<Outlet />
-			</main>
+			</AuthProvider>
 		</>
 	);
 }

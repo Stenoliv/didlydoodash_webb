@@ -1,10 +1,10 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
+import "@/styles/organistaionLayout.css";
 
 export default function OrganisationLayout() {
 	return (
 		<>
-			<div></div>
+			<div className="header-organisation"></div>
 			<Outlet />
 		</>
 	);

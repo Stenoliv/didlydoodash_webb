@@ -1,5 +1,9 @@
 export type User = {
+	username: string;
 	id: string;
-	name: string;
 	email: string;
+};
+
+export type Organisation = {
+	name: string;
 };

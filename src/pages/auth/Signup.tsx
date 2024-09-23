@@ -69,7 +69,7 @@ export default function SignupPage() {
 							type="password"
 							id="user-password"
 							name="password"
-							placeholder=""
+							placeholder="Password"
 							aria-description="user-password"
 							aria-invalid="false"
 							onChange={handleInput}
@@ -79,7 +79,6 @@ export default function SignupPage() {
 				</form>
 				<a href="/signin">Already signed up? Signin</a>
 			</div>
-			<div className="filler" />
 		</div>
 	);
 }
