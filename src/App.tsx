@@ -41,18 +41,15 @@ function App() {
 						<Route path="/projects" element={<ProjectLayout />}>
 							<Route index element={<ProjectPage />} />
 							{/** View a project */}
-							<Route path="/projects/:projectID" element={<ProjectView />} />
-							<Route path="/projects/create" element={<CreateProjectPage />} />
-							<Route
-								path="/projects/completed"
-								element={<CompletedProjectsPage />}
-							/>
+							<Route path=":projectID" element={<ProjectView />} />
+							<Route path="create" element={<CreateProjectPage />} />
+							<Route path="completed" element={<CompletedProjectsPage />} />
 						</Route>
 
 						{/** Organisation routes */}
 						<Route path="/organisations" element={<OrganisationLayout />}>
 							<Route index element={<OrganisationPage />} loader={dataLoader} />
-							<Route path="/organisations/chats" element={<ChatsPage />} />
+							<Route path="chats" element={<ChatsPage />} />
 						</Route>
 
 						{/** Profile routes */}
