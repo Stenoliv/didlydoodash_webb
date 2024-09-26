@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import "@/styles/auth.css";
 import { API } from "@/utils/api";
-import { useAuth } from "@/components/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function SignupPage() {
 	const [input, setInput] = useState({
@@ -15,7 +15,7 @@ export default function SignupPage() {
 	const handleSubmitEvent = (e: FormEvent) => {
 		e.preventDefault();
 		if (input.username !== "" && input.email !== "" && input.password !== "") {
-			return API.post("/api/signup", {})
+			return API.post("/api/auth/signup", {})
 				.then((response) => {
 					console.log(response);
 					login(response.data.user);

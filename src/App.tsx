@@ -11,28 +11,28 @@ import "./styles/MainHeader.css";
 import PrivateRoute from "./components/PrivateRoute";
 
 // Layouts
-import DefaultLayout from "./components/layouts/DefaultLayout";
-import MainLayout from "./components/layouts/MainLayout";
-import OrganisationLayout from "./components/layouts/OrganisationLayout";
-import ProjectLayout from "./components/layouts/ProjectLayout";
-import ProfileLayout from "./components/layouts/ProfileLayout";
+import DefaultLayout from "@/layouts/DefaultLayout";
+import MainLayout from "@/layouts/MainLayout";
+import OrganisationLayout from "@/layouts/OrganisationLayout";
+import ProjectLayout from "@/layouts/ProjectLayout";
+import ProfileLayout from "@/layouts/ProfileLayout";
 
 // Public pages
-import SigninPage from "./pages/public/Signin";
-import SignupPage from "./pages/public/Signup";
+import SigninPage from "@/pages/public/Signin";
+import SignupPage from "@/pages/public/Signup";
 import NoMatchPage from "@/pages/private/NoMatch";
 
 // Private pages
-import HomePage from "./pages/private/Home";
-import ProfilePage from "./pages/private/profile";
+import HomePage from "@/pages/private/Home";
+import ProfilePage from "@/pages/private/profile";
 // Organisation
-import OrganisationPage, { dataLoader } from "./pages/private/organisation";
-import ChatsPage from "./pages/private/organisation/Chats";
+import OrganisationPage, { dataLoader } from "@/pages/private/organisation";
+import ChatsPage from "@/pages/private/organisation/Chats";
 // Projects
-import ProjectPage from "./pages/private/project";
-import ProjectView from "./pages/private/project/ProjectView";
-import CreateProjectPage from "./pages/private/project/Create";
-import CompletedProjectsPage from "./pages/private/project/Completed";
+import ProjectPage from "@/pages/private/project";
+import ProjectView from "@/pages/private/project/ProjectView";
+import CreateProjectPage from "@/pages/private/project/Create";
+import CompletedProjectsPage from "@/pages/private/project/Completed";
 
 function App() {
 	const router = createBrowserRouter(

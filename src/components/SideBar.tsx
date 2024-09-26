@@ -10,7 +10,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import { useAuth } from "./context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function SideBar() {
 	const [open, setopen] = useState(true);
