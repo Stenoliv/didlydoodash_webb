@@ -24,8 +24,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 	};
 
 	const logout = () => {
+		navigate("/");
 		setUser(null);
-		navigate("/signin");
 	};
 
 	return (
