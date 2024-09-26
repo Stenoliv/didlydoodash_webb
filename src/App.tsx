@@ -33,6 +33,8 @@ import ProjectPage from "@/pages/private/project";
 import ProjectView from "@/pages/private/project/ProjectView";
 import CreateProjectPage from "@/pages/private/project/Create";
 import CompletedProjectsPage from "@/pages/private/project/Completed";
+import ForgotPasswordPage from "./pages/public/ForgotPassword";
+import CreateOrganisationPage from "./pages/private/organisation/CreateOrganisation";
 
 function App() {
 	const router = createBrowserRouter(
@@ -41,6 +43,7 @@ function App() {
 				{/** Public routes */}
 				<Route path="/signin" element={<SigninPage />} />
 				<Route path="/signup" element={<SignupPage />} />
+				<Route path="/forgot" element={<ForgotPasswordPage />} />
 
 				{/** Authenticated routes */}
 				<Route element={<PrivateRoute />}>
@@ -59,6 +62,7 @@ function App() {
 						{/** Organisation routes */}
 						<Route path="/organisations" element={<OrganisationLayout />}>
 							<Route index element={<OrganisationPage />} loader={dataLoader} />
+							<Route path="create" element={<CreateOrganisationPage />} />
 							<Route path="chats" element={<ChatsPage />} />
 						</Route>
 

@@ -33,10 +33,6 @@
 	margin-left: auto;
 }
 
-.subItem {
-	padding-left: 20px; /* Indentation for sub-items */
-}
-
 .sideitem {
 	display: flex;
 	align-items: center;
@@ -44,6 +40,10 @@
 	cursor: pointer;
 	color: #b2bac2;
 	text-decoration: none;
+}
+
+a.sideitem {
+	padding-left: 40px;
 }
 
 .sideitem:hover {

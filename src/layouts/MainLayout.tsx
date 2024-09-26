@@ -1,18 +1,16 @@
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import SideBar from "@/components/SideBar";
-import "@/styles/MainHeader.css";
+import NavBar from "@/components/NavBar";
 
 export default function MainLayout() {
 	return (
 		<>
-			<SideBar />
+			<NavBar />
 			<main>
-				<header className="header">
-					<Link to={"/"}>
-						<h1 className="header-name">DidlydooDash</h1>
-					</Link>
-				</header>
-				<Outlet />
+				<SideBar />
+				<div className="App">
+					<Outlet />
+				</div>
 			</main>
 		</>
 	);

@@ -2,11 +2,13 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import "@/styles/auth.css";
 import { API } from "@/utils/api";
 import { useAuth } from "@/context/AuthContext";
+import { toast } from "react-toastify";
 
 export default function SignupPage() {
 	const [input, setInput] = useState({
 		email: "",
 		password: "",
+		rememberMe: false,
 	});
 
 	const { login } = useAuth();
@@ -14,21 +16,35 @@ export default function SignupPage() {
 	const handleSubmitEvent = (e: FormEvent) => {
 		e.preventDefault();
 		if (input.email !== "" && input.password !== "") {
-			return API.post("/api/auth/signin", {})
+			return API.post("/api/auth/signin", { ...input })
 				.then((response) => {
-					console.log(response);
 					login(response.data.user);
+					toast.success(`Welcome back ${response.data.user.username}`);
+				})
+				.catch(() => {
+					toast.error("Failed to signin check your credentials", {
+						position: "top-left",
+					});
 				})
 				.finally();
 		}
-		alert("Please provide a valid input");
+		toast.error("Please fill out the form first", {
+			position: "top-left",
+		});
 	};
 
 	const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
+		const { name, type, checked, value } = e.target;
 		setInput((prev) => ({
 			...prev,
-			[name]: value,
+			[name]: type === "checkbox" ? checked : value,
+		}));
+	};
+
+	const toggleRememberMe = () => {
+		setInput((prev) => ({
+			...prev,
+			rememberMe: !input.rememberMe,
 		}));
 	};
 
@@ -36,7 +52,7 @@ export default function SignupPage() {
 		<div className="container">
 			<div className="form">
 				<h1>DidlydooDash</h1>
-				<h3>Welcome back!</h3>
+				<h2>Welcome back!</h2>
 				<form onSubmit={handleSubmitEvent}>
 					<div className="form-field">
 						<label>Email:</label>
@@ -62,9 +78,23 @@ export default function SignupPage() {
 							onChange={handleInput}
 						/>
 					</div>
+					<div className="form-field row">
+						<div className="rememberMe" onClick={toggleRememberMe}>
+							<input
+								type="checkbox"
+								name="rememberMe"
+								checked={input.rememberMe}
+								onChange={handleInput}
+							/>
+							<label>Remember me!</label>
+						</div>
+						<a href="/forgot">Forgot password?</a>
+					</div>
 					<button className="">Submit</button>
 				</form>
-				<a href="/signup">Not signed up? Signup</a>
+				<span>
+					Not signed up? <a href="/signup">Signup</a>
+				</span>
 			</div>
 		</div>
 	);

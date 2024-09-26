@@ -4,13 +4,20 @@ import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
+import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
+
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
+import MessageRoundedIcon from "@mui/icons-material/MessageRounded";
+
 import FolderIcon from "@mui/icons-material/Folder";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import FolderOffRoundedIcon from "@mui/icons-material/FolderOffRounded";
+import FolderOpenRoundedIcon from "@mui/icons-material/FolderOpenRounded";
+import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
+import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import { useAuth } from "@/context/AuthContext";
+import { Badge } from "@mui/material";
 
 export default function SideBar() {
 	const [open, setopen] = useState(true);
@@ -35,8 +42,21 @@ export default function SideBar() {
 					icon={<CorporateFareIcon />}
 					open={open}
 					subItems={[
-						{ to: "/organisations", text: "Overview" },
-						{ to: "/organisations/chats", text: "Chats" },
+						{
+							to: "/organisations/create",
+							text: "Create",
+							icon: <AddBoxRoundedIcon />,
+						},
+						{ to: "/organisations", text: "View", icon: <CorporateFareIcon /> },
+						{
+							to: "/organisations/chats",
+							text: "Chats",
+							icon: (
+								<Badge badgeContent={0} color="primary">
+									<MessageRoundedIcon />
+								</Badge>
+							),
+						},
 					]}
 				/>
 				<ExpandableNavItem
@@ -45,65 +65,30 @@ export default function SideBar() {
 					icon={<FolderIcon />}
 					open={open}
 					subItems={[
-						{ to: "/projects/create", text: "Create Project" },
+						{
+							to: "/projects/create",
+							text: "Create",
+							icon: <CreateNewFolderRoundedIcon />,
+						},
 						{
 							to: "/projects",
-							text: "Active Projects",
+							text: "Active",
+							icon: <FolderOpenRoundedIcon />,
 						},
 						{
 							to: "/projects/completed",
-							text: "Completed Projects",
+							text: "Completed",
+							icon: <FolderRoundedIcon />,
+						},
+						{
+							to: "/projects/archived",
+							text: "Archived",
+							icon: <FolderOffRoundedIcon />,
 						},
 					]}
 				/>
 			</>
-			<div style={{ flex: 1 }} />
-			{ProfileNav(open, toggleOpen)}
 		</div>
-	);
-}
-
-function ProfileNav(open: boolean, toggleOpen: () => void) {
-	const location = useLocation().pathname.split("/")[1];
-	const active = `/${location}` === "/profile" ? true : false;
-
-	const { user } = useAuth();
-
-	return (
-		<>
-			{open ? (
-				<div className={`${styles.profileDiv} ${active ? styles.active : ""}`}>
-					<NavLink
-						to={"/profile"}
-						className={`${styles.profileRow} ${active ? styles.active : ""}`}
-					>
-						<img
-							className={styles.profilePic}
-							src="https://i.pinimg.com/originals/ae/ec/c2/aeecc22a67dac7987a80ac0724658493.jpg"
-						/>
-						<h4>{user?.username}</h4>
-					</NavLink>
-					<button>
-						<span>Logout</span>
-					</button>
-				</div>
-			) : (
-				<NavLink
-					to="/profile"
-					className={`${styles.sideitem} ${active ? styles.active : ""}`}
-					onClick={() => {
-						if (!open) {
-							toggleOpen();
-						}
-					}}
-				>
-					{<AccountCircleIcon />}
-					<span className={open ? styles.linkText : styles.linkTextClosed}>
-						Profile
-					</span>
-				</NavLink>
-			)}
-		</>
 	);
 }
 

@@ -1,5 +1,7 @@
 .container {
 	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 100vw;
 	height: 100vh;
 	margin: 0;
@@ -7,17 +9,18 @@
 }
 
 .form {
-	flex: 1;
+	padding: 50px;
+	border-radius: 25px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	align-items: center;
+	text-align: center;
+	background-color: black;
 }
 
 form {
 	display: flex;
 	flex-direction: column;
-	background-color: black;
 	border-radius: 12px;
 	padding: 10px;
 	gap: 10px;
@@ -26,14 +29,27 @@ form {
 
 .form-field {
 	display: flex;
+	flex-direction: column;
+}
+
+.form-field.row {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.rememberMe {
+	display: flex;
+	align-items: center;
+	pointer-events: all;
 }
 
 .form-field label {
-	flex: 0.5;
+	text-align: left;
 	padding: 10px;
 	padding-left: 0px;
 }
 
 .form-field input {
-	flex: 1;
+	height: 36px;
 }
