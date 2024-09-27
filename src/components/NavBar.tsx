@@ -44,13 +44,17 @@ export default function NavBar() {
 	return (
 		<header className="header">
 			<Link to={"/"}>
-				<h1 className="header-name">DidlydooDash</h1>
+				<h1 className="header-title">DidlydooDash</h1>
 			</Link>
+			<div className="header-content"></div>
 			{user && (
-				<div>
+				<div className="header-profile">
 					<FormControl>
-						<InputLabel id="select-organisation-label">Organisation</InputLabel>
+						<InputLabel id="select-organisation-label">
+							Organisations
+						</InputLabel>
 						<Select
+							size="small"
 							labelId="select-organisation-label"
 							label="Organisation"
 							id="select-organisation-select"
