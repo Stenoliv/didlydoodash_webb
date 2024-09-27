@@ -3,6 +3,7 @@ import "@/styles/auth.css";
 import { API } from "@/utils/api";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
+import { useAuthStore } from "@/stores/auth/store";
 
 export default function SignupPage() {
 	const [input, setInput] = useState({
@@ -12,13 +13,16 @@ export default function SignupPage() {
 	});
 
 	const { login } = useAuth();
+	const { setTokens } = useAuthStore();
 
 	const handleSubmitEvent = (e: FormEvent) => {
 		e.preventDefault();
 		if (input.email !== "" && input.password !== "") {
 			return API.post("/api/auth/signin", { ...input })
 				.then((response) => {
+					console.log(response);
 					login(response.data.user);
+					setTokens(response.data.tokens);
 					toast.success(`Welcome back ${response.data.user.username}`);
 				})
 				.catch(() => {

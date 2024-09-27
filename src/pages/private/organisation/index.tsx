@@ -1,8 +1,13 @@
 import { API } from "@/utils/api";
+import { Organisation } from "@/utils/types";
 import { useQuery } from "react-query";
+import { toast } from "react-toastify";
 
 export default function OrganisationPage() {
-	const { data, isLoading, error } = useQuery("organisations", dataLoader);
+	const { data, isLoading, error } = useQuery<Organisation[], Error>(
+		"organisations",
+		dataLoader
+	);
 
 	if (isLoading) {
 		return <div>Loading...</div>;
@@ -25,7 +30,12 @@ export const dataLoader = async () => {
 	try {
 		const result = await API.get("/api/organisations");
 		return result.data.organisations;
-	} catch (error) {
-		throw new Error("Failed to fetch organisations: " + error.message);
+	} catch (error: any) {
+		toast.error(
+			`Failed to get organisations error message: ${error?.message}`,
+			{
+				position: "top-left",
+			}
+		);
 	}
 };

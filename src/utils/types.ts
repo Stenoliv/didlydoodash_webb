@@ -5,6 +5,11 @@ export type User = {
 	avatar?: string;
 };
 
+export type Tokens = {
+	access: string;
+	refresh: string;
+}
+
 export type Organisation = {
 	name: string;
 };

@@ -3,16 +3,17 @@ import "@/styles/auth.css";
 import { API } from "@/utils/api";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
+import { useAuthStore } from "@/stores/auth/store";
 
 export default function SignupPage() {
 	const [input, setInput] = useState({
 		username: "",
 		email: "",
 		password: "",
-		rememberMe: false,
 	});
 
 	const { login } = useAuth();
+	const { setTokens } = useAuthStore();
 
 	const handleSubmitEvent = (e: FormEvent) => {
 		e.preventDefault();
@@ -21,6 +22,7 @@ export default function SignupPage() {
 				.then((response) => {
 					console.log(response);
 					login(response.data.user);
+					setTokens(response.data.tokens);
 					toast.success(
 						`Welcome to didlydoodash ${response.data.user.username}`
 					);
@@ -38,17 +40,10 @@ export default function SignupPage() {
 	};
 
 	const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-		const { name, type, checked, value } = e.target;
+		const { name, value } = e.target;
 		setInput((prev) => ({
 			...prev,
-			[name]: type === "checkbox" ? checked : value,
-		}));
-	};
-
-	const toggleRememberMe = () => {
-		setInput((prev) => ({
-			...prev,
-			rememberMe: !input.rememberMe,
+			[name]: value,
 		}));
 	};
 
@@ -93,17 +88,6 @@ export default function SignupPage() {
 							aria-invalid="false"
 							onChange={handleInput}
 						/>
-					</div>
-					<div className="form-field row">
-						<div className="rememberMe" onClick={toggleRememberMe}>
-							<input
-								type="checkbox"
-								name="rememberMe"
-								checked={input.rememberMe}
-								onChange={handleInput}
-							/>
-							<label>Remember me!</label>
-						</div>
 					</div>
 					<button className="">Submit</button>
 				</form>

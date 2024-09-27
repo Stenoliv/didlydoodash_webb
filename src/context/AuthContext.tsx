@@ -1,7 +1,7 @@
 import { useContext, createContext, ReactNode } from "react";
 import { User } from "@/utils/types";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "@/stores/auth.store";
+import { useAuthStore } from "@/stores/auth/store";
 
 export type AuthContextType = {
 	user: User | null;
