@@ -26,7 +26,7 @@ import NoMatchPage from "@/pages/private/NoMatch";
 import HomePage from "@/pages/private/Home";
 import ProfilePage from "@/pages/private/profile";
 // Organisation
-import OrganisationPage, { dataLoader } from "@/pages/private/organisation";
+import OrganisationPage from "@/pages/private/organisation";
 import ChatsPage from "@/pages/private/organisation/Chats";
 // Projects
 import ProjectPage from "@/pages/private/project";
@@ -61,7 +61,7 @@ function App() {
 
 						{/** Organisation routes */}
 						<Route path="/organisations" element={<OrganisationLayout />}>
-							<Route index element={<OrganisationPage />} loader={dataLoader} />
+							<Route index element={<OrganisationPage />} />
 							<Route path="create" element={<CreateOrganisationPage />} />
 							<Route path="chats" element={<ChatsPage />} />
 						</Route>

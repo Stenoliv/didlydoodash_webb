@@ -15,7 +15,7 @@ import { useState } from "react";
 
 export default function NavBar() {
 	const { user, logout } = useAuth();
-	const [organisation, setOrganisation] = useState("");
+	const [organisation, setOrganisation] = useState("Organisation1");
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 	const navigate = useNavigate();

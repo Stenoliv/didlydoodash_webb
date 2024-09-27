@@ -1,30 +1,31 @@
 import { API } from "@/utils/api";
-import { useLoaderData, useNavigation } from "react-router-dom";
+import { useQuery } from "react-query";
 
 export default function OrganisationPage() {
-	const organisations = useLoaderData();
-	const navigation = useNavigation();
+	const { data, isLoading, error } = useQuery("organisations", dataLoader);
 
-	console.log(organisations);
-
-	if (navigation.state === "loading") {
+	if (isLoading) {
 		return <div>Loading...</div>;
 	}
 
-	if (!Array.isArray(organisations)) {
-		return <div>Error: Organisations data is not an array.</div>;
+	if (error) {
+		return <div>Error: {error.message}</div>;
 	}
 
-	if (!organisations || organisations.length === 0) {
+	if (!data || data.length === 0) {
 		return <div>No organisations available.</div>;
 	}
 
-	return organisations.map((organisation, index) => (
+	return data.map((organisation, index) => (
 		<div key={index}>{organisation.name}</div>
 	));
 }
 
 export const dataLoader = async () => {
-	const result = await API.get("/api/organisations");
-	return result.data.organisations;
+	try {
+		const result = await API.get("/api/organisations");
+		return result.data.organisations;
+	} catch (error) {
+		throw new Error("Failed to fetch organisations: " + error.message);
+	}
 };
