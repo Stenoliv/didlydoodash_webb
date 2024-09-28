@@ -90,7 +90,18 @@ export default function SideBar() {
 						}
 						placement="right"
 					>
-						<FormControl style={{ marginTop: 10, marginBottom: 5 }}>
+						<FormControl
+							style={
+								open
+									? {
+											marginLeft: 20,
+											marginTop: 10,
+											marginBottom: 5,
+											marginRight: 10,
+									  }
+									: { margin: 0, marginBottom: 5, marginTop: 10 }
+							}
+						>
 							<InputLabel id="organisation-label">Organisations</InputLabel>
 							<Select
 								size="small"
