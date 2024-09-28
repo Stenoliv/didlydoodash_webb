@@ -177,7 +177,7 @@ export default function SideBar() {
 	);
 }
 
-export const organisationLoader = async () => {
+const organisationLoader = async () => {
 	try {
 		const result = await API.get("/api/organisations");
 		return result.data.organisations;
