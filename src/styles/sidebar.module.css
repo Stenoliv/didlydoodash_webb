@@ -1,49 +1,43 @@
 .sidenav {
+	margin: 0;
+	padding: 0;
 	width: 250px;
+	max-width: 250px;
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
+	justify-content: flex-start;
 	transition: width 0.3s ease-in-out;
 	background-color: rgb(10, 25, 41);
 }
 
 .sidenavClosed {
 	composes: sidenav;
-	transition: width 0.3s ease-in-out;
 	width: 60px;
-}
-
-.menuItems {
-	display: flex;
+	transition: width 0.3s ease-in-out;
 }
 
 .expandableItem {
+	padding: 0;
 	display: flex;
 	flex-direction: column;
 }
 
-.parentItem {
-	display: flex;
-	align-items: center;
-	cursor: pointer;
-	padding: 10px;
-}
-
-.expandIcon {
-	margin-left: auto;
-}
-
 .sideitem {
 	display: flex;
-	align-items: center;
 	padding: 10px 20px;
+	align-items: center;
 	cursor: pointer;
 	color: #b2bac2;
 	text-decoration: none;
 }
 
-a.sideitem {
+.expandableItem a.sideitem {
 	padding-left: 40px;
+}
+
+.expandIcon {
+	flex: 1;
 }
 
 .sideitem:hover {
@@ -62,43 +56,4 @@ a.sideitem {
 .linkTextClosed {
 	composes: linkText;
 	visibility: hidden;
-}
-
-.menuBtn {
-	align-self: center;
-	align-self: flex-start;
-	justify-self: flex-end;
-	color: #b2bac2;
-	background-color: transparent;
-	border: none;
-	cursor: pointer;
-	padding-left: 20px;
-}
-
-.profileDiv {
-	display: flex;
-	flex-direction: column;
-	cursor: pointer;
-	color: #b2bac2;
-	text-decoration: none;
-	background-color: rgb(18, 49, 80);
-}
-
-.profileDiv .profileRow:hover {
-	background-color: #216cbd94;
-}
-
-.profileRow {
-	flex: 1;
-	padding: 0px 20px;
-	margin: 0;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.profilePic {
-	width: 50px;
-	height: 50px;
-	border-radius: 25px;
 }

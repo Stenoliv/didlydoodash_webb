@@ -1,28 +1,14 @@
 import { useAuth } from "@/context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import "@/styles/MainHeader.css";
-import {
-	Avatar,
-	Button,
-	FormControl,
-	InputLabel,
-	Menu,
-	MenuItem,
-	Select,
-	SelectChangeEvent,
-} from "@mui/material";
+import { Avatar, Button, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
+import "@/styles/MainHeader.css";
 
 export default function NavBar() {
 	const { user, logout } = useAuth();
-	const [organisation, setOrganisation] = useState("Organisation1");
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-	const open = Boolean(anchorEl);
 	const navigate = useNavigate();
-
-	const handleChange = (event: SelectChangeEvent) => {
-		setOrganisation(event.target.value as string);
-	};
+	const open = Boolean(anchorEl);
 
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -46,26 +32,8 @@ export default function NavBar() {
 			<Link to={"/"}>
 				<h1 className="header-title">DidlydooDash</h1>
 			</Link>
-			<div className="header-content"></div>
 			{user && (
 				<div className="header-profile">
-					<FormControl>
-						<InputLabel id="select-organisation-label">
-							Organisations
-						</InputLabel>
-						<Select
-							size="small"
-							labelId="select-organisation-label"
-							label="Organisation"
-							id="select-organisation-select"
-							defaultValue="Organisation1"
-							value={organisation}
-							onChange={handleChange}
-						>
-							<MenuItem value={"Organisation1"}>Organisation1</MenuItem>
-							<MenuItem value={"Organisation2"}>Organisation2</MenuItem>
-						</Select>
-					</FormControl>
 					<Button
 						id="basic-button"
 						aria-controls={open ? "basic-menu" : undefined}

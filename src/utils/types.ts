@@ -11,5 +11,6 @@ export type Tokens = {
 }
 
 export type Organisation = {
+	id: string;
 	name: string;
 };
