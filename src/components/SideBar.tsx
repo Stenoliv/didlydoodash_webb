@@ -54,7 +54,8 @@ export default function SideBar() {
 	const handleChange = (event: SelectChangeEvent) => {
 		const selectedOrganisationId = event.target.value as string;
 		const selectedOrganisation =
-			organisations.find((org) => org.id === selectedOrganisationId) || null;
+			organisations.find((org) => org.id === selectedOrganisationId) ||
+			undefined;
 		setOrganisation(selectedOrganisation);
 	};
 
@@ -72,7 +73,16 @@ export default function SideBar() {
 
 	return (
 		<div className={open ? styles.sidenav : styles.sidenavClosed}>
-			<Button onClick={toggleOpen}>
+			<Button
+				onClick={toggleOpen}
+				style={{
+					justifyContent: open ? "flex-start" : "center",
+					margin: 10,
+					paddingRight: 0,
+					paddingLeft: open ? 10 : 0,
+					minWidth: 0,
+				}}
+			>
 				{open ? (
 					<KeyboardDoubleArrowLeftIcon />
 				) : (
@@ -81,7 +91,7 @@ export default function SideBar() {
 			</Button>
 			<>
 				<NavItem to={"/"} text="Home" icon={<Home />} open={open} />
-				{organisations && (
+				{organisations && organisations.length > 0 && (
 					<Tooltip
 						title={
 							organisation != null
@@ -90,20 +100,25 @@ export default function SideBar() {
 						}
 						placement="right"
 					>
-						<FormControl
-							style={
-								open
-									? {
-											marginLeft: 20,
-											marginTop: 10,
-											marginBottom: 5,
-											marginRight: 10,
-									  }
-									: { margin: 0, marginBottom: 5, marginTop: 10 }
-							}
-						>
-							<InputLabel id="organisation-label">Organisations</InputLabel>
+						<FormControl>
+							<InputLabel
+								style={{
+									marginTop: 10,
+									marginBottom: 5,
+									marginRight: open ? 10 : 0,
+									marginLeft: open ? 20 : 0,
+								}}
+								id="organisation-label"
+							>
+								Organisations
+							</InputLabel>
 							<Select
+								style={{
+									marginTop: 10,
+									marginBottom: 5,
+									marginRight: open ? 10 : 0,
+									marginLeft: open ? 20 : 0,
+								}}
 								size="small"
 								labelId="organisation-label"
 								label="Organisations"
@@ -128,7 +143,7 @@ export default function SideBar() {
 				tooltip="New organisation"
 				open={open}
 			/>
-			{organisation && organisations && (
+			{organisation && organisations && organisations.length > 0 && (
 				<>
 					<NavItem
 						to={"/organisations"}

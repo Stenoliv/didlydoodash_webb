@@ -3,8 +3,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import { create } from "zustand";
 
 export interface OrganisationStoreType {
-    organisation: Organisation | null;
-    setOrganisation: (org: Organisation | null) => void;
+    organisation: Organisation | undefined;
+    setOrganisation: (org: Organisation | undefined) => void;
     organisations: Organisation[];
     addOrganisation: (org: Organisation) => void;
     setOrganisations: (orgs: Organisation[]) => void;
@@ -13,7 +13,7 @@ export interface OrganisationStoreType {
 export const useOrgStore = create<OrganisationStoreType>()(
     persist(
         (set) => ({
-            organisation: null,
+            organisation: undefined,
             setOrganisation: (org) => set({organisation: org}),
             organisations: [] as Organisation[],
             addOrganisation: (org) => set((state) => ({

@@ -2,6 +2,7 @@ import { useContext, createContext, ReactNode } from "react";
 import { User } from "@/utils/types";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth/store";
+import { useOrgStore } from "@/stores/organisation";
 
 export type AuthContextType = {
 	user: User | null;
@@ -17,9 +18,11 @@ export type AuthProviderProps = {
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
 	const { user, setUser } = useAuthStore();
+	const { setOrganisation } = useOrgStore();
 	const navigate = useNavigate();
 
 	const login = (user: User) => {
+		setOrganisation(undefined);
 		setUser(user);
 		navigate("/");
 	};

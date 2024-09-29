@@ -16,8 +16,8 @@ interface OrgMemberInput {
 
 export default function CreatePage() {
 	const [input, setInput] = useState<CreateOrgInput>({
-		name: null,
-		members: null,
+		name: "",
+		members: [],
 	});
 	const { addOrganisation } = useOrgStore();
 
