@@ -20,21 +20,24 @@ import ProfileLayout from "@/layouts/ProfileLayout";
 // Public pages
 import SigninPage from "@/pages/public/Signin";
 import SignupPage from "@/pages/public/Signup";
+import ForgotPasswordPage from "./pages/public/ForgotPassword";
 import NoMatchPage from "@/pages/private/NoMatch";
 
 // Private pages
 import HomePage from "@/pages/private/Home";
 import ProfilePage from "@/pages/private/profile";
+
 // Organisation
 import OrganisationPage from "@/pages/private/organisations";
 import CreateOrganisationPage from "./pages/private/organisations/CreateOrganisation";
-import ChatsPage from "@/pages/private/organisations/Chats";
+import ChatsPage from "@/pages/private/organisations/chats";
+import ChatPage from "./pages/private/organisations/chats/[id]";
+
 // Projects
 import ProjectPage from "@/pages/private/project";
 import ProjectView from "@/pages/private/project/ProjectView";
 import CreateProjectPage from "@/pages/private/project/Create";
 import CompletedProjectsPage from "@/pages/private/project/Completed";
-import ForgotPasswordPage from "./pages/public/ForgotPassword";
 
 function App() {
 	const router = createBrowserRouter(
@@ -64,6 +67,7 @@ function App() {
 							<Route index element={<OrganisationPage />} />
 							<Route path="create" element={<CreateOrganisationPage />} />
 							<Route path="chats" element={<ChatsPage />} />
+							<Route path="chats/:id" element={<ChatPage />} />
 						</Route>
 
 						{/** Profile routes */}

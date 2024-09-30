@@ -27,3 +27,9 @@ export type ChatMember = {
 	id: string;
 	name: string;
 }
+
+export type WSMessage = {
+	type: string;
+	roomId: string;
+	payload: string;
+}
