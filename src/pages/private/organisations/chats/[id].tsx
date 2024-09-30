@@ -27,7 +27,6 @@ function ChatPage() {
 		},
 	});
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const [messageHistory, setMessageHistory] = useState<WSChatMessage[]>([]);
 	const [input, setInput] = useState({
 		message: "",
