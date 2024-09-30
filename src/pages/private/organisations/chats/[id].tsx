@@ -1,6 +1,7 @@
+import MessageItem from "@/components/chats/Message";
 import { useAuthStore } from "@/stores/auth/store";
 import { useOrgStore } from "@/stores/organisation";
-import { WSMessage } from "@/utils/types";
+import { WSChatMessage, WSMessage } from "@/utils/types";
 import { Button, FormControl, TextField } from "@mui/material";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -10,6 +11,7 @@ function ChatPage() {
 	const { id } = useParams();
 	const { organisation } = useOrgStore();
 	const { tokens } = useAuthStore();
+	const { user } = useAuthStore();
 
 	const WS_URL = `ws://localhost:3000/organisations/${organisation?.id}/chats/${id}?token=${tokens?.access}`;
 
@@ -26,7 +28,7 @@ function ChatPage() {
 	});
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const [messageHistory, setMessageHistory] = useState<WSMessage[]>([]);
+	const [messageHistory, setMessageHistory] = useState<WSChatMessage[]>([]);
 	const [input, setInput] = useState({
 		message: "",
 	});
@@ -57,21 +59,32 @@ function ChatPage() {
 
 	const handleSendMessage = useCallback(
 		() =>
-			sendJsonMessage({
+			sendJsonMessage<WSChatMessage>({
 				type: "message.send",
-				payload: input.message,
-				roomId: id,
+				roomId: id ? id : "",
+				payload: {
+					userId: user ? user?.id : "",
+					message: input.message,
+				},
 			}),
-		[id, sendJsonMessage, input.message]
+		[id, user, sendJsonMessage, input.message]
 	);
 
 	return (
 		<div>
 			<div>
 				Messages:
-				<ul style={{ display: "flex", flexDirection: "column" }}>
+				<ul
+					style={{
+						display: "flex",
+						flexDirection: "column",
+						position: "relative",
+						width: "100%",
+						height: "100%",
+					}}
+				>
 					{messageHistory.map((message, idx) => (
-						<span key={idx}>{message ? message.payload : null}</span>
+						<MessageItem data={message} key={idx} />
 					))}
 				</ul>
 			</div>

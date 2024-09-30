@@ -28,8 +28,34 @@ export type ChatMember = {
 	name: string;
 }
 
-export type WSMessage = {
-	type: string;
+export type WSMessage = 
+	| WSChatMessage
+	| WSUserJoined
+	| WSUserLeft
+
+export type WSChatMessage = {
+	type: "message.send";
 	roomId: string;
-	payload: string;
+	payload: {
+		userId: string;
+		createdAt?: Date;
+		updatedAt?: Date;
+		message: string;
+	};
+}
+
+export type WSUserJoined = {
+	type: "user.joined";
+	roomId: string;
+	payload: {
+		userId: string;
+	}
+}
+
+export type WSUserLeft = {
+	type: "user.left";
+	roomId: string;
+	payload: {
+		userId: string;
+	}
 }
