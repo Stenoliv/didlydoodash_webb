@@ -14,3 +14,16 @@ export type Organisation = {
 	id: string;
 	name: string;
 };
+
+export type Chat = {
+	id: string;
+	createdAt: Date;
+	updatedAt: Date;
+	name: string;
+	members: ChatMember[]
+}
+
+export type ChatMember = {
+	id: string;
+	name: string;
+}
