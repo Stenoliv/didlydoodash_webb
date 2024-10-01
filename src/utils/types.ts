@@ -25,7 +25,10 @@ export type Chat = {
 
 export type ChatMember = {
 	id: string;
-	name: string;
+	member: {
+		id: string;
+		username: string;
+	}
 }
 
 export type WSMessage = 

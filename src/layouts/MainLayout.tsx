@@ -8,7 +8,7 @@ export default function MainLayout() {
 			<NavBar />
 			<main>
 				<SideBar />
-				<div className="App">
+				<div className="main-layout">
 					<Outlet />
 				</div>
 			</main>

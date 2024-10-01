@@ -18,5 +18,9 @@ export const useChatStore = create<ChatStoreType>()(persist((set) => ({
     setOpenChat: (chat) => set({ openChat: chat })
 }), {
     name: "chat-store",
-    storage: createJSONStorage(() => localStorage)
+    storage: createJSONStorage(() => localStorage),
+    partialize: ((state) => ({
+        chats: state.chats,
+        openChat: state.openChat
+    }))
 }))

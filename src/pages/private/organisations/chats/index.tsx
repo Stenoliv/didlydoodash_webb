@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 
 export default function ChatsPage() {
 	const { organisation } = useOrgStore();
-	const { chats, addChat, setChats } = useChatStore();
+	const { chats, addChat, setChats, setOpenChat } = useChatStore();
 	const { user } = useAuthStore(); // TODO: Remove temp and implement member selection form
 	const { isLoading, isError } = useQuery<Chat[], Error>("chats", getChats, {
 		onSuccess: (data) => {
@@ -103,7 +103,7 @@ export default function ChatsPage() {
 			</Modal>
 			{chats.map((chat) => {
 				return (
-					<NavLink to={`/organisations/chats/${chat.id}`}>{chat.name}</NavLink>
+					<NavLink to={`/organisations/chats/${chat.id}`} onClick={() => setOpenChat(chat)}>{chat.name}</NavLink>
 				);
 			})}
 		</div>
