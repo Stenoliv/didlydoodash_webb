@@ -5,7 +5,6 @@ import {
 	RouterProvider,
 } from "react-router-dom";
 import "./styles/App.css";
-import "./styles/MainHeader.css";
 
 // Components
 import PrivateRoute from "./components/PrivateRoute";
@@ -31,7 +30,6 @@ import ProfilePage from "@/pages/private/profile";
 import OrganisationPage from "@/pages/private/organisations";
 import CreateOrganisationPage from "./pages/private/organisations/CreateOrganisation";
 import ChatsPage from "@/pages/private/organisations/chats";
-import ChatPage from "./pages/private/organisations/chats/[id]";
 
 // Projects
 import ProjectPage from "@/pages/private/project";
@@ -67,7 +65,6 @@ function App() {
 							<Route index element={<OrganisationPage />} />
 							<Route path="create" element={<CreateOrganisationPage />} />
 							<Route path="chats" element={<ChatsPage />} />
-							<Route path="chats/:id" element={<ChatPage />} />
 						</Route>
 
 						{/** Profile routes */}
@@ -82,9 +79,9 @@ function App() {
 	);
 
 	return (
-		<div className="App">
+		<>
 			<RouterProvider router={router} />
-		</div>
+		</>
 	);
 }
 

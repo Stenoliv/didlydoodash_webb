@@ -2,7 +2,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { Avatar, Button, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
-import "@/styles/MainHeader.css";
+import "./navBar.css";
 
 export default function NavBar() {
 	const { user, logout } = useAuth();

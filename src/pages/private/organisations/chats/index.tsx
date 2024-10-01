@@ -1,33 +1,24 @@
+import Chats from "@/components/chats/chats/Chats";
+import Details from "@/components/chats/details/Details";
+import List from "@/components/chats/lists/List";
 import { useAuthStore } from "@/stores/auth/store";
 import { useOrgStore } from "@/stores/organisation";
 import { useChatStore } from "@/stores/organisation/chats";
 import { API } from "@/utils/api";
 import { Chat } from "@/utils/types";
-import {
-	Button,
-	FormControl,
-	Modal,
-	TextField,
-	Typography,
-} from "@mui/material";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useQuery } from "react-query";
-import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function ChatsPage() {
 	const { organisation } = useOrgStore();
-	const { chats, addChat, setChats, setOpenChat } = useChatStore();
+	const { addChat, setChats } = useChatStore();
 	const { user } = useAuthStore(); // TODO: Remove temp and implement member selection form
-	const { isLoading, isError } = useQuery<Chat[], Error>("chats", getChats, {
+	const {} = useQuery<Chat[], Error>("chats", getChats, {
 		onSuccess: (data) => {
 			setChats(data);
 		},
 	});
-
-	const [open, setOpen] = useState<boolean>(false);
-	const handleOpen = () => setOpen(true);
-	const handleClose = () => setOpen(false);
 
 	const [input, setInput] = useState({
 		name: "",
@@ -58,54 +49,11 @@ export default function ChatsPage() {
 			.finally();
 	};
 
-	// Chats loading
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
-
-	if (isError) {
-		return <div>Error: {}</div>;
-	}
-
 	return (
-		<div>
-			<Button onClick={handleOpen}>Add Chat</Button>
-			<Modal open={open} onClose={handleClose}>
-				<FormControl
-					onSubmit={handleNewChat}
-					component="form"
-					sx={{
-						position: "absolute",
-						top: "50%",
-						left: "50%",
-						width: 400,
-						transform: "translate(-50%,-50%)",
-						bgcolor: "background.paper",
-						display: "flex",
-						flexDirection: "column",
-						boxShadow: 24,
-						padding: 3,
-					}}
-				>
-					<Typography id="modal-title" variant="h6" component={"h2"}>
-						Create a new chat
-					</Typography>
-					<TextField
-						label="Name"
-						name="name"
-						value={input.name}
-						onChange={handleChange}
-					/>
-					<Button variant="contained" type="submit">
-						Create
-					</Button>
-				</FormControl>
-			</Modal>
-			{chats.map((chat) => {
-				return (
-					<NavLink to={`/organisations/chats/${chat.id}`} onClick={() => setOpenChat(chat)}>{chat.name}</NavLink>
-				);
-			})}
+		<div style={{ flex: 1, display: "flex", flexBasis: "auto" }}>
+			<List />
+			<Chats />
+			<Details />
 		</div>
 	);
 }

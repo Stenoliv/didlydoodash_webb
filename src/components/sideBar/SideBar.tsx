@@ -4,7 +4,7 @@ import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArro
 import { Location, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Organisation } from "@/utils/types";
 import { useQuery } from "react-query";
-import styles from "@/styles/sidebar.module.css";
+import styles from "./sidebar.module.css";
 
 import FolderIcon from "@mui/icons-material/Folder";
 import FolderOffRoundedIcon from "@mui/icons-material/FolderOffRounded";

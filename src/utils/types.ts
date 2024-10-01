@@ -31,34 +31,27 @@ export type ChatMember = {
 	}
 }
 
-export type WSMessage = 
-	| WSChatMessage
-	| WSUserJoined
-	| WSUserLeft
+export type WSType = string
 
-export type WSChatMessage = {
-	type: "message.send";
+export const MessageSend: WSType = "message.send"
+export const MessageAll: WSType = "message.all"
+export const MessageError: WSType = "message.error"
+
+export type WSMessage = 
+	| WSInputMessage
+	| WSResponseMessage
+
+export type WSInputMessage = {
+	type: WSType;
 	roomId: string;
 	payload: {
-		userId: string;
-		createdAt?: Date;
-		updatedAt?: Date;
+		id: string;
 		message: string;
 	};
 }
 
-export type WSUserJoined = {
-	type: "user.joined";
+export type WSResponseMessage = {
+	type: WSType;
 	roomId: string;
-	payload: {
-		userId: string;
-	}
-}
-
-export type WSUserLeft = {
-	type: "user.left";
-	roomId: string;
-	payload: {
-		userId: string;
-	}
+	payload: any;
 }

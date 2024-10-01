@@ -1,4 +1,5 @@
 .header-organisation {
+	flex: 1;
 	display: flex;
 	flex-direction: row;
 	gap: 10px;

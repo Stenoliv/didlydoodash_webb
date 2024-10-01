@@ -44,8 +44,10 @@
 }
 
 .active {
-	background-color: #2a87eb1c; /* Example active style */
-	font-weight: bold; /* Example of making the active link stand out */
+	background-color: #2a87eb1c;
+	/* Example active style */
+	font-weight: bold;
+	/* Example of making the active link stand out */
 }
 
 .linkText {
