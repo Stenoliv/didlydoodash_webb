@@ -55,3 +55,12 @@ export type WSResponseMessage = {
 	roomId: string;
 	payload: any;
 }
+
+export  type WSChatMessage = {
+	id: string;
+	roomId: string;
+	userId: string;
+	message: string;
+	createdAt?: number;
+	updatedAt?: number;
+}

@@ -6,21 +6,21 @@ export interface ChatStoreType {
     chats: Chat[],
     setChats: (chats: Chat[]) => void;
     addChat: (chat: Chat) => void;
-    openChat: Chat | null,
-    setOpenChat: (chat: Chat | null) => void;
+    chatId: string | null
+    selectChat: (chat: string | null) => void;
 }
 
 export const useChatStore = create<ChatStoreType>()(persist((set) => ({
     chats: [],
     setChats: (chats) => set({ chats}),
     addChat: (chat) => set((state) => ({ chats: [...state.chats, chat ]})),
-    openChat: null,
-    setOpenChat: (chat) => set({ openChat: chat })
+    chatId: null,
+    selectChat: (chat) => set({ chatId: chat })
 }), {
     name: "chat-store",
     storage: createJSONStorage(() => localStorage),
     partialize: ((state) => ({
         chats: state.chats,
-        openChat: state.openChat
+        openChat: state.chatId  
     }))
 }))

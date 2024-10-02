@@ -1,14 +1,12 @@
 .chat {
-    flex: 2;
+    flex: 2 auto;
     border-left: 1px solid #dddddd35;
-    border-right: 1px solid #dddddd35;
-    height: 100%;
     display: flex;
     flex-direction: column;
 
     .top {
-        padding: 20px;
-        display: flex;
+        padding: 10px 20px;
+        display: inline-flex;
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid #dddddd35;
@@ -36,9 +34,11 @@
                 }
 
                 p {
+                    margin: 0;
                     font-size: 14px;
                     font-weight: 300;
                     color: #a5a5a5;
+                    cursor: default;
                 }
             }
         }
@@ -48,77 +48,30 @@
             gap: 20px;
 
             img {
-                width: 20px;
-                height: 20px;
+                width: 30px;
+                height: 30px;
+                cursor: pointer;
             }
         }
     }
 
     .center {
-        padding: 20px;
-        flex: 1;
-        overflow: hidden;
+        flex-grow: 1;
         overflow-y: auto;
+        padding: 10px 15px;
         display: flex;
         flex-direction: column;
-        gap: 20px;
-
-        .message {
-            max-width: 70%;
-            display: flex;
-            gap: 20px;
-
-            &.own {
-                align-self: flex-end;
-
-                .texts {
-                    p {
-                        background-color: #5183fe;
-                    }
-                }
-            }
-
-            img {
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
-                object-fit: cover;
-            }
-
-            .texts {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                gap: 5px;
-
-                img {
-                    width: 100%;
-                    height: 300px;
-                    border-radius: 10px;
-                    object-fit: cover;
-                }
-
-                p {
-                    padding: 20px;
-                    background-color: rgba(17, 25, 40, 0.3);
-                    border-radius: 10px;
-                }
-
-                span {
-                    font-size: 13px;
-                }
-            }
-        }
+        position: relative;
+        gap: 8px;
     }
 
     .bottom {
-        padding: 20px;
+        padding: 10px 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         border-top: 1px solid #dddddd35;
         gap: 20px;
-        margin-top: auto;
 
         .icons {
             display: flex;
@@ -126,8 +79,8 @@
         }
 
         img {
-            width: 20px;
-            height: 20px;
+            width: 30px;
+            height: 30px;
             cursor: pointer;
         }
 
@@ -137,7 +90,7 @@
             border: none;
             outline: none;
             color: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
             font-size: 16px;
 

@@ -1,0 +1,72 @@
+:root {
+    --msg-color: #00b46f;
+    --msg-own-color: #0078a7;
+}
+
+.message {
+    max-width: 70%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    img {
+        width: 40px;
+        height: 40px;
+    }
+
+    &.own {
+        align-self: flex-end;
+
+        img {
+            display: none;
+        }
+    }
+
+    .texts {
+        padding: 10px;
+        background-color: var(--msg-color);
+        border-radius: 0px 10px 10px 10px;
+        position: relative;
+
+        &.own {
+            background-color: var(--msg-own-color);
+            border-radius: 10px 0px 10px 10px;
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        span {
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            font-weight: 200;
+        }
+    }
+
+    .texts::after {
+        content: "";
+        position: absolute;
+        margin-top: -1px;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid var(--msg-color);
+        transform: rotate(45deg);
+        left: -10px;
+        top: 0;
+    }
+
+    .own::after {
+        content: "";
+        position: absolute;
+        border-bottom: 8px solid var(--msg-own-color);
+        transform: rotate(-45deg);
+        left: auto;
+        right: -10px;
+        top: 0;
+    }
+}

@@ -13,6 +13,7 @@
 .sidenavClosed {
 	composes: sidenav;
 	width: 60px;
+	max-width: 60;
 	transition: width 0.3s ease-in-out;
 }
 

@@ -7,7 +7,9 @@ export default function OrganisationLayout() {
 			<div className="header-organisation">
 				<p>Organisation</p>
 			</div>
-			<Outlet />
+			<div className="content-organisation">
+				<Outlet />
+			</div>
 		</>
 	);
 }

@@ -12,8 +12,6 @@ export default function UserInfo() {
 			</div>
 			<div className="icons">
 				<img src="/icons/more.svg" alt="" />
-				<img src="/icons/video.svg" alt="" />
-				<img src="/icons/edit.svg" alt="" />
 			</div>
 		</div>
 	);

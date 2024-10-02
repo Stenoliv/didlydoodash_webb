@@ -1,6 +1,10 @@
 .header-organisation {
-	flex: 1;
 	display: flex;
 	flex-direction: row;
 	gap: 10px;
+}
+
+.content-organisation {
+	flex: 1;
+	position: relative;
 }

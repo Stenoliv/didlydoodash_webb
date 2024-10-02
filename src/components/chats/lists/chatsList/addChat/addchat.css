@@ -1,8 +1,8 @@
 .addUser {
     width: max-content;
     height: max-content;
-    padding: 30px;
-    background-color: rgba(17, 25, 40, 0.781);
+    padding: 10px;
+    background-color: rgb(17, 25, 40);
     border-radius: 10px;
     position: absolute;
     top: 0;
