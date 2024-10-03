@@ -1,61 +1,59 @@
 .sidenav {
-	margin: 0;
-	padding: 0;
-	width: 250px;
-	max-width: 250px;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	transition: width 0.3s ease-in-out;
-	background-color: rgb(10, 25, 41);
+  margin: 0;
+  padding: 0;
+  width: 250px;
+  max-width: 250px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: width 0.3s ease-in-out;
+  background-color: rgb(10, 25, 41);
 }
 
 .sidenavClosed {
-	composes: sidenav;
-	width: 60px;
-	max-width: 60;
-	transition: width 0.3s ease-in-out;
+  composes: sidenav;
+  width: 60px;
+  transition: width 0.3s ease-in-out;
 }
 
 .expandableItem {
-	padding: 0;
-	display: flex;
-	flex-direction: column;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .sideitem {
-	display: flex;
-	padding: 10px 20px;
-	align-items: center;
-	cursor: pointer;
-	color: #b2bac2;
-	text-decoration: none;
+  display: flex;
+  padding: 10px 20px;
+  align-items: center;
+  cursor: pointer;
+  color: #b2bac2;
+  text-decoration: none;
 }
 
 .expandableItem a.sideitem {
-	padding-left: 40px;
+  padding-left: 40px;
 }
 
 .expandIcon {
-	flex: 1;
+  flex: 1;
 }
 
 .sideitem:hover {
-	background-color: #244f7d1c;
+  background-color: #244f7d1c;
 }
 
 .active {
-	background-color: #2a87eb1c;
-	/* Example active style */
-	font-weight: bold;
-	/* Example of making the active link stand out */
+  background-color: #2a87eb1c; /* Example active style */
+  font-weight: bold; /* Example of making the active link stand out */
 }
 
 .linkText {
-	padding-left: 16px;
+  padding-left: 16px;
 }
 
 .linkTextClosed {
-	composes: linkText;
-	visibility: hidden;
+  composes: linkText;
+  visibility: hidden;
 }
