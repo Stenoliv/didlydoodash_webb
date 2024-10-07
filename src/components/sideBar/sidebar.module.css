@@ -3,7 +3,7 @@
   padding: 0;
   width: 250px;
   max-width: 250px;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -45,8 +45,10 @@
 }
 
 .active {
-  background-color: #2a87eb1c; /* Example active style */
-  font-weight: bold; /* Example of making the active link stand out */
+  background-color: #2a87eb1c;
+  /* Example active style */
+  font-weight: bold;
+  /* Example of making the active link stand out */
 }
 
 .linkText {

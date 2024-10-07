@@ -13,9 +13,7 @@ export default function ChatsPage() {
 				right: 0,
 				top: 0,
 				bottom: 0,
-				display: "inline-flex",
-				overflow: "hidden",
-				maxHeight: "100%",
+				display: "flex",
 			}}
 		>
 			<List />

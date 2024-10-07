@@ -15,6 +15,12 @@ export type Organisation = {
 	name: string;
 };
 
+export type OrgMember = {
+	organisationId: string;
+	role: string;
+	user: User
+}
+
 export type Chat = {
 	id: string;
 	createdAt: Date;
@@ -25,10 +31,7 @@ export type Chat = {
 
 export type ChatMember = {
 	id: string;
-	member: {
-		id: string;
-		username: string;
-	}
+	member: User
 }
 
 export type WSType = string

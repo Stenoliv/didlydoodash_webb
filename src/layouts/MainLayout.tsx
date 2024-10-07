@@ -6,12 +6,12 @@ export default function MainLayout() {
 	return (
 		<>
 			<NavBar />
-			<main>
+			<div className="main-container">
 				<SideBar />
 				<div className="page-container">
 					<Outlet />
 				</div>
-			</main>
+			</div>
 		</>
 	);
 }

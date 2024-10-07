@@ -28,9 +28,23 @@
                 flex-direction: column;
                 gap: 5px;
 
+                h2 {
+                    margin: 0;
+                    padding: 0;
+                }
+
                 span {
                     font-size: 18px;
                     font-weight: bold;
+                }
+
+                span:hover {
+                    cursor: pointer;
+                    color: rgb(141, 18, 18);
+                }
+
+                span:hover::before {
+                    content: "🗑️";
                 }
 
                 p {
@@ -63,6 +77,15 @@
         flex-direction: column;
         position: relative;
         gap: 8px;
+    }
+
+    .center::-webkit-scrollbar {
+        width: 15px;
+    }
+
+    .center::-webkit-scrollbar-thumb {
+        background: #272b33;
+        border-radius: 10px;
     }
 
     .bottom {

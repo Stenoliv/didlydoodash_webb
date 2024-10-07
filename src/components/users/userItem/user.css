@@ -1,0 +1,13 @@
+.user-item {
+    padding: 5px;
+    cursor: pointer;
+
+    .texts {
+        margin: 0;
+        padding: 0;
+
+        span {
+            font-weight: 600;
+        }
+    }
+}

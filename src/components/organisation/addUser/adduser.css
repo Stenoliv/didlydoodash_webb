@@ -1,0 +1,14 @@
+.add-user-btn {
+    background-color: blue;
+}
+
+.add-user-container {
+    position: absolute;
+    width: min-content;
+    height: min-content;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: aqua;
+}

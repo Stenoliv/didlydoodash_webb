@@ -12,14 +12,16 @@ import {
 	MessageAll,
 	MessageError,
 	MessageSend,
+	User,
 	WSChatMessage,
 	WSInputMessage,
 	WSMessage,
 } from "@/utils/types";
 import AddUser from "./addUser/AddUser";
+import { API } from "@/utils/api";
 
 export default function Chats() {
-	const { chats, chatId, selectChat } = useChatStore();
+	const { chats, chatId, selectChat, removeMember } = useChatStore();
 	const { user, tokens } = useAuthStore();
 	const { organisation } = useOrgStore();
 
@@ -90,6 +92,21 @@ export default function Chats() {
 		setText("");
 	}, [sendJsonMessage, text, chatId, user]);
 
+	const handleRemoveUser = (user: User) => {
+		return API.delete(
+			`/api/organisations/${organisation?.id}/chats/${chatId}/member/${user.id}`
+		)
+			.then((response) => {
+				toast.success(`User ${user.username} removed!`);
+				if (chatId) removeMember(chatId, response.data.member);
+			})
+			.catch(() => {
+				toast.error(`Failed to remove ${user.username}`, {
+					position: "top-left",
+				});
+			});
+	};
+
 	useEffect(() => {
 		if (!lastMessage || !chatId) return;
 		try {
@@ -124,11 +141,13 @@ export default function Chats() {
 				<div className="user">
 					<img src={user?.avatar || "/icons/avatars/avatar-girl2.svg"} alt="" />
 					<div className="texts">
-						<span>{openChat?.name}</span>
+						<h2>{openChat?.name}</h2>
 						<p style={{ display: "flex", gap: "15px", alignItems: "center" }}>
 							Members:
 							{openChat?.members.map((member) => (
-								<span>{member.member.username}</span>
+								<span onClick={() => handleRemoveUser(member.member)}>
+									{member.member.username}
+								</span>
 							))}
 						</p>
 					</div>
