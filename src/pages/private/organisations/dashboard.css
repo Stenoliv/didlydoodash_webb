@@ -1,0 +1,49 @@
+:root {
+    --c-danger-text: red;
+    --c-danger-btn-bg: rgb(46, 28, 28);
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    gap: 20px;
+
+    .texts {
+        h1 {
+            margin: 10px 0px;
+        }
+
+        h2 {
+            margin: 0;
+        }
+
+        span {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    .danger {
+        display: flex;
+        flex-direction: column;
+
+        h2 {
+            margin: 0;
+        }
+
+        .texts {
+            display: flex;
+            flex-direction: column;
+            color: var(--c-danger-text);
+            gap: 10px;
+
+            button {
+                background-color: var(--c-danger-btn-bg);
+                color: var(--c-danger-text);
+            }
+        }
+    }
+}

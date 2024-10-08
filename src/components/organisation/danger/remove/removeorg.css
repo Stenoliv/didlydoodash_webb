@@ -1,0 +1,59 @@
+.delete-org-container {
+    width: max-content;
+    max-width: 400px;
+    height: max-content;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgb(38, 44, 48);
+    border-radius: 10px;
+    padding: 15px;
+    gap: 10px;
+
+    .texts {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        h2 {
+            margin: 0;
+        }
+
+        p {
+            margin: 0;
+
+            span {
+                color: red;
+                font-style: italic;
+                font-size: 18px;
+                background-color: rgb(21, 25, 29);
+                padding: 2px 5px;
+                border-radius: 5px;
+            }
+        }
+    }
+
+    form {
+        margin: 0;
+        padding: 0;
+        gap: 8px;
+
+        input {
+            padding: 10px;
+            background-color: rgb(9, 22, 32);
+            border: 0px;
+            border-radius: 5px;
+        }
+
+        input:hover {
+            background-color: rgb(16, 42, 61);
+            cursor: pointer;
+        }
+    }
+}

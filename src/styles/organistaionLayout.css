@@ -1,11 +1,28 @@
 .header-organisation {
+	height: 60px;
 	display: flex;
+	align-items: center;
 	flex-direction: row;
 	gap: 10px;
 }
 
 .content-organisation {
-	flex: 1;
+	position: absolute;
+	top: 60px;
+	bottom: 0;
+	left: 0;
+	right: 0;
 	display: flex;
-	position: relative;
+	overflow: hidden;
+	overflow-y: auto;
+}
+
+.content-organisation::-webkit-scrollbar {
+	width: 15px;
+
+}
+
+.content-organisation::-webkit-scrollbar-thumb {
+	background-color: black;
+	border-radius: 10px;
 }

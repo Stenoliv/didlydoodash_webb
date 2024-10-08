@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import "./chats.css";
 import { useAuthStore } from "@/stores/auth/store";
 import EmojiPicker from "emoji-picker-react";
@@ -29,8 +29,6 @@ export default function Chats() {
 	const [open, setOpen] = useState(false);
 	const [openAddUser, setOpenAddUser] = useState(false);
 	const [text, setText] = useState("");
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [img, setImg] = useState<{ file: File; url: string }>();
 
 	const [messages, setMessages] = useState<WSChatMessage[]>([]);
 
@@ -41,15 +39,6 @@ export default function Chats() {
 	const handleEmoji = (e: any) => {
 		setText((prev) => prev + e.emoji);
 		setOpen(false);
-	};
-
-	const handleImg = (e: ChangeEvent<HTMLInputElement>) => {
-		if (e.target.files && e.target.files[0]) {
-			setImg({
-				file: e.target.files[0],
-				url: URL.createObjectURL(e.target.files[0]),
-			});
-		}
 	};
 
 	const handleAddUser = () => {
@@ -78,19 +67,23 @@ export default function Chats() {
 		},
 	});
 
-	const handleSend = useCallback(() => {
-		if (text === "") return;
+	const handleSend = useCallback(
+		(e: FormEvent<HTMLFormElement>) => {
+			e.preventDefault();
+			if (text === "") return;
 
-		sendJsonMessage<WSInputMessage>({
-			type: "message.send",
-			roomId: chatId || "",
-			payload: {
-				id: user?.id || "",
-				message: text,
-			},
-		});
-		setText("");
-	}, [sendJsonMessage, text, chatId, user]);
+			sendJsonMessage<WSInputMessage>({
+				type: "message.send",
+				roomId: chatId || "",
+				payload: {
+					id: user?.id || "",
+					message: text,
+				},
+			});
+			setText("");
+		},
+		[sendJsonMessage, text, chatId, user]
+	);
 
 	const handleRemoveUser = (user: User) => {
 		return API.delete(
@@ -145,9 +138,11 @@ export default function Chats() {
 						<p style={{ display: "flex", gap: "15px", alignItems: "center" }}>
 							Members:
 							{openChat?.members.map((member) => (
-								<span onClick={() => handleRemoveUser(member.member)}>
-									{member.member.username}
-								</span>
+								<Tooltip title={`Remove user`}>
+									<span onClick={() => handleRemoveUser(member.member)}>
+										{member.member.username}
+									</span>
+								</Tooltip>
 							))}
 						</p>
 					</div>
@@ -168,18 +163,7 @@ export default function Chats() {
 				})}
 				<div id="bottom" ref={endRef}></div>
 			</div>
-			<div className="bottom">
-				<div className="icons">
-					<label htmlFor="file">
-						<img src="/icons/file.svg" alt="" />
-					</label>
-					<input
-						type="file"
-						id="file"
-						style={{ display: "none" }}
-						onChange={handleImg}
-					/>
-				</div>
+			<form className="bottom" onSubmit={handleSend}>
 				<input
 					type="text"
 					placeholder="Type a message..."
@@ -187,15 +171,19 @@ export default function Chats() {
 					onChange={(e) => setText(e.target.value)}
 				/>
 				<div className="emoji">
-					<img src="/icons/emoji.svg" alt="" />
+					<img src="/icons/emoji.svg" alt="" onClick={() => setOpen(!open)} />
 					<div className="picker">
-						<EmojiPicker open={open} onEmojiClick={handleEmoji} />
+						<EmojiPicker
+							open={open}
+							lazyLoadEmojis
+							onEmojiClick={handleEmoji}
+						/>
 					</div>
 				</div>
-				<button className="sendButton" onClick={handleSend} disabled={false}>
+				<button className="sendButton" type="submit" disabled={false}>
 					Send
 				</button>
-			</div>
+			</form>
 		</div>
 	);
 }

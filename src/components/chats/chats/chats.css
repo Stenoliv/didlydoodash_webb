@@ -36,6 +36,7 @@
                 span {
                     font-size: 18px;
                     font-weight: bold;
+                    position: relative;
                 }
 
                 span:hover {
@@ -44,7 +45,10 @@
                 }
 
                 span:hover::before {
+                    width: 100%;
                     content: "🗑️";
+                    text-align: center;
+                    position: absolute;
                 }
 
                 p {
@@ -89,8 +93,10 @@
     }
 
     .bottom {
+        margin: 0;
         padding: 10px 20px;
         display: flex;
+        flex-flow: row;
         align-items: center;
         justify-content: space-between;
         border-top: 1px solid #dddddd35;
@@ -105,6 +111,8 @@
             width: 30px;
             height: 30px;
             cursor: pointer;
+            background-color: azure;
+            border-radius: 25px;
         }
 
         input {
@@ -127,8 +135,8 @@
 
             .picker {
                 position: absolute;
-                bottom: 50px;
-                left: 0;
+                bottom: 70px;
+                right: 0;
             }
         }
 

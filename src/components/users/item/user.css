@@ -1,6 +1,15 @@
 .user-item {
     padding: 5px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+    gap: 10px;
+
+    img {
+        width: 30px;
+        height: 30px;
+    }
 
     .texts {
         margin: 0;

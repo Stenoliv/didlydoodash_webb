@@ -1,7 +1,7 @@
 import "./userlist.css";
 import { API } from "@/utils/api";
 import { toast } from "react-toastify";
-import { UserItem } from "../userItem/User";
+import { UserItem } from "../item/User";
 import { Pagination } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import { useQuery } from "react-query";
@@ -17,13 +17,13 @@ export type UserPage = {
 export type UserListProps = {
 	userAction?: (user: User) => void;
 	filter?: User[];
+	pageSize?: number;
 };
 
 export default function UserList(props: UserListProps) {
-	const { userAction, filter } = props;
+	const { userAction, filter, pageSize = 10 } = props;
 
 	const [page, setPage] = useState(0);
-	const pageSize = 10;
 
 	// Users list
 	const [users, setUsers] = useState<UserPage>({} as UserPage);
@@ -48,7 +48,7 @@ export default function UserList(props: UserListProps) {
 	);
 
 	const handlePageChange = (_: ChangeEvent<unknown>, page: number) => {
-		setPage(page);
+		setPage(page - 1);
 	};
 
 	if (isLoading) {

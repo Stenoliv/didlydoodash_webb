@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./adduser.css";
 import { Modal } from "@mui/material";
-import UserList from "@/components/users/userList/UserList";
+import UserList from "@/components/users/list/UserList";
 import { OrgMember, User } from "@/utils/types";
 import { toast } from "react-toastify";
 import { API } from "@/utils/api";
@@ -18,7 +18,8 @@ export default function AddUser(props: AddUserProps) {
 
 	const { organisation } = useOrgStore();
 
-	const userAction = async (user: User) => {
+	const userAction = async (user: User | OrgMember) => {
+		user = user as User;
 		API.post(`/api/organisations/${organisation?.id}/members/${user.id}`)
 			.then(() => {
 				toast.success(`User: ${user.username} added to organisation!`);

@@ -1,0 +1,32 @@
+.update-member-container {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(12, 14, 19);
+    padding: 10px 20px;
+    border-radius: 14px;
+    gap: 20px;
+
+    h2 {
+        margin: 0;
+    }
+
+    .danger-zone {
+        display: flex;
+        flex-direction: column;
+        color: red;
+        gap: 10px;
+
+        button {
+            background-color: rgb(54, 19, 19);
+            color: red;
+        }
+    }
+}

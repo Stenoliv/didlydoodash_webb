@@ -1,5 +1,7 @@
 .add-user-btn {
     background-color: blue;
+    margin: 0;
+    padding: 5px 15px;
 }
 
 .add-user-container {

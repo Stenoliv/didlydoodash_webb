@@ -7,6 +7,7 @@ import { OrgMember, User } from "@/utils/types";
 import { useOrgStore } from "@/stores/organisation";
 import { useState } from "react";
 import { useChatStore } from "@/stores/organisation/chats";
+import { UserItem } from "@/components/users/item/User";
 
 export interface AddUserProps {
 	open: boolean;
@@ -30,7 +31,8 @@ export default function AddUser(props: AddUserProps) {
 		}
 	);
 
-	const handleAddMember = (user: User) => {
+	const handleAddMember = (user: User | OrgMember) => {
+		user = user as User;
 		return API.put(
 			`/api/organisations/${organisation?.id}/chats/${chatId}/member/${user.id}`
 		)
@@ -67,13 +69,12 @@ export default function AddUser(props: AddUserProps) {
 						)
 						.map((member) => {
 							return (
-								<div
-									onClick={() => {
-										handleAddMember(member.user);
+								<UserItem
+									user={member.user}
+									userAction={(user) => {
+										handleAddMember(user);
 									}}
-								>
-									{member.user.username}
-								</div>
+								/>
 							);
 						})}
 			</div>

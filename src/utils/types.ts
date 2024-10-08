@@ -1,6 +1,6 @@
 export type User = {
-	username: string;
 	id: string;
+	username: string;
 	email: string;
 	avatar?: string;
 };
@@ -13,12 +13,34 @@ export type Tokens = {
 export type Organisation = {
 	id: string;
 	name: string;
+	owner: OrgMember;
 };
 
 export type OrgMember = {
 	organisationId: string;
-	role: string;
+	role: OrgRole;
 	user: User
+}
+
+export enum OrgRole {
+    // Executive & Leadership Roles
+    CEO = "CEO",
+    
+    // Management Roles
+    ProjectManager = "Project Manager",
+    HRManager = "HR Manager",
+    ITManager = "IT Manager",
+    
+    // Technical Roles
+    SeniorSoftwareEngineer = "Senior Software Engineer",
+    JuniorSoftwareEngineer = "Junior Software Engineer",
+    ITSupport = "IT Support",
+
+    // Human Resources & Administration Roles
+    Recruiter = "Recruiter",
+
+    // Role not specified
+    NotSpecified = "Not specified"
 }
 
 export type Chat = {

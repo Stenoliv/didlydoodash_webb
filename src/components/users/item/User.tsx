@@ -8,15 +8,17 @@ export interface UserItemProps {
 
 export function UserItem(props: UserItemProps) {
 	const { user, userAction } = props;
-	const { username } = user;
+
+	const { avatar, username } = user;
 
 	return (
 		<div
 			className="user-item"
 			onClick={() => {
-				if (userAction) userAction(user);
+				if (userAction && user) userAction(user);
 			}}
 		>
+			<img src={avatar || "/icons/avatars/avatar-boy.svg"} alt="" />
 			<div className="texts">
 				<span>{username}</span>
 			</div>

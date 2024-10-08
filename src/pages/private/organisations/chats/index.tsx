@@ -3,7 +3,7 @@ import List from "@/components/chats/lists/List";
 import { useChatStore } from "@/stores/organisation/chats";
 
 export default function ChatsPage() {
-	const { chatId } = useChatStore();
+	const { chatId, chats } = useChatStore();
 
 	return (
 		<div
@@ -17,7 +17,7 @@ export default function ChatsPage() {
 			}}
 		>
 			<List />
-			{chatId && <Chats />}
+			{chats && chatId && chats.length > 0 && <Chats />}
 		</div>
 	);
 }
