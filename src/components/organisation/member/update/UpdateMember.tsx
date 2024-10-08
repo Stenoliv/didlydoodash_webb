@@ -3,8 +3,8 @@ import "./updatemember.css";
 import { OrgMember, OrgRole } from "@/utils/types";
 import { useEffect, useState } from "react";
 import { API } from "@/utils/api";
-import { useOrgStore } from "@/stores/organisation";
 import { toast } from "react-toastify";
+import { useQueryClient } from "react-query";
 
 export interface UpdateMemberProps {
 	open: boolean;
@@ -15,11 +15,11 @@ export interface UpdateMemberProps {
 export default function UpdateMember(props: UpdateMemberProps) {
 	const { open = false, setOpen, member } = props;
 
-	const { organisation } = useOrgStore();
-
 	const [input, setInput] = useState({
 		role: member.role,
 	});
+
+	const queryClient = useQueryClient();
 
 	const handleRoleChange = (event: SelectChangeEvent<OrgRole>) => {
 		const updatedRole = event.target.value as OrgRole;
@@ -29,18 +29,37 @@ export default function UpdateMember(props: UpdateMemberProps) {
 		}));
 	};
 
-	const handleUpdateMember = () => {};
+	const handleUpdateMember = () => {
+		return API.patch(
+			`/api/organisations/${member.organisationId}/members/${member.user.id}`,
+			{ ...input }
+		)
+			.then(() => {
+				toast.success(`Member ${member.user.username} updated!`);
+				queryClient.invalidateQueries("members");
+				setOpen(false);
+			})
+			.catch((error) => {
+				toast.error(
+					`Failed to update member: ${member.user.username}, Error: ${error.message}`,
+					{ position: "top-left" }
+				);
+			});
+	};
 
 	const handleRemoveMember = () => {
 		return API.delete(
-			`/api/organisations/${organisation?.id}/members/${member.user.id}`
+			`/api/organisations/${member.organisationId}/members/${member.user.id}`
 		)
 			.then(() => {
 				toast.success(`Removed ${member.user.username} from the organisation`);
+				queryClient.invalidateQueries("members");
 				setOpen(false);
 			})
-			.catch(() => {
-				toast.error("Failed to remove user!", { position: "top-left" });
+			.catch((error) => {
+				toast.error("Failed to remove user! Error: " + error.message, {
+					position: "top-left",
+				});
 			});
 	};
 
@@ -52,7 +71,7 @@ export default function UpdateMember(props: UpdateMemberProps) {
 		<Modal open={open} onClose={() => setOpen(false)}>
 			<div className="update-member-container">
 				<h2>Update {member.user.username}</h2>
-				<Select value={input.role} onChange={handleRoleChange}>
+				<Select value={input.role} name="role" onChange={handleRoleChange}>
 					{Object.keys(OrgRole).map((key) => (
 						<MenuItem key={key} value={OrgRole[key as keyof typeof OrgRole]}>
 							{OrgRole[key as keyof typeof OrgRole]}

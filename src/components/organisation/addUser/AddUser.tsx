@@ -6,6 +6,7 @@ import { OrgMember, User } from "@/utils/types";
 import { toast } from "react-toastify";
 import { API } from "@/utils/api";
 import { useOrgStore } from "@/stores/organisation";
+import { useQueryClient } from "react-query";
 
 export interface AddUserProps {
 	members: OrgMember[];
@@ -17,12 +18,14 @@ export default function AddUser(props: AddUserProps) {
 	const [open, setOpen] = useState(false);
 
 	const { organisation } = useOrgStore();
+	const queryClient = useQueryClient();
 
 	const userAction = async (user: User | OrgMember) => {
 		user = user as User;
 		API.post(`/api/organisations/${organisation?.id}/members/${user.id}`)
 			.then(() => {
 				toast.success(`User: ${user.username} added to organisation!`);
+				queryClient.invalidateQueries("members");
 			})
 			.catch(() => {
 				toast.error("Failed to add user: " + user.username, {
