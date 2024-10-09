@@ -17,12 +17,6 @@
   transition: width 0.3s ease-in-out;
 }
 
-.expandableItem {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-
 .sideitem {
   display: flex;
   padding: 10px 20px;
@@ -32,12 +26,22 @@
   text-decoration: none;
 }
 
+.expandableItem {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+
 .expandableItem a.sideitem {
   padding-left: 40px;
 }
 
 .expandIcon {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .sideitem:hover {

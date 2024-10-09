@@ -42,8 +42,8 @@ export const useChatStore = create<ChatStoreType>()(persist((set) => ({
         }); 
         return { chats: updatedChats };
     }),
-    setChats: (chats) => set({ chats}),
-    addChat: (chat) => set((state) => ({ chats: [...state.chats, chat ]})),
+    setChats: (chats) => set({ chats }),
+    addChat: (chat) => set((state) => ({ chats: [...state.chats, { ...chat, unread: 0 } ]})),
 }), {
     name: "chat-store",
     storage: createJSONStorage(() => localStorage),

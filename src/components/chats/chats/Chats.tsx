@@ -50,15 +50,8 @@ export default function Chats() {
 	};
 
 	const { sendJsonMessage, lastMessage } = useWebSocket(WS_URL, {
-		onOpen: () => {
-			console.log("Websocket connection established");
-		},
-		onClose: () => {
-			console.log("Connection closed");
-		},
-		onMessage: (data) => {
-			console.log("Message: " + data.data);
-		},
+		onOpen: () => {},
+		onClose: () => {},
 		reconnectAttempts: 5,
 		onReconnectStop: (attempts) => {
 			toast.error(`Failed to reconnect to websocket: ${attempts}`, {
@@ -138,7 +131,7 @@ export default function Chats() {
 						<p style={{ display: "flex", gap: "15px", alignItems: "center" }}>
 							Members:
 							{openChat?.members.map((member) => (
-								<Tooltip title={`Remove user`}>
+								<Tooltip key={member.id} title={`Remove user`}>
 									<span onClick={() => handleRemoveUser(member.member)}>
 										{member.member.username}
 									</span>
@@ -159,7 +152,7 @@ export default function Chats() {
 			</div>
 			<div className="center">
 				{messages.map((message) => {
-					return <MessageItem message={message} />;
+					return <MessageItem key={message.id} message={message} />;
 				})}
 				<div id="bottom" ref={endRef}></div>
 			</div>

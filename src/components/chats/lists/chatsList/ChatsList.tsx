@@ -7,13 +7,19 @@ import { Chat } from "@/utils/types";
 import { useOrgStore } from "@/stores/organisation";
 import { toast } from "react-toastify";
 import { API } from "@/utils/api";
-import { Tooltip } from "@mui/material";
+import { Badge, Tooltip } from "@mui/material";
+import { useAuthStore } from "@/stores/auth/store";
+import { ChatNotification } from "@/utils/types";
+import useWebSocket from "react-use-websocket";
 
 export default function ChatsList() {
 	const [addMore, setAddMore] = useState<boolean>(false);
 	const [input, SetInput] = useState<string>("");
-	const { chats, setChats, chatId, selectChat } = useChatStore();
+	const { chats, chatId, setChats, selectChat } = useChatStore();
 	const { organisation } = useOrgStore();
+	const { tokens } = useAuthStore();
+
+	const [badges] = useState<Map<string, number>>(new Map<string, number>());
 
 	// Fetch chats
 	const { isLoading, isError, error } = useQuery<Chat[], Error>(
@@ -22,9 +28,6 @@ export default function ChatsList() {
 		{
 			onSuccess: (data) => {
 				setChats(data);
-				if (!data.find((chat) => chat.id === chatId)) {
-					selectChat(data[0].id || null);
-				}
 			},
 		}
 	);
@@ -34,6 +37,7 @@ export default function ChatsList() {
 
 		if (foundChat) {
 			selectChat(foundChat.id);
+			badges.set(foundChat.id, 0);
 		}
 	};
 
@@ -43,6 +47,36 @@ export default function ChatsList() {
 
 	const filteredChats = chats.filter((c) =>
 		c.name.toLowerCase().includes(input.toLowerCase())
+	);
+
+	useWebSocket(
+		`http://localhost:3000/organisations/chats/notifications?token=${tokens?.access}`,
+		{
+			onOpen: () => {
+				console.log("Connected to notification channel");
+			},
+			onMessage: (data) => {
+				try {
+					const parsedData: ChatNotification = JSON.parse(data.data);
+					if (chatId && chatId == parsedData.chatId) {
+						badges.set(parsedData.chatId, 0);
+						return;
+					}
+					console.log(parsedData);
+					const current = badges.get(parsedData.chatId) || 0;
+					badges.set(parsedData.chatId, current + 1);
+				} catch (error) {
+					console.log(`Error: ${error}`);
+				}
+			},
+			onClose: () => {
+				console.log("Disconnected from notification channel");
+			},
+			onError: () => {
+				console.log("Error when connecting to notification channel");
+			},
+			reconnectAttempts: 5,
+		}
 	);
 
 	if (isLoading) {
@@ -75,14 +109,11 @@ export default function ChatsList() {
 				</Tooltip>
 			</div>
 			{filteredChats.map((chat) => (
-				<Tooltip title="Open chat" placement="bottom-start">
-					<div
-						className="item"
-						key={chat.id}
-						style={{}}
-						onClick={() => handleSelect(chat)}
-					>
-						<img src="/icons/avatars/avatar-boy.svg" alt="" />
+				<Tooltip key={chat.id} title="Open chat" placement="bottom-start">
+					<div className="item" style={{}} onClick={() => handleSelect(chat)}>
+						<Badge badgeContent={badges.get(chat.id) || 0} color="error">
+							<img src="/icons/avatars/avatar-boy.svg" alt="" />
+						</Badge>
 						<div className="texts">
 							<span>{chat.name}</span>
 							{/* <p>{chat.lastMessage}</p> */}

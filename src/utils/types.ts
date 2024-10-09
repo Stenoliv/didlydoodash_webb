@@ -56,6 +56,12 @@ export type ChatMember = {
 	member: User
 }
 
+export type ChatNotification = {
+	chatId: string;
+	title: string;
+	message: any;
+}
+
 export type WSType = string
 
 export const MessageSend: WSType = "message.send"
