@@ -65,7 +65,9 @@ export type ChatNotification = {
 export type WSType = string
 
 export const MessageSend: WSType = "message.send"
+export const MessageRead: WSType = "message.read"
 export const MessageAll: WSType = "message.all"
+export const MessageTyping: WSType = "message.typing"
 export const MessageError: WSType = "message.error"
 
 export type WSMessage = 
@@ -79,6 +81,14 @@ export type WSInputMessage = {
 		id: string;
 		message: string;
 	};
+}
+
+export type WSInputMessageRead = {
+	type: WSType;
+	roomId: string;
+	payload: {
+		messageId: string;
+	}
 }
 
 export type WSResponseMessage = {

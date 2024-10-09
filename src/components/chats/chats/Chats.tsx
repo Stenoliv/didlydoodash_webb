@@ -1,7 +1,6 @@
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import "./chats.css";
 import { useAuthStore } from "@/stores/auth/store";
-import EmojiPicker from "emoji-picker-react";
 import { useChatStore } from "@/stores/organisation/chats";
 import { Tooltip } from "@mui/material";
 import useWebSocket from "react-use-websocket";
@@ -11,10 +10,12 @@ import MessageItem from "./message/Message";
 import {
 	MessageAll,
 	MessageError,
+	MessageRead,
 	MessageSend,
 	User,
 	WSChatMessage,
 	WSInputMessage,
+	WSInputMessageRead,
 	WSMessage,
 } from "@/utils/types";
 import AddUser from "./addUser/AddUser";
@@ -26,7 +27,6 @@ export default function Chats() {
 	const { organisation } = useOrgStore();
 
 	const endRef = useRef<HTMLDivElement>(null);
-	const [open, setOpen] = useState(false);
 	const [openAddUser, setOpenAddUser] = useState(false);
 	const [text, setText] = useState("");
 
@@ -35,11 +35,6 @@ export default function Chats() {
 	const openChat = chats.find((chat) => chat.id === chatId);
 
 	const WS_URL = `ws://localhost:3000/organisations/${organisation?.id}/chats/${chatId}?token=${tokens?.access}`;
-
-	const handleEmoji = (e: any) => {
-		setText((prev) => prev + e.emoji);
-		setOpen(false);
-	};
 
 	const handleAddUser = () => {
 		setOpenAddUser(true);
@@ -92,6 +87,23 @@ export default function Chats() {
 				});
 			});
 	};
+
+	useEffect(() => {
+		endRef.current?.scrollIntoView({ behavior: "smooth" });
+
+		// Mark last message as read when new messages are loaded
+		if (messages.length > 0) {
+			const lastMessage = messages[messages.length - 1];
+
+			sendJsonMessage<WSInputMessageRead>({
+				type: MessageRead, // This is the action type handled on the server
+				roomId: chatId || "",
+				payload: {
+					messageId: lastMessage.id,
+				},
+			});
+		}
+	}, [messages, chatId, user, sendJsonMessage]);
 
 	useEffect(() => {
 		if (!lastMessage || !chatId) return;
@@ -163,16 +175,6 @@ export default function Chats() {
 					value={text}
 					onChange={(e) => setText(e.target.value)}
 				/>
-				<div className="emoji">
-					<img src="/icons/emoji.svg" alt="" onClick={() => setOpen(!open)} />
-					<div className="picker">
-						<EmojiPicker
-							open={open}
-							lazyLoadEmojis
-							onEmojiClick={handleEmoji}
-						/>
-					</div>
-				</div>
 				<button className="sendButton" type="submit" disabled={false}>
 					Send
 				</button>
