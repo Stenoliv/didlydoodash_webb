@@ -1,5 +1,4 @@
 import UserList from "@/components/users/list/UserList";
-import { useAuthStore } from "@/stores/auth/store";
 import { useOrgStore } from "@/stores/organisation";
 import { API } from "@/utils/api";
 import { Organisation, OrgMember, OrgRole, User } from "@/utils/types";
@@ -8,6 +7,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "react-toastify";
 import "./createorganisation.css";
 import MemberItem from "@/components/organisation/member/item/MemberItem";
+import { useAuth } from "@/context/AuthContext";
 
 interface CreateOrgInput {
 	name: string | null;
@@ -15,7 +15,7 @@ interface CreateOrgInput {
 }
 
 export default function CreatePage() {
-	const { user } = useAuthStore();
+	const { user } = useAuth();
 	const [input, setInput] = useState<CreateOrgInput>({
 		name: "",
 		members: [{ organisationId: "", role: OrgRole.CEO, user: user as User }],

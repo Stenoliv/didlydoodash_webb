@@ -11,6 +11,7 @@ import MemberItem from "@/components/organisation/member/item/MemberItem";
 import RemoveOrg from "@/components/organisation/danger/remove/RemoveOrg";
 import { useNavigate } from "react-router-dom";
 import UpdateMember from "@/components/organisation/member/update/UpdateMember";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Page() {
 	const [members, setMembers] = useState<OrgMember[]>([]);
@@ -19,7 +20,10 @@ export default function Page() {
 
 	const [removeOrg, setRemoveOrg] = useState<boolean>(false);
 
-	const { organisation, owner } = useOrgStore();
+	const { organisation } = useOrgStore();
+	const { user } = useAuth();
+
+	const owner = organisation?.owner.user.id === user?.id;
 	const navigate = useNavigate();
 
 	const { isLoading, isError, error } = useQuery<OrgMember[], Error>(
@@ -124,7 +128,6 @@ const memberLoader = async (id: string) => {
 	try {
 		if (!id) return;
 		const response = await API.get(`/api/organisations/${id}/members`);
-		console.log(response.data);
 		return response.data.members;
 	} catch (error: any) {
 		toast.error(`Error loading organisationMembers: ${error?.message}`, {

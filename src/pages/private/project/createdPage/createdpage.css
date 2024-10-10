@@ -1,0 +1,18 @@
+.create-project {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .project-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+    }
+}

@@ -1,12 +1,10 @@
 import { Organisation } from "@/utils/types";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { create } from "zustand";
-import { useAuthStore } from "../auth/store";
 
 export interface OrganisationStoreType {
-    organisation: Organisation | undefined;
-    owner: boolean;
-    setOrganisation: (org: Organisation | undefined) => void;
+    organisation: Organisation | null;
+    setOrganisation: (org: Organisation | null) => void;
     organisations: Organisation[];
     addOrganisation: (org: Organisation) => void;
     removeOrganisation: (org: Organisation) => void;
@@ -16,15 +14,8 @@ export interface OrganisationStoreType {
 export const useOrgStore = create<OrganisationStoreType>()(
     persist(
         (set) => ({
-            organisation: undefined,
-            owner: false,
-            setOrganisation: (org) => {
-                const { user } = useAuthStore.getState()
-                if (org?.owner.user.id === user?.id) {
-                    set({ owner: true})
-                } else set({ owner: false})
-                set({organisation: org})
-            },
+            organisation: null,
+            setOrganisation: (org) => set({organisation: org}),
             organisations: [] as Organisation[],
             addOrganisation: (org) => set((state) => ({
                 organisations: [...state.organisations, org]

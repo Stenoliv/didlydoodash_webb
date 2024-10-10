@@ -56,8 +56,7 @@ export default function SideBar() {
 	const handleChange = (event: SelectChangeEvent) => {
 		const selectedOrganisationId = event.target.value as string;
 		const selectedOrganisation =
-			organisations.find((org) => org.id === selectedOrganisationId) ||
-			undefined;
+			organisations.find((org) => org.id === selectedOrganisationId) || null;
 		setOrganisation(selectedOrganisation);
 	};
 

@@ -4,8 +4,8 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "react-toastify";
 import { useOrgStore } from "@/stores/organisation";
 import { useChatStore } from "@/stores/organisation/chats";
-import { useAuthStore } from "@/stores/auth/store";
 import { Modal } from "@mui/material";
+import { useAuth } from "@/context/AuthContext";
 
 export interface AddChatProps {
 	open: boolean;
@@ -17,7 +17,7 @@ export default function AddChat(props: AddChatProps) {
 
 	const { organisation } = useOrgStore();
 	const { addChat } = useChatStore();
-	const { user } = useAuthStore();
+	const { user } = useAuth();
 
 	const [input, setInput] = useState({
 		name: "",

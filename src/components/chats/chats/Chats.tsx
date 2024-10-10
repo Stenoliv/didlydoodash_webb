@@ -69,6 +69,7 @@ export default function Chats() {
 		},
 	});
 
+	// Send message callback
 	const handleSend = useCallback(
 		(e: FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
@@ -87,9 +88,10 @@ export default function Chats() {
 		[sendJsonMessage, text, openChatId, user]
 	);
 
+	// Update last read message
 	useEffect(() => {
 		if (messages.length > 0) {
-			const lastMessage = messages[0];
+			const lastMessage = messages[messages.length - 1];
 
 			sendJsonMessage<WSInputMessageRead>({
 				type: MessageRead,
@@ -102,7 +104,7 @@ export default function Chats() {
 	}, [messages, openChatId, user, sendJsonMessage]);
 
 	useEffect(() => {
-		if (!lastJsonMessage || !openChatId) return;
+		if (!lastJsonMessage || !lastJsonMessage.type || !openChatId) return;
 		try {
 			// Check if the message type is 'message.send' and if it belongs to the current room
 			if (
@@ -132,10 +134,10 @@ export default function Chats() {
 	}, [lastJsonMessage, openChatId]);
 
 	useEffect(() => {
-		if (
-			(lastJsonMessage && lastJsonMessage.type === MessageSend) ||
-			lastJsonMessage.type === MessageAll
-		)
+		if (lastJsonMessage && lastJsonMessage.type === MessageAll) {
+			endRef.current?.scrollIntoView({ behavior: "instant" });
+		}
+		if (lastJsonMessage && lastJsonMessage.type === MessageSend)
 			endRef.current?.scrollIntoView({ behavior: "smooth" });
 	}, [messages, lastJsonMessage]);
 
@@ -169,10 +171,10 @@ export default function Chats() {
 				</div>
 			</div>
 			<div className="center">
-				<div id="bottom" ref={endRef}></div>
 				{messages.map((message) => {
 					return <MessageItem key={message.id} message={message} />;
 				})}
+				<div id="bottom" ref={endRef}></div>
 			</div>
 			<form className="bottom" onSubmit={handleSend}>
 				<input

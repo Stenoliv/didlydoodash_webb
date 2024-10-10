@@ -43,6 +43,57 @@ export enum OrgRole {
     NotSpecified = "Not specified"
 }
 
+/**
+ * Project related types
+ */
+export type Project = {
+	id: string;
+	createdAt: number;
+	updatedAt: number;
+	name: string;
+	status: ProjectStatus;
+	organisationId: string;
+	members?: ProjectMember[]
+}
+
+export enum ProjectStatus {
+	Active = "Active",
+	Archived = "Archived",
+	Completed = "Completed",
+}
+
+export type ProjectMember = {
+	projectId: string;
+	role: ProjectRole;
+	user: User;
+}
+
+export enum ProjectRole {
+	Admin = "Admin",
+	Edit = "Edit",
+	View = "View",
+}
+
+/**
+ * Kanban related types
+ */
+export type Kanban = {
+	id: string;
+	name: string;
+	projectId: string;
+}
+
+
+/**
+ * Whiteboard related types
+ */
+export type Whiteboard = {
+	id: string;
+}
+
+/**
+ * Chat related types
+ */
 export type Chat = {
 	id: string;
 	createdAt: Date;
@@ -56,6 +107,9 @@ export type ChatMember = {
 	member: User
 }
 
+/**
+ * Chat notifications related types
+ */
 export type ChatNotification = 
 	| ChatCountNotification
 

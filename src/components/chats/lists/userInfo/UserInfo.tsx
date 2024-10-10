@@ -1,8 +1,8 @@
-import { useAuthStore } from "@/stores/auth/store";
 import "./userinfo.css";
+import { useAuth } from "@/context/AuthContext";
 
 export default function UserInfo() {
-	const { user } = useAuthStore();
+	const { user } = useAuth();
 
 	return (
 		<div className="userInfo">
