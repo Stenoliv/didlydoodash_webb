@@ -74,13 +74,24 @@
     }
 
     .center {
-        flex-grow: 1;
         overflow-y: auto;
         padding: 10px 15px;
         display: flex;
-        flex-direction: column;
-        position: relative;
+        flex-direction: column-reverse;
         gap: 8px;
+
+        .loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0px;
+        }
+
+        #bottom {
+            height: 0;
+            margin: 0;
+            padding: 0;
+        }
     }
 
     .center::-webkit-scrollbar {

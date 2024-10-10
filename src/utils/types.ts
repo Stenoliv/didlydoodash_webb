@@ -56,10 +56,16 @@ export type ChatMember = {
 	member: User
 }
 
-export type ChatNotification = {
-	chatId: string;
-	title: string;
-	message: any;
+export type ChatNotification = 
+	| ChatCountNotification
+
+export type ChatCountNotification = {
+	type: string;
+	payload: {
+		chatId: string;
+		userId: string;
+		unreadMessages: number
+	};
 }
 
 export type WSType = string

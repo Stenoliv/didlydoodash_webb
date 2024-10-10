@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./chatslist.css";
 import AddChat from "./addChat/AddChat";
 import { useChatStore } from "@/stores/organisation/chats";
@@ -8,18 +8,14 @@ import { useOrgStore } from "@/stores/organisation";
 import { toast } from "react-toastify";
 import { API } from "@/utils/api";
 import { Badge, Tooltip } from "@mui/material";
-import { useAuthStore } from "@/stores/auth/store";
-import { ChatNotification } from "@/utils/types";
-import useWebSocket from "react-use-websocket";
+import { useNotification } from "@/context/NotificationContext";
 
 export default function ChatsList() {
 	const [addMore, setAddMore] = useState<boolean>(false);
 	const [input, SetInput] = useState<string>("");
-	const { chats, chatId, setChats, selectChat } = useChatStore();
+	const { chats, openChatId, setChats, selectChat } = useChatStore();
+	const { badges, resetBadge } = useNotification();
 	const { organisation } = useOrgStore();
-	const { tokens } = useAuthStore();
-
-	const [badges] = useState<Map<string, number>>(new Map<string, number>());
 
 	// Fetch chats
 	const { isLoading, isError, error } = useQuery<Chat[], Error>(
@@ -45,39 +41,14 @@ export default function ChatsList() {
 		setAddMore(true);
 	};
 
-	const filteredChats = chats.filter((c) =>
-		c.name.toLowerCase().includes(input.toLowerCase())
-	);
+	const filteredChats = chats
+		? chats.filter((c) => c.name.toLowerCase().includes(input.toLowerCase()))
+		: [];
 
-	useWebSocket(
-		`http://localhost:3000/organisations/chats/notifications?token=${tokens?.access}`,
-		{
-			onOpen: () => {
-				console.log("Connected to notification channel");
-			},
-			onMessage: (data) => {
-				try {
-					const parsedData: ChatNotification = JSON.parse(data.data);
-					if (chatId && chatId == parsedData.chatId) {
-						badges.set(parsedData.chatId, 0);
-						return;
-					}
-					console.log(parsedData);
-					const current = badges.get(parsedData.chatId) || 0;
-					badges.set(parsedData.chatId, current + 1);
-				} catch (error) {
-					console.log(`Error: ${error}`);
-				}
-			},
-			onClose: () => {
-				console.log("Disconnected from notification channel");
-			},
-			onError: () => {
-				console.log("Error when connecting to notification channel");
-			},
-			reconnectAttempts: 5,
-		}
-	);
+	// Example: Reset badge when a chat is opened
+	useEffect(() => {
+		if (openChatId) resetBadge(openChatId); // Reset unread messages for the opened chat
+	}, [openChatId, resetBadge, badges]);
 
 	if (isLoading) {
 		return <div>Loading...</div>;

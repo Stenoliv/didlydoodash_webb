@@ -4,7 +4,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 export interface ChatStoreType {
     chats: Chat[],
-    chatId: string | null
+    openChatId: string | null
     selectChat: (chat: string | null) => void;
     addMember: (id: string, user: ChatMember) => void;
     removeMember: (id: string, user: ChatMember) => void;
@@ -14,8 +14,8 @@ export interface ChatStoreType {
 
 export const useChatStore = create<ChatStoreType>()(persist((set) => ({
     chats: [],
-    chatId: null,
-    selectChat: (chat) => set({ chatId: chat }),
+    openChatId: null,
+    selectChat: (chat) => set({ openChatId: chat }),
     addMember: (id, user) => set((state) => {
         const updatedChats = state.chats.map((chat) => {
             if (chat.id === id) {
@@ -49,6 +49,6 @@ export const useChatStore = create<ChatStoreType>()(persist((set) => ({
     storage: createJSONStorage(() => localStorage),
     partialize: ((state) => ({
         chats: state.chats,
-        chatId: state.chatId  
+        chatId: state.openChatId  
     }))
 }))

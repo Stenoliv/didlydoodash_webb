@@ -22,31 +22,45 @@ import AddUser from "./addUser/AddUser";
 import { API } from "@/utils/api";
 
 export default function Chats() {
-	const { chats, chatId, selectChat, removeMember } = useChatStore();
+	const { chats, openChatId, selectChat, removeMember } = useChatStore();
 	const { user, tokens } = useAuthStore();
 	const { organisation } = useOrgStore();
 
 	const endRef = useRef<HTMLDivElement>(null);
+	const openChat = chats.find((chat) => chat.id === openChatId);
+
 	const [openAddUser, setOpenAddUser] = useState(false);
 	const [text, setText] = useState("");
 
 	const [messages, setMessages] = useState<WSChatMessage[]>([]);
 
-	const openChat = chats.find((chat) => chat.id === chatId);
-
-	const WS_URL = `ws://localhost:3000/organisations/${organisation?.id}/chats/${chatId}?token=${tokens?.access}`;
-
+	// Handlers
 	const handleAddUser = () => {
 		setOpenAddUser(true);
+	};
+
+	const handleRemoveUser = (user: User) => {
+		return API.delete(
+			`/api/organisations/${organisation?.id}/chats/${openChatId}/member/${user.id}`
+		)
+			.then((response) => {
+				toast.success(`User ${user.username} removed!`);
+				if (openChatId) removeMember(openChatId, response.data.member);
+			})
+			.catch(() => {
+				toast.error(`Failed to remove ${user.username}`, {
+					position: "top-left",
+				});
+			});
 	};
 
 	const handleCloseChat = () => {
 		selectChat(null);
 	};
 
-	const { sendJsonMessage, lastMessage } = useWebSocket(WS_URL, {
-		onOpen: () => {},
-		onClose: () => {},
+	// Websocket connection
+	const WS_URL = `ws://localhost:3000/organisations/${organisation?.id}/chats/${openChatId}?token=${tokens?.access}`;
+	const { sendJsonMessage, lastJsonMessage } = useWebSocket<WSMessage>(WS_URL, {
 		reconnectAttempts: 5,
 		onReconnectStop: (attempts) => {
 			toast.error(`Failed to reconnect to websocket: ${attempts}`, {
@@ -62,7 +76,7 @@ export default function Chats() {
 
 			sendJsonMessage<WSInputMessage>({
 				type: "message.send",
-				roomId: chatId || "",
+				roomId: openChatId || "",
 				payload: {
 					id: user?.id || "",
 					message: text,
@@ -70,68 +84,60 @@ export default function Chats() {
 			});
 			setText("");
 		},
-		[sendJsonMessage, text, chatId, user]
+		[sendJsonMessage, text, openChatId, user]
 	);
 
-	const handleRemoveUser = (user: User) => {
-		return API.delete(
-			`/api/organisations/${organisation?.id}/chats/${chatId}/member/${user.id}`
-		)
-			.then((response) => {
-				toast.success(`User ${user.username} removed!`);
-				if (chatId) removeMember(chatId, response.data.member);
-			})
-			.catch(() => {
-				toast.error(`Failed to remove ${user.username}`, {
-					position: "top-left",
-				});
-			});
-	};
-
 	useEffect(() => {
-		endRef.current?.scrollIntoView({ behavior: "smooth" });
-
-		// Mark last message as read when new messages are loaded
 		if (messages.length > 0) {
-			const lastMessage = messages[messages.length - 1];
+			const lastMessage = messages[0];
 
 			sendJsonMessage<WSInputMessageRead>({
-				type: MessageRead, // This is the action type handled on the server
-				roomId: chatId || "",
+				type: MessageRead,
+				roomId: openChatId || "",
 				payload: {
 					messageId: lastMessage.id,
 				},
 			});
 		}
-	}, [messages, chatId, user, sendJsonMessage]);
+	}, [messages, openChatId, user, sendJsonMessage]);
 
 	useEffect(() => {
-		if (!lastMessage || !chatId) return;
+		if (!lastJsonMessage || !openChatId) return;
 		try {
-			// Parse the message and cast it as WSMessage
-			const parsedData: WSMessage = JSON.parse(lastMessage?.data);
-
 			// Check if the message type is 'message.send' and if it belongs to the current room
-			if (parsedData.type === MessageSend && parsedData.roomId === chatId) {
-				setMessages((prev) => [...prev, parsedData.payload]);
-			} else if (
-				parsedData.type === MessageAll &&
-				parsedData.roomId === chatId
+			if (
+				lastJsonMessage.type === MessageSend &&
+				lastJsonMessage.roomId === openChatId
 			) {
-				setMessages(parsedData.payload);
-			} else if (parsedData.type === MessageError) {
-				toast.error("Failed to load messages", {
+				setMessages((prev) => [...prev, lastJsonMessage.payload]);
+			}
+			// If type === message.all
+			else if (
+				lastJsonMessage.type === MessageAll &&
+				lastJsonMessage.roomId === openChatId
+			) {
+				setMessages(lastJsonMessage.payload);
+			}
+			// If type === message.error
+			else if (lastJsonMessage.type === MessageError) {
+				toast.error("Error: " + lastJsonMessage.payload.message, {
 					position: "top-left",
 				});
 			}
 		} catch (error) {
-			console.error("Failed to parse WebSocket message:", error);
+			toast.error("Failed to parse WebSocket message: " + error, {
+				position: "top-left",
+			});
 		}
-	}, [lastMessage, chatId]);
+	}, [lastJsonMessage, openChatId]);
 
 	useEffect(() => {
-		endRef.current?.scrollIntoView({ behavior: "smooth" });
-	}, [messages]);
+		if (
+			(lastJsonMessage && lastJsonMessage.type === MessageSend) ||
+			lastJsonMessage.type === MessageAll
+		)
+			endRef.current?.scrollIntoView({ behavior: "smooth" });
+	}, [messages, lastJsonMessage]);
 
 	return (
 		<div className="chat">
@@ -163,10 +169,10 @@ export default function Chats() {
 				</div>
 			</div>
 			<div className="center">
+				<div id="bottom" ref={endRef}></div>
 				{messages.map((message) => {
 					return <MessageItem key={message.id} message={message} />;
 				})}
-				<div id="bottom" ref={endRef}></div>
 			</div>
 			<form className="bottom" onSubmit={handleSend}>
 				<input

@@ -33,6 +33,7 @@ import {
 	AddBoxRounded,
 } from "@mui/icons-material";
 import { useOrgStore } from "@/stores/organisation";
+import { useNotification } from "@/context/NotificationContext";
 
 export default function SideBar() {
 	const { isLoading, error } = useQuery<Organisation[], Error>(
@@ -47,6 +48,7 @@ export default function SideBar() {
 
 	const [open, setopen] = useState(true);
 	const location = useLocation();
+	const { badges } = useNotification();
 	const { organisation, setOrganisation, organisations, setOrganisations } =
 		useOrgStore();
 
@@ -156,7 +158,13 @@ export default function SideBar() {
 						to={"/organisations/chats"}
 						text="Chats"
 						icon={
-							<Badge showZero>
+							<Badge
+								badgeContent={Array.from(badges.values()).reduce(
+									(sum, value) => sum + value,
+									0
+								)}
+								color="error"
+							>
 								<ChatRounded />
 							</Badge>
 						}

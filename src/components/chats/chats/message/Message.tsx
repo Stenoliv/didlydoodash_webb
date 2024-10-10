@@ -3,18 +3,19 @@ import "./message.css";
 import { useAuthStore } from "@/stores/auth/store";
 import { Tooltip } from "@mui/material";
 import { useChatStore } from "@/stores/organisation/chats";
+import { memo } from "react";
 
 export interface MessageProps {
 	message: WSChatMessage;
 }
 
-export default function MessageItem(props: MessageProps) {
+function MessageItem(props: MessageProps) {
 	const { message } = props;
 	const { user } = useAuthStore();
-	const { chats, chatId } = useChatStore();
+	const { chats, openChatId } = useChatStore();
 	const own = user?.id == message.userId ? "own" : "";
 
-	const currentChat = chats.find((chat) => chat.id === chatId);
+	const currentChat = chats.find((chat) => chat.id === openChatId);
 
 	return (
 		<Tooltip
@@ -42,3 +43,5 @@ export default function MessageItem(props: MessageProps) {
 		</Tooltip>
 	);
 }
+
+export default memo(MessageItem);
