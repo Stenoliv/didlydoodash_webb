@@ -43,6 +43,9 @@ export enum OrgRole {
     NotSpecified = "Not specified"
 }
 
+// Websocket message type
+export type WSType = string
+
 /**
  * Project related types
  */
@@ -79,10 +82,59 @@ export enum ProjectRole {
  */
 export type Kanban = {
 	id: string;
+	createdAt: number;
+	updatedAt: number;
 	name: string;
 	projectId: string;
+	status: ProjectStatus
+	categories: KanbanCategory[]
 }
 
+export type KanbanCategory = {
+	id: string;
+	createdAt: number;
+	updatedAt: number;
+	name: string;
+	kanbanId: string;
+	items: KanbanItem[]
+}
+
+export type KanbanItem = {
+	id: string;
+	createdAt: number;
+	updatedAt: number;
+	name: string;
+}
+
+// Kanban WS messages
+export type WSKanbanMessage = 
+| WSKanbanInput | WSKanbanResponse
+
+
+export type WSKanbanInput = {
+	type: WSType;
+	roomId: string;
+	payload: any
+}
+
+export type WSKanbanResponse = {
+	type: WSType;
+	roomId: string;
+	payload: any
+}
+
+// Kanban ws types
+export const JoinKanban: WSType = "kanban.load"
+export const EditKanban: WSType = "kanban.edit"
+export const DeleteKanban: WSType = "kanban.delete"
+// Kanban category ws types
+export const NewKanbanCategory: WSType = "kanban.category.new"
+export const EditKanbanCategory: WSType = "kanban.category.edit"
+export const DeleteKanbanCategory: WSType = "kanban.category.delete"
+// Kanban item ws types
+export const NewKanbanItem: WSType = "kanban.item.new"
+export const EditKanbanItem: WSType = "kanban.item.edit"
+export const DeleteKanbanItem: WSType = "kanban.item.delete"
 
 /**
  * Whiteboard related types
@@ -122,7 +174,6 @@ export type ChatCountNotification = {
 	};
 }
 
-export type WSType = string
 
 export const MessageSend: WSType = "message.send"
 export const MessageRead: WSType = "message.read"

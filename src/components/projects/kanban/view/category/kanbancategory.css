@@ -1,0 +1,37 @@
+:root {
+    --width: 300px;
+}
+
+.kanban-category-container {
+    min-width: var(--width);
+    max-width: var(--width);
+    display: flex;
+    flex-flow: column;
+    flex: 1;
+    flex-grow: 1;
+
+    .header {
+
+        h2 {
+            margin: 0;
+        }
+    }
+
+    .content {
+        flex: 1;
+        margin: 10px;
+        position: relative;
+
+        .absolute {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-flow: column;
+            overflow: hidden;
+            overflow-y: auto;
+        }
+    }
+}

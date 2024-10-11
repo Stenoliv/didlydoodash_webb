@@ -41,6 +41,8 @@ import CompletedProjectsPage from "@/pages/private/project/completedPage";
 
 // Whiteboard
 import WhiteboardPage from "./pages/private/whiteboard";
+import KanbanLayout from "./layouts/KanbanLayout";
+import KanbanView from "./pages/private/kanban";
 
 function App() {
 	const router = createBrowserRouter(
@@ -64,6 +66,11 @@ function App() {
 							<Route path="archived" element={<ArchivedProjectPage />} />
 							<Route path="create" element={<CreateProjectPage />} />
 							<Route path="completed" element={<CompletedProjectsPage />} />
+						</Route>
+
+						{/** Kanban routes */}
+						<Route path="/kanban" element={<KanbanLayout />}>
+							<Route path=":kanbanID" element={<KanbanView />} />
 						</Route>
 
 						{/** Whiteboard routes */}

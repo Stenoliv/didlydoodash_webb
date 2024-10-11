@@ -1,0 +1,42 @@
+.kanban-view {
+    flex: 1;
+    display: flex;
+    flex-flow: column;
+
+    .header {
+        border-width: 0px;
+        border-bottom-width: 4px;
+        border-color: white;
+        border-style: solid;
+        background-color: rgb(24, 30, 31);
+
+        h1 {
+            font-size: 2rem;
+        }
+    }
+
+    .categories {
+        flex: 1;
+        display: flex;
+        flex-flow: row;
+        position: relative;
+
+        .absolute {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-flow: row;
+            overflow: hidden;
+            overflow-x: auto;
+        }
+
+        .add-category {
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+    }
+}

@@ -1,0 +1,19 @@
+:root {
+    --c-a-icon: 35px;
+}
+
+.add-category-icon {
+    border-color: black;
+    border-style: solid;
+    border-radius: 12px;
+    border-width: 2px;
+    filter: invert();
+    width: var(--c-a-icon);
+    height: var(--c-a-icon);
+    margin: 0px 10px;
+    cursor: pointer;
+}
+
+.add-category-icon:hover {
+    border-color: rgb(185, 126, 78);
+}

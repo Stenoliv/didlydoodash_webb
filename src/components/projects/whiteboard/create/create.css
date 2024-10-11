@@ -1,0 +1,29 @@
+.create-whiteboard-button {
+    width: 30px;
+    height: 30px;
+    background-color: rgb(37, 42, 46);
+    border-radius: 5px;
+}
+
+.create-whiteboard-container {
+    display: flex;
+    width: max-content;
+    height: max-content;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 15px;
+    border-radius: 12px;
+    background-color: rgb(41, 49, 53);
+}
+
+.create-whiteboard-form {
+    display: flex;
+
+    h2 {
+        margin: 0;
+    }
+}
