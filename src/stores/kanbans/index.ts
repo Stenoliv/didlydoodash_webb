@@ -1,6 +1,6 @@
-import { Kanban, KanbanCategory } from "@/utils/types";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { Kanban, KanbanCategory } from "@/utils/types";
 
 
 export interface KanbanStoreState {
@@ -14,6 +14,8 @@ export interface KanbanStoreState {
     selectKanban: (kanban: Kanban | null) => void;
     // Category handling
     addCategory: (category: KanbanCategory) => void;
+    updateCategory: (category: KanbanCategory) => void;
+    updateCategoryName: (id: string, name: string) => void;
     removeCategory: (category: KanbanCategory) => void;
 }
 
@@ -30,11 +32,7 @@ export const useKanbanStore = create<KanbanStoreState>()(
 
         // Select kanba
         kanban: null,
-        selectKanban: (kanban) => set((state) => {
-                if (!kanban) return { kanban: null}
-                const selectedKanban = state.kanbans.find((k) => k.id === kanban.id);
-                return { kanban: selectedKanban || null}
-            }),
+        selectKanban: (kanban) => set({ kanban: kanban }),
         // Category handling
         addCategory: (category) => set((state) => ({
             kanban: state.kanban ? { 
@@ -42,6 +40,36 @@ export const useKanbanStore = create<KanbanStoreState>()(
                 categories: [...state.kanban.categories, category] 
             } : null,
         })),
+        updateCategory: (category) => set((state) => {
+            if (!state.kanban) return state;
+            const categoryIdx = state.kanban?.categories.findIndex((c) => c.id === category.id);
+            if (categoryIdx !== -1) {
+                const updatedCategories = state.kanban.categories;
+                updatedCategories[categoryIdx] = { ...updatedCategories[categoryIdx], ...category };
+                return { 
+                    ...state,
+                    kanban: { 
+                        ...state.kanban, 
+                        categories: updatedCategories
+                    }
+                };
+            }
+            return state;
+        }),
+        updateCategoryName: (id, name) => set((state) => {
+            if (!state.kanban) return state;
+            const categoryIndex = state.kanban.categories.findIndex((c) => c.id === id);
+            if (categoryIndex === -1) return state;
+            const updatedCategories = state.kanban.categories.map((category, index) => 
+                index === categoryIndex ? { ...category, name } : category
+            );
+            return { 
+                kanban: {
+                    ...state.kanban,
+                    categories: updatedCategories
+                } 
+            };
+        }),
         removeCategory: (category) => set((state) => ({
             kanban: state.kanban ? { 
                 ...state.kanban, 

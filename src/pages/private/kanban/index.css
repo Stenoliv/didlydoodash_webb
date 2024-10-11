@@ -31,10 +31,12 @@
             flex-flow: row;
             overflow: hidden;
             overflow-x: auto;
+            padding: 0px 10px;
+            gap: 20px;
         }
 
         .add-category {
-            height: 60px;
+            height: 50px;
             display: flex;
             align-items: center;
         }

@@ -13,10 +13,13 @@ export default function CreateCategory(props: CreateCategoryProps) {
 	};
 
 	return (
-		<img
-			className="add-category-icon"
-			src="/icons/plus.svg"
-			onClick={handleClick}
-		/>
+		<div className="add-category-texts">
+			<img
+				className="add-category-icon"
+				src="/icons/plus.svg"
+				onClick={handleClick}
+			/>
+			<span>New category</span>
+		</div>
 	);
 }

@@ -6,6 +6,8 @@ import useWebSocket from "react-use-websocket";
 import { useOrgStore } from "@/stores/organisation";
 import { useProjectStore } from "@/stores/projects";
 import {
+	DeleteKanbanCategory,
+	EditKanbanCategory,
 	JoinKanban,
 	NewKanbanCategory,
 	WSKanbanInput,
@@ -19,7 +21,8 @@ import { toast } from "react-toastify";
 export default function KanbanView() {
 	const { organisation } = useOrgStore();
 	const { project } = useProjectStore();
-	const { kanban, selectKanban, addCategory } = useKanbanStore();
+	const { kanban, selectKanban, addCategory, removeCategory, updateCategory } =
+		useKanbanStore();
 	const { tokens } = useAuthStore();
 
 	const WS_URL = `http://localhost:3000/organisations/${organisation?.id}/projects/${project?.id}/kanbans/${kanban?.id}?token=${tokens?.access}`;
@@ -46,7 +49,9 @@ export default function KanbanView() {
 	);
 
 	useEffect(() => {
+		if (!lastJsonMessage) return;
 		try {
+			if (!lastJsonMessage.type) return;
 			console.log(lastJsonMessage);
 			switch (lastJsonMessage.type) {
 				case JoinKanban:
@@ -55,13 +60,25 @@ export default function KanbanView() {
 				case NewKanbanCategory:
 					addCategory(lastJsonMessage.payload.category);
 					break;
+				case EditKanbanCategory:
+					updateCategory(lastJsonMessage.payload.category);
+					break;
+				case DeleteKanbanCategory:
+					removeCategory(lastJsonMessage.payload.category);
+					break;
 			}
 		} catch (error: any) {
 			toast.error(`Websocket error: ${error.message}`, {
 				position: "top-left",
 			});
 		}
-	}, [lastJsonMessage, selectKanban, addCategory]);
+	}, [
+		lastJsonMessage,
+		selectKanban,
+		removeCategory,
+		addCategory,
+		updateCategory,
+	]);
 
 	useEffect(() => {}, [readyState]);
 

@@ -1,0 +1,18 @@
+:root {
+    --c-r-icon: 30px;
+}
+
+.remove-category-icon {
+    border-color: black;
+    border-style: solid;
+    border-radius: 12px;
+    border-width: 2px;
+    filter: invert();
+    width: var(--c-r-icon);
+    height: var(--c-r-icon);
+    cursor: pointer;
+}
+
+.remove-category-icon:hover {
+    border-color: rgb(185, 126, 78);
+}

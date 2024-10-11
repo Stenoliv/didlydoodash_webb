@@ -1,5 +1,5 @@
 :root {
-    --width: 300px;
+    --width: 280px;
 }
 
 .kanban-category-container {
@@ -10,10 +10,31 @@
     flex: 1;
     flex-grow: 1;
 
-    .header {
+    .category-header {
+        height: 50px;
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        justify-content: space-between;
+        border-color: white;
+        border-width: 0;
+        border-bottom-width: 2px;
+        border-style: solid;
 
-        h2 {
+        input {
+            flex: 1;
+            width: 0;
+            font-size: 1.2rem;
+            padding: 5px;
             margin: 0;
+            border: none;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
         }
     }
 

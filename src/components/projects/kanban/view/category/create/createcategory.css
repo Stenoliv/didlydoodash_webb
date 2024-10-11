@@ -2,6 +2,19 @@
     --c-a-icon: 35px;
 }
 
+.add-category-texts {
+    width: 280px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    span {
+        font-size: 1.3rem;
+        font-weight: lighter;
+    }
+}
+
 .add-category-icon {
     border-color: black;
     border-style: solid;
@@ -10,7 +23,6 @@
     filter: invert();
     width: var(--c-a-icon);
     height: var(--c-a-icon);
-    margin: 0px 10px;
     cursor: pointer;
 }
 
