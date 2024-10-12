@@ -103,7 +103,8 @@ export type KanbanItem = {
 	id: string;
 	createdAt: number;
 	updatedAt: number;
-	name: string;
+	title: string;
+	desc: string;
 }
 
 // Kanban WS messages
@@ -123,16 +124,27 @@ export type WSKanbanResponse = {
 	payload: any
 }
 
+// Kanban DnD types
+export const KanbanDNDTypes = {
+	ITEM: "Item",
+}
+export type KanbanDragItem = {
+	id: string;
+	categoryId: string;
+}
+
 // Kanban ws types
 export const JoinKanban: WSType = "kanban.load"
 export const EditKanban: WSType = "kanban.edit"
 export const DeleteKanban: WSType = "kanban.delete"
+export const ErrorKanban: WSType = "kanban.error"
 // Kanban category ws types
 export const NewKanbanCategory: WSType = "kanban.category.new"
 export const EditKanbanCategory: WSType = "kanban.category.edit"
 export const DeleteKanbanCategory: WSType = "kanban.category.delete"
 // Kanban item ws types
 export const NewKanbanItem: WSType = "kanban.item.new"
+export const MoveKanbanItem: WSType = "kanban.item.drop"
 export const EditKanbanItem: WSType = "kanban.item.edit"
 export const DeleteKanbanItem: WSType = "kanban.item.delete"
 

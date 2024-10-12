@@ -1,18 +1,19 @@
-import { NewKanbanItem, WSType } from "@/utils/types";
+import { DeleteKanbanItem, KanbanItem, WSType } from "@/utils/types";
 import "./removeitem.css";
 
 export interface RemoveItemProps {
+	item: KanbanItem;
 	sendMessage: (type: WSType, payload: any) => Promise<void>;
 }
 
 export default function RemoveItem(props: RemoveItemProps) {
-	const { sendMessage } = props;
+	const { item, sendMessage } = props;
 
 	return (
 		<img
 			className="add-item-icon"
 			src="/icons/minus.svg"
-			onClick={() => sendMessage(NewKanbanItem, { name: "Not named" })}
+			onClick={() => sendMessage(DeleteKanbanItem, { itemId: item.id })}
 		/>
 	);
 }

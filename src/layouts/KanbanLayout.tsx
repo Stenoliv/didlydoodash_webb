@@ -1,5 +1,7 @@
 import { useKanbanStore } from "@/stores/kanbans";
 import { useProjectStore } from "@/stores/projects";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 export default function KanbanLayout() {
@@ -19,7 +21,9 @@ export default function KanbanLayout() {
 				<NavLink to={`/projects/${project?.id}`}>/Project</NavLink>
 				<NavLink to={`/kanban/${kanban.id}`}>/Kanban</NavLink>
 			</div>
-			<Outlet />
+			<DndProvider backend={HTML5Backend}>
+				<Outlet />
+			</DndProvider>
 		</>
 	);
 }

@@ -12,6 +12,8 @@ export default function SignupPage() {
 		rememberMe: false,
 	});
 
+	const [passwordShown, setPasswordShown] = useState(false);
+
 	const { login } = useAuth();
 	const { setTokens } = useAuthStore();
 
@@ -73,13 +75,17 @@ export default function SignupPage() {
 					<div className="form-field">
 						<label>Password:</label>
 						<input
-							type="password"
+							type={passwordShown ? "text" : "password"}
 							id="user-password"
 							name="password"
 							placeholder="Password"
 							aria-description="user-password"
 							aria-invalid="false"
 							onChange={handleInput}
+						/>
+						<img
+							src={passwordShown ? "/icons/hide.svg" : "/icons/show.svg"}
+							onClick={() => setPasswordShown(!passwordShown)}
 						/>
 					</div>
 					<div className="form-field row">

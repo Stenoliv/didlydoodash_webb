@@ -30,6 +30,17 @@ form {
 .form-field {
 	display: flex;
 	flex-direction: column;
+	position: relative;
+
+	img {
+		width: 25px;
+		height: 25px;
+		filter: invert();
+		position: absolute;
+		right: 5px;
+		bottom: 5px;
+		cursor: pointer;
+	}
 }
 
 .form-field.row {

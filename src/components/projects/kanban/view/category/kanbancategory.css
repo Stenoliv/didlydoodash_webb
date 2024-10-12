@@ -40,11 +40,12 @@
 
     .content {
         flex: 1;
-        margin: 10px;
+        margin: 10px 0px;
         position: relative;
 
         .absolute {
             position: absolute;
+            padding: 0px;
             top: 0;
             left: 0;
             right: 0;

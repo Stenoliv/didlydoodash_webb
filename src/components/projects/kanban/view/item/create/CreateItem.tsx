@@ -1,18 +1,24 @@
-import { NewKanbanItem, WSType } from "@/utils/types";
+import { KanbanCategory, NewKanbanItem, WSType } from "@/utils/types";
 import "./createitem.css";
 
 export interface CreateItemProps {
+	category: KanbanCategory;
 	sendMessage: (type: WSType, payload: any) => Promise<void>;
 }
 
 export default function CreateItem(props: CreateItemProps) {
-	const { sendMessage } = props;
+	const { category, sendMessage } = props;
 
 	return (
 		<img
 			className="add-item-icon"
 			src="/icons/plus.svg"
-			onClick={() => sendMessage(NewKanbanItem, { name: "Not named" })}
+			onClick={() =>
+				sendMessage(NewKanbanItem, {
+					categoryId: category.id,
+					name: "Not named",
+				})
+			}
 		/>
 	);
 }

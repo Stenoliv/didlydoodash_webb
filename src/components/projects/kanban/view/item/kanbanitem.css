@@ -1,0 +1,61 @@
+.kanban-item-box {
+    display: flex;
+    flex-flow: column;
+    padding: 10px 5px;
+    border-width: 2px;
+    border-color: white;
+    border-radius: 12px;
+    border-style: solid;
+    gap: 10px;
+
+    .kanban-item-header {
+        display: flex;
+        flex-flow: column;
+        gap: 8px;
+
+        .kanban-item-handle {
+            height: 24px;
+            background-color: white;
+            border-radius: 5px;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+        }
+
+        .kanban-item-actions {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+    }
+
+    .kanban-item-content {
+        display: flex;
+        flex-flow: row;
+
+        .title-desc {
+            flex: 1;
+            display: flex;
+            flex-flow: column;
+
+            input {
+                display: block;
+                width: 100%;
+                border: none;
+                font-size: 1.2rem;
+                padding: 10px 0px;
+                margin: 0;
+            }
+
+            input.desc {
+                font-size: 0.8rem;
+            }
+        }
+    }
+
+
+}
