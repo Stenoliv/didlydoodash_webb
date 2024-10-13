@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Line, Rect, Arrow, Circle, Text } from "react-konva";
 import { KonvaEventObject } from "konva/lib/Node";
+import styles from "./whiteboard.module.css"
 
 interface LineData {
   points: number[];
@@ -211,7 +212,7 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ websocketUrl }) => {
           />
         );
       case "triangle":
-        const trianglePoints = [x1, y2, x2, y2, (x1 + x2) / 2, y1]; // Create an isosceles triangle
+        const trianglePoints = [x1, y2, x2, y2, (x1 + x2) / 2, y1]; 
         return (
           <Line
             key={i}
@@ -228,7 +229,7 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ websocketUrl }) => {
             text={line.text || ""}
             x={x1}
             y={y1}
-            fontSize={20}
+            fontSize={24}
             fill={line.stroke}
           />
         );
@@ -238,27 +239,28 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ websocketUrl }) => {
   };
 
   return (
-    <div>
-      <h1>Collaborative Whiteboard</h1>
+    <div className={styles.whiteboard_container}>
+      <h1 className={styles.whiteboard_PageTitle}>[WBNAME] Whiteboard</h1>
 
       {/* ToolBar */}
-      <div className="toolbar">
-        <button onClick={() => setTool("line")}>Line</button>
-        <button onClick={() => setTool("square")}>Square</button>
-        <button onClick={() => setTool("triangle")}>Triangle</button>
-        <button onClick={() => setTool("circle")}>Circle</button>
-        <button onClick={() => setTool("arrow")}>Arrow</button>
-        <button onClick={() => setTool("eraser")}>Eraser</button>
-        <button onClick={() => setTool("text")}>Text</button>
+      <div className={styles.whiteboard_toolbar}>
+        <button className={styles.whiteboard_Toolbar_Button} onClick={() => setTool("line")}>Line</button>
+        <button className={styles.whiteboard_Toolbar_Button} onClick={() => setTool("square")}>Square</button>
+        <button className={styles.whiteboard_Toolbar_Button} onClick={() => setTool("triangle")}>Triangle</button>
+        <button className={styles.whiteboard_Toolbar_Button} onClick={() => setTool("circle")}>Circle</button>
+        <button className={styles.whiteboard_Toolbar_Button} onClick={() => setTool("arrow")}>Arrow</button>
+        <button className={styles.whiteboard_Toolbar_Button} onClick={() => setTool("eraser")}>Eraser</button>
         <input
           type="color"
           value={strokeColor}
           onChange={(e) => setStrokeColor(e.target.value)}
+          className={styles.whiteboard_Toolbar_Colorpicker}
         />
-        {/* Stroke Width Selector */}
+
         <select
           value={strokeWidth}
           onChange={(e) => setStrokeWidth(Number(e.target.value))}
+          className={styles.whiteboard_Toolbar_Strokesize}
         >
           <option value={1}>1</option>
           <option value={2}>2</option>
@@ -270,20 +272,26 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ websocketUrl }) => {
           <option value={25}>25</option>
           <option value={50}>50</option>
         </select>
+        <button className={styles.whiteboard_Toolbar_Button} onClick={() => setTool("text")}>Text</button>
         {tool === "text" && (
           <input
             type="text"
             value={textInput}
             onChange={(e) => setTextInput(e.target.value)}
             placeholder="Enter text"
-            style={{ marginLeft: "10px" }}
+            className={styles.whiteboard_Toolbar_textinput}
           />
         )}
       </div>
 
       <Stage
-        width={window.innerWidth}
-        height={window.innerHeight}
+        className={styles.whiteboard_Draw_Area}
+        height={window.innerHeight -138}
+        width={window.innerWidth - 100}
+        style={{
+          border: "1px solid white",
+          backgroundColor: "#181618"
+        }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}

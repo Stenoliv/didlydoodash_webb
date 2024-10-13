@@ -1,10 +1,9 @@
 import "./create.css";
 import { Button, FormControl, Modal, TextField } from "@mui/material";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useKanbanStore } from "@/stores/kanbans";
 import { API } from "@/utils/api";
 import { toast } from "react-toastify";
-import { Kanban } from "@/utils/types";
+import { Whiteboard } from "@/utils/types";
 
 export interface CreataWhiteboardProps {
 	orgId: string;
@@ -18,7 +17,6 @@ export default function CreateWhiteboard(props: CreataWhiteboardProps) {
 	});
 
 	const { orgId, projectId } = props;
-	const { addKanban } = useKanbanStore();
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -31,16 +29,15 @@ export default function CreateWhiteboard(props: CreataWhiteboardProps) {
 	const handleCreateWhiteboard = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		return API.post(
-			`/api/organisations/${orgId}/projects/${projectId}/whiteboard`,
+			`/api/organisations/${orgId}/projects/${projectId}/whiteboards`,
 			{ ...input }
 		)
 			.then((respones) => {
-				const kanban: Kanban = respones.data.kanban;
-				addKanban(kanban);
-				toast.success(`Successfully created kanban: ${kanban.name}`);
+				const whiteboard: Whiteboard = respones.data.whiteboard;
+				toast.success(`Successfully created whiteboard: ${whiteboard.name}`);
 			})
 			.catch((error) => {
-				toast.error(`Failed to create kanban: ${error.response.data.message}`, {
+				toast.error(`Failed to create whiteboard: ${error.response.data.message}`, {
 					position: "top-left",
 				});
 			});

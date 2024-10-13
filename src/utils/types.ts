@@ -153,6 +153,7 @@ export const DeleteKanbanItem: WSType = "kanban.item.delete"
  */
 export type Whiteboard = {
 	id: string;
+	name: string;
 }
 
 /**
