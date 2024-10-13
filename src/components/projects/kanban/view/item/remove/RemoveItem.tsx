@@ -11,8 +11,8 @@ export default function RemoveItem(props: RemoveItemProps) {
 
 	return (
 		<img
-			className="add-item-icon"
-			src="/icons/minus.svg"
+			className="remove-item-icon"
+			src="/icons/trashcan.svg"
 			onClick={() => sendMessage(DeleteKanbanItem, { itemId: item.id })}
 		/>
 	);

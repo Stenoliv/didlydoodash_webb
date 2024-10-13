@@ -23,6 +23,9 @@ import {
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/auth/store";
 import { toast } from "react-toastify";
+import ArchiveList from "@/components/projects/kanban/view/archive/list/ArchiveList";
+import { useNavigate } from "react-router-dom";
+import { useKanbanArchiveStore } from "@/stores/kanbans/archive";
 
 export default function KanbanView() {
 	const { organisation } = useOrgStore();
@@ -30,6 +33,8 @@ export default function KanbanView() {
 	const { kanban, selectKanban, updateKanban } = useKanbanStore();
 	const { addCategory, removeCategory, updateCategory } = useKanbanStore();
 	const { addItem, moveItem, removeItem, updateItem } = useKanbanStore();
+	const { toggleOpen } = useKanbanArchiveStore();
+	const navigate = useNavigate();
 	const { tokens } = useAuthStore();
 
 	const [overlayVisible, setOverlayVisible] = useState(false);
@@ -147,6 +152,7 @@ export default function KanbanView() {
 		moveItem,
 		updateItem,
 		removeItem,
+		updateKanban,
 	]);
 
 	function handleReconnect(): void {
@@ -154,6 +160,11 @@ export default function KanbanView() {
 		setWebSocketURL(
 			`http://localhost:3000/organisations/${organisation?.id}/projects/${project?.id}/kanbans/${kanban?.id}?token=${tokens?.access}`
 		);
+	}
+
+	if (!kanban) {
+		navigate(-1);
+		return;
 	}
 
 	return (
@@ -169,7 +180,7 @@ export default function KanbanView() {
 						onChange={handleChange}
 					/>
 				</div>
-				<img className="archive" src="/icons/more.svg" onClick={() => {}} />
+				<img className="archive" src="/icons/more.svg" onClick={toggleOpen} />
 			</div>
 			<div className="categories">
 				<div className="absolute">
@@ -185,6 +196,7 @@ export default function KanbanView() {
 						<CreateCategory sendMessage={sendMessage} />
 					</div>
 				</div>
+				<ArchiveList />
 			</div>
 			{/* WebSocket Disconnected Overlay */}
 			{readyState === ReadyState.CLOSED ||

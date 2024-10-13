@@ -1,7 +1,13 @@
+:root {
+    --k-d-width: 250px;
+}
+
 .kanban-view {
     flex: 1;
     display: flex;
     flex-flow: column;
+    position: relative;
+    overflow: hidden;
 
     .header {
         flex: 1;
@@ -15,7 +21,6 @@
 
         .kanban-name {
             flex: 1;
-            max-width: 50%;
             display: flex;
             align-items: center;
 
@@ -66,6 +71,20 @@
             display: flex;
             align-items: center;
         }
+
+        .absolute::-webkit-scrollbar {
+            width: 20px;
+            margin-right: 3px;
+        }
+
+        .absolute::-webkit-scrollbar-thumb {
+            background: white;
+            border-radius: 10px;
+            border-style: solid;
+            border-color: transparent;
+            border-width: 4px;
+            background-clip: padding-box;
+        }
     }
 
     .overlay {
@@ -82,4 +101,6 @@
         align-items: center;
         justify-content: center;
     }
+
+
 }

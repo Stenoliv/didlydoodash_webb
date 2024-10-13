@@ -104,7 +104,25 @@ export type KanbanItem = {
 	createdAt: number;
 	updatedAt: number;
 	title: string;
-	desc: string;
+	description: string;
+	priority: KanbanItemPriority;
+	due_date: number;
+	estimated_time: number;
+}
+
+export type KanbanArchiveItem = {
+	id: string;
+	type: "category" | "item"
+	deletedAt: number
+	name: string;
+}
+
+export enum KanbanItemPriority {
+    EXTREME = "Extreme",
+    HIGH = "High",
+    MEDIUM = "Medium",
+    LOW = "Low",
+    NONE = "None"
 }
 
 // Kanban WS messages
@@ -138,6 +156,7 @@ export const JoinKanban: WSType = "kanban.load"
 export const EditKanban: WSType = "kanban.edit"
 export const DeleteKanban: WSType = "kanban.delete"
 export const ErrorKanban: WSType = "kanban.error"
+export const GetKanbanArchive: WSType = "kanban.archive.get"
 // Kanban category ws types
 export const NewKanbanCategory: WSType = "kanban.category.new"
 export const EditKanbanCategory: WSType = "kanban.category.edit"

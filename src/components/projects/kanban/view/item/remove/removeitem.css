@@ -2,7 +2,7 @@
     --k-i-icon: 30px;
 }
 
-.add-item-icon {
+.remove-item-icon {
     width: var(--k-i-icon);
     height: var(--k-i-icon);
     border-color: black;
@@ -13,6 +13,6 @@
     cursor: pointer;
 }
 
-.add-item-icon:hover {
-    border-color: rgb(192, 156, 99);
+.remove-item-icon:hover {
+    border-color: rgb(0, 189, 202);
 }

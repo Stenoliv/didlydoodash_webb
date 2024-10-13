@@ -1,0 +1,26 @@
+.kanban-archive-drawer {
+    position: absolute;
+    display: flex;
+    align-items: flex-start;
+    width: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(23, 25, 27);
+    transition: 0.5s ease width;
+    border-width: 0;
+    border-color: white;
+    border-style: solid;
+    border-left-width: 2px;
+
+    h2 {
+        flex: 1;
+        height: min-content;
+        margin: 0;
+        text-align: center;
+    }
+}
+
+.kanban-archive-drawer.showing {
+    width: var(--k-d-width);
+}

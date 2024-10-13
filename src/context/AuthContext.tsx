@@ -22,7 +22,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 	const navigate = useNavigate();
 
 	const login = (user: User) => {
-		setOrganisation(undefined);
+		setOrganisation(null);
 		setUser(user);
 		navigate("/");
 	};

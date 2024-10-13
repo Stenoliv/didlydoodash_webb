@@ -16,7 +16,7 @@ export default function RemoveCategory(props: RemoveCategoryProps) {
 	return (
 		<img
 			className="remove-category-icon"
-			src="/icons/minus.svg"
+			src="/icons/trashcan.svg"
 			onClick={handleClick}
 		/>
 	);

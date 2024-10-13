@@ -51,7 +51,14 @@ export default function ProjectView() {
 				</div>
 				{whiteboards && whiteboards.length ? (
 					whiteboards.map((whiteboard) => (
-						<div className="whiteboard_link_cont" key={whiteboard.id}><a href={`/:${project.id}/whiteboard/:${whiteboard.id}`} className="whiteboard_link">{whiteboard.name}</a></div>
+						<div className="whiteboard_link_cont" key={whiteboard.id}>
+							<a
+								href={`/${project.id}/whiteboard/${whiteboard.id}`}
+								className="whiteboard_link"
+							>
+								{whiteboard.name}
+							</a>
+						</div>
 					))
 				) : (
 					<div>No whiteboards</div>

@@ -1,6 +1,6 @@
 :root {
     --grid-gap: 20px;
-    --grid-width: calc(50% - var(--grid-gap)/2)
+    --grid-width: 100%;
 }
 
 .grid-projects {
@@ -8,15 +8,25 @@
     grid-auto-flow: row;
     grid-gap: var(--grid-gap);
     grid-row-gap: 30px;
-    grid-template-columns: var(--grid-width) var(--grid-width);
+    grid-template-columns: var(--grid-width);
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1000px) {
     :root {
-        --grid-width: calc(33% - var(--grid-gap)/2)
+        --grid-width: calc(50% - var(--grid-gap)/2)
     }
 
     .grid-projects {
-        grid-template-columns: var(--grid-width) var(--grid-width) var(--grid-width);
+        grid-template-columns: var(--grid-width) var(--grid-width);
+    }
+
+    @media (min-width: 1500px) {
+        :root {
+            --grid-width: calc(33% - var(--grid-gap)/2)
+        }
+
+        .grid-projects {
+            grid-template-columns: var(--grid-width) var(--grid-width) var(--grid-width);
+        }
     }
 }

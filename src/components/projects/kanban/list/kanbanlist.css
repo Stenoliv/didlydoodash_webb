@@ -1,6 +1,6 @@
 :root {
     --grid-gap: 15px;
-    --item-width: calc(100%);
+    --item-width: 100%;
 }
 
 .kanban-list {

@@ -40,12 +40,11 @@
 
     .content {
         flex: 1;
-        margin: 10px 0px;
         position: relative;
 
         .absolute {
             position: absolute;
-            padding: 0px;
+            padding: 10px 0px;
             top: 0;
             left: 0;
             right: 0;
@@ -54,6 +53,20 @@
             flex-flow: column;
             overflow: hidden;
             overflow-y: auto;
+        }
+
+        .absolute::-webkit-scrollbar {
+            width: 20px;
+            margin-right: 3px;
+        }
+
+        .absolute::-webkit-scrollbar-thumb {
+            background: white;
+            border-radius: 10px;
+            border-style: solid;
+            border-color: transparent;
+            border-width: 4px;
+            background-clip: padding-box;
         }
     }
 }

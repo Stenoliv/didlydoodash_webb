@@ -1,5 +1,6 @@
 .kanban-item-container {
     padding: 10px;
+    width: 100%;
     background-color: rgb(12, 27, 32);
     border-style: solid;
     border-color: white;
