@@ -3,6 +3,7 @@
     height: 30px;
     background-color: rgb(37, 42, 46);
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .create-whiteboard-container {

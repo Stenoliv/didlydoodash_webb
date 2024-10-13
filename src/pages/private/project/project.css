@@ -71,3 +71,17 @@
     }
 
 }
+.whiteboard_link_cont {
+    margin-bottom: 12px;
+    
+}
+.whiteboard_link {
+    background-color: rgb(49, 42, 54);
+    color: white;
+    border-radius: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size: 16px;
+}
