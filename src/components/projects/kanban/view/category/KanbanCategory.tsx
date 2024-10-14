@@ -77,14 +77,21 @@ export default function KanbanCategoryItem(props: KanbanCategoryProps) {
 				<div ref={drop} className="absolute">
 					{category.items &&
 						Array.isArray(category.items) &&
-						category.items.map((item) => (
-							<KanbanItemComp
-								categoryId={category.id}
-								key={item.id}
-								item={item}
-								sendMessage={sendMessage}
-							/>
-						))}
+						category.items
+							.filter((item) => item.createdAt)
+							.sort((a, b) => {
+								const dateA = new Date(a.createdAt).getTime(); // Convert to timestamp
+								const dateB = new Date(b.createdAt).getTime(); // Convert to timestamp
+								return dateA - dateB;
+							})
+							.map((item) => (
+								<KanbanItemComp
+									categoryId={category.id}
+									key={item.id}
+									item={item}
+									sendMessage={sendMessage}
+								/>
+							))}
 					{isOver && dragItem && (
 						<KanbanItemComp
 							style={{ opacity: 0.5 }}
