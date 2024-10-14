@@ -53,7 +53,7 @@ export default function ProjectView() {
 					whiteboards.map((whiteboard) => (
 						<div className="whiteboard_link_cont" key={whiteboard.id}>
 							<a
-								href={`/${project.id}/whiteboard/${whiteboard.id}`}
+								href={`/whiteboard/${whiteboard.id}`}
 								className="whiteboard_link"
 							>
 								{whiteboard.name}

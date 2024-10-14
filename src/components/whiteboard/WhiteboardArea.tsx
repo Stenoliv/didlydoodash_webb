@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Line, Rect, Arrow, Circle, Text } from "react-konva";
 import { KonvaEventObject } from "konva/lib/Node";
 import styles from "./whiteboard.module.css"
+import { useParams } from "react-router-dom";
 
 interface LineData {
   points: number[];
@@ -25,6 +26,7 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ websocketUrl }) => {
   const wsRef = React.useRef<WebSocket | null>(null);
   const isDrawing = useRef(false);
   const startPointRef = useRef<{ x: number; y: number } | null>(null);
+  const {whiteboardID}=useParams()
 
   useEffect(() => {
     // Create a WebSocket connection if it doesn't already exist
@@ -38,7 +40,8 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ websocketUrl }) => {
     socket.onmessage = (event) => {
       console.log("Message received:", event.data);
       const message = JSON.parse(event.data);
-      setLines((prevLines) => [...prevLines, message]);
+      const payload = message.payload;
+      setLines((prevLines) => [...prevLines, payload]);
     };
 
     socket.onerror = (event) => {
@@ -150,7 +153,7 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ websocketUrl }) => {
       const lastLine = lines[lines.length - 1];
       console.log("Sending data:", JSON.stringify(lastLine));
       if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify(lastLine));
+        ws.send(JSON.stringify({roomId: whiteboardID,payload: lastLine} ));
       } else {
         console.error("WebSocket is not open, cannot send message");
       }

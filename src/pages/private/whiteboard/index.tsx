@@ -1,11 +1,19 @@
 import Whiteboard from "@/components/whiteboard/WhiteboardArea";
+import { useAuthStore } from "@/stores/auth/store";
+import { useOrgStore } from "@/stores/organisation";
+import { useProjectStore } from "@/stores/projects";
+import { useParams } from "react-router-dom";
 
 export default function WhiteboardPage() {
+  const {whiteboardID}=useParams()
+  const {organisation}=useOrgStore()
+  const {project}=useProjectStore()
+  const {tokens}=useAuthStore()
   return (
     <div style={styles.mainArea}>
       <div style={styles.canvas}>
         {/* This is where you can draw */}
-        <Whiteboard websocketUrl="ws://localhost:8000/ws" />
+        <Whiteboard websocketUrl={`ws://localhost:3000/organisations/${organisation?.id}/projects/${project?.id}/whiteboards/${whiteboardID}?token=${tokens?.access}`}/>
       </div>
     </div>
   );

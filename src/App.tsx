@@ -75,7 +75,7 @@ function App() {
 
 						{/** Whiteboard routes */}
 						<Route path="/whiteboard" element={<WhiteboardLayout />}>
-							<Route index element={<WhiteboardPage />} />
+							<Route path=":whiteboardID" element={<WhiteboardPage />} />
 						</Route>
 
 						{/** Organisation routes */}
