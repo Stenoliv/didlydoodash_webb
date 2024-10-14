@@ -47,3 +47,18 @@
         }
     }
 }
+.announcement_header {
+    display: flex;
+    flex-direction: row;
+    
+}
+.new_announcement_btn {
+    margin-left: 20px;
+}
+.announcement_Text_Input {
+    width: 100%;
+    height: 90px;
+    font-size: 14px;
+    resize: vertical;
+    border: solid 1px white;
+}
