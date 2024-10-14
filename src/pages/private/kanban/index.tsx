@@ -6,6 +6,7 @@ import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useOrgStore } from "@/stores/organisation";
 import { useProjectStore } from "@/stores/projects";
 import {
+	ArchiveKanban,
 	DeleteKanbanCategory,
 	DeleteKanbanItem,
 	EditKanban,
@@ -16,6 +17,8 @@ import {
 	MoveKanbanItem,
 	NewKanbanCategory,
 	NewKanbanItem,
+	RestoreKanbanCategory,
+	RestoreKanbanItem,
 	WSKanbanInput,
 	WSKanbanMessage,
 	WSType,
@@ -33,7 +36,7 @@ export default function KanbanView() {
 	const { kanban, selectKanban, updateKanban } = useKanbanStore();
 	const { addCategory, removeCategory, updateCategory } = useKanbanStore();
 	const { addItem, moveItem, removeItem, updateItem } = useKanbanStore();
-	const { toggleOpen } = useKanbanArchiveStore();
+	const { toggleOpen, setArchive } = useKanbanArchiveStore();
 	const navigate = useNavigate();
 	const { tokens } = useAuthStore();
 
@@ -90,13 +93,20 @@ export default function KanbanView() {
 			switch (lastJsonMessage.type) {
 				case JoinKanban:
 					selectKanban(lastJsonMessage.payload.kanban);
+					setArchive(lastJsonMessage.payload.archive);
 					break;
 				case EditKanban:
 					updateKanban(lastJsonMessage.payload.updates);
 					break;
+				case ArchiveKanban:
+					setArchive(lastJsonMessage.payload);
+					break;
 
 				// Kanban Category responses
 				case NewKanbanCategory:
+					addCategory(lastJsonMessage.payload.category);
+					break;
+				case RestoreKanbanCategory:
 					addCategory(lastJsonMessage.payload.category);
 					break;
 				case EditKanbanCategory:
@@ -107,6 +117,12 @@ export default function KanbanView() {
 					break;
 				// Kanban Item responses
 				case NewKanbanItem:
+					addItem(
+						lastJsonMessage.payload.item.categoryId,
+						lastJsonMessage.payload.item
+					);
+					break;
+				case RestoreKanbanItem:
 					addItem(
 						lastJsonMessage.payload.item.categoryId,
 						lastJsonMessage.payload.item
@@ -153,6 +169,7 @@ export default function KanbanView() {
 		updateItem,
 		removeItem,
 		updateKanban,
+		setArchive,
 	]);
 
 	function handleReconnect(): void {
@@ -196,7 +213,7 @@ export default function KanbanView() {
 						<CreateCategory sendMessage={sendMessage} />
 					</div>
 				</div>
-				<ArchiveList />
+				<ArchiveList sendMessage={sendMessage} />
 			</div>
 			{/* WebSocket Disconnected Overlay */}
 			{readyState === ReadyState.CLOSED ||

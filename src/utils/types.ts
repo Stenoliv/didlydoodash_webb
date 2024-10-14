@@ -155,17 +155,22 @@ export type KanbanDragItem = {
 export const JoinKanban: WSType = "kanban.load"
 export const EditKanban: WSType = "kanban.edit"
 export const DeleteKanban: WSType = "kanban.delete"
+export const ArchiveKanban: WSType = "kanban.archive"
 export const ErrorKanban: WSType = "kanban.error"
 export const GetKanbanArchive: WSType = "kanban.archive.get"
 // Kanban category ws types
 export const NewKanbanCategory: WSType = "kanban.category.new"
+export const RestoreKanbanCategory: WSType = "kanban.category.restore"
 export const EditKanbanCategory: WSType = "kanban.category.edit"
 export const DeleteKanbanCategory: WSType = "kanban.category.delete"
+export const PermaDeleteKanbanCategory: WSType = "kanban.category.perma"
 // Kanban item ws types
 export const NewKanbanItem: WSType = "kanban.item.new"
+export const RestoreKanbanItem: WSType = "kanban.item.restore"
 export const MoveKanbanItem: WSType = "kanban.item.drop"
 export const EditKanbanItem: WSType = "kanban.item.edit"
 export const DeleteKanbanItem: WSType = "kanban.item.delete"
+export const PermaDeleteKanbanItem: WSType = "kanban.item.perma"
 
 /**
  * Whiteboard related types

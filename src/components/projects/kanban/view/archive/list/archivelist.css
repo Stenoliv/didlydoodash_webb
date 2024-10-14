@@ -1,26 +1,80 @@
+:root {
+    --k-d-width: 300px;
+}
+
 .kanban-archive-drawer {
     position: absolute;
     display: flex;
+    flex-flow: column;
     align-items: flex-start;
-    width: 0;
+    width: var(--k-d-width);
     top: 0;
     right: 0;
     bottom: 0;
     background-color: rgb(23, 25, 27);
-    transition: 0.5s ease width;
+    transform: translateX(var(--k-d-width));
+    transition: 0.75s ease transform;
     border-width: 0;
     border-color: white;
     border-style: solid;
-    border-left-width: 2px;
+    border-left-width: 3px;
 
-    h2 {
-        flex: 1;
-        height: min-content;
-        margin: 0;
-        text-align: center;
+    .archive-header {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #2b2e33;
+        border-width: 0;
+        border-style: solid;
+        border-bottom-width: 2px;
+        border-color: white;
+        gap: 10px;
+
+        img {
+            margin-left: 10px;
+            width: 30px;
+            padding: 3px;
+            border-color: black;
+            border-width: 3px;
+            border-style: solid;
+            border-radius: 20px;
+            filter: invert();
+            transform: rotate(180deg);
+            cursor: pointer;
+        }
+
+        h2 {
+            flex: 1;
+            height: min-content;
+            margin: 0;
+            text-align: start;
+        }
+    }
+
+    .kanban-archive-list {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-flow: column;
+        position: relative;
+
+        .kanban-archive-list-abosulute {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 10px 4px;
+            display: flex;
+            flex-flow: column;
+            gap: 8px;
+            overflow-y: auto;
+        }
     }
 }
 
 .kanban-archive-drawer.showing {
-    width: var(--k-d-width);
+    transform: translateX(0);
 }

@@ -1,62 +1,46 @@
 // ArchiveList.js
 import "./archivelist.css";
 import { useKanbanArchiveStore } from "@/stores/kanbans/archive";
-import { useKanbanStore } from "@/stores/kanbans";
-import { useQuery, useQueryClient } from "react-query";
-import { KanbanArchiveItem } from "@/utils/types";
-import { API } from "@/utils/api";
-import { toast } from "react-toastify";
-import { useProjectStore } from "@/stores/projects";
-import { useOrgStore } from "@/stores/organisation";
-import { useEffect, useState } from "react";
+
+import { ArchiveKanban, WSType } from "@/utils/types";
 import ArchiveItem from "../item/ArchiveItem";
+import { useEffect } from "react";
 
-// export interface ArchiveListProps {}
+export interface ArchiveListProps {
+	sendMessage: (type: WSType, payload: any) => Promise<void>;
+}
 
-export default function ArchiveList(/*props: ArchiveListProps*/) {
-	const [archive, setArchive] = useState<KanbanArchiveItem[]>([]);
+export default function ArchiveList(props: ArchiveListProps) {
+	const { sendMessage } = props;
 
-	const { open, toggleOpen } = useKanbanArchiveStore();
-	const queryClient = useQueryClient();
+	const { open, toggleOpen, archive } = useKanbanArchiveStore();
 
 	useEffect(() => {
-		queryClient.invalidateQueries("archive");
-	}, [open, queryClient]);
-
-	useQuery<KanbanArchiveItem[], Error>("archive", loadArchive, {
-		onSuccess: (data) => {
-			setArchive(data);
-		},
-	});
+		if (sendMessage) sendMessage(ArchiveKanban, {});
+	}, [archive, sendMessage]);
 
 	return (
 		<div className={`kanban-archive-drawer ${open ? "showing" : ""}`}>
-			<div className="header">
-				<img src="" alt="" onClick={toggleOpen} />
+			<div className="archive-header">
+				<img src="/icons/back.svg" alt="" onClick={toggleOpen} />
 				<h2>Kanban Archive:</h2>
 			</div>
 			<div className="kanban-archive-list">
-				{archive &&
-					Array.isArray(archive) &&
-					archive.map((item) => <ArchiveItem item={item} />)}
+				<div className="kanban-archive-list-abosulute">
+					{archive &&
+						Array.isArray(archive) &&
+						archive
+							.filter((item) => item.deletedAt)
+							.sort((a, b) => {
+								const dateA = new Date(a.deletedAt).getTime(); // Convert to timestamp
+								const dateB = new Date(b.deletedAt).getTime(); // Convert to timestamp
+								return dateA - dateB;
+							})
+							.map((item) => (
+								<ArchiveItem item={item} sendMessage={sendMessage} />
+							))}
+				</div>
 			</div>
 		</div>
 	);
 }
-
-const loadArchive = async () => {
-	const { organisation } = useOrgStore.getState();
-	const { project } = useProjectStore.getState();
-	const { kanban } = useKanbanStore.getState();
-
-	try {
-		const response = await API.get(
-			`/api/organisations/${organisation?.id}/projects/${project?.id}/kanbans/${kanban?.id}/archive`
-		);
-		return response.data.archive;
-	} catch (error: any) {
-		toast.error("Error loading archive: " + error?.message, {
-			position: "top-left",
-		});
-	}
-};
