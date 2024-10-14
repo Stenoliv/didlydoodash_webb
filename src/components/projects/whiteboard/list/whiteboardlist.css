@@ -1,0 +1,32 @@
+:root {
+    --grid-gap: 15px;
+    --item-width: 100%;
+}
+
+.kanban-list {
+    gap: 10px;
+    display: grid;
+    grid-column-gap: var(--grid-gap);
+    grid-template-columns: var(--item-width);
+}
+
+@media (min-width: 1200px) {
+    :root {
+        --item-width: calc(50% - var(--grid-gap) / 2);
+    }
+
+    .kanban-list {
+        grid-template-columns: var(--item-width) var(--item-width);
+    }
+
+
+    @media (min-width: 1400px) {
+        :root {
+            --item-width: calc(33% - var(--grid-gap) / 3);
+        }
+
+        .kanban-list {
+            grid-template-columns: var(--item-width) var(--item-width) var(--item-width);
+        }
+    }
+}

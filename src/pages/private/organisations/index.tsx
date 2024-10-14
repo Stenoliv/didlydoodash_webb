@@ -2,7 +2,7 @@ import AddUser from "@/components/organisation/addUser/AddUser";
 import { useOrgStore } from "@/stores/organisation";
 import { API } from "@/utils/api";
 import { OrgMember } from "@/utils/types";
-import {useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { toast } from "react-toastify";
 
@@ -41,10 +41,10 @@ export default function Page() {
 	);
 
 	const postNewAnnouncement = () => {
-		if (annoncementDivRef.current){
-			annoncementDivRef.current.style.display = 'flex';
+		if (annoncementDivRef.current) {
+			annoncementDivRef.current.style.display = "flex";
 		}
-	}
+	};
 
 	const postAnnouncement = async () => {
 		if (!announcementText) {
@@ -54,10 +54,13 @@ export default function Page() {
 			return;
 		}
 		try {
-			const response = await API.post(`/api/organisations/${organisation?.id}/announcements`, {
-				text: announcementText,
-			});
-			console.log(response);
+			const response = await API.post(
+				`/organisations/${organisation?.id}/announcements`,
+				{
+					text: announcementText,
+				}
+			);
+			setAnnouncements((past) => [...past, response.data.announcement]);
 			toast.success("Announcement posted successfully");
 			setAnnouncementText(""); // Clear the input after posting
 		} catch (error) {
@@ -74,28 +77,36 @@ export default function Page() {
 	const fetchAnnouncements = async () => {
 		if (!organisation?.id) return; // Ensure there is an organisation ID
 		try {
-			const response = await API.get(`/api/organisations/${organisation.id}/announcements`);
+			const response = await API.get(
+				`/organisations/${organisation.id}/announcements`
+			);
 			setAnnouncements(response.data.announcements);
-			console.log(announcements) 
-		} catch (error) {
+			console.log(announcements);
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		} catch (error: any) {
 			toast.error("Failed to load announcements", {
 				position: "top-left",
 			});
 		}
 	};
 	const deleteAnnouncement = async (announcementId: string) => {
-        try {
+		try {
 			if (!organisation?.id) return;
-            await API.delete(`/api/organisations/${organisation.id}/announcements/${announcementId}`);
-            // Update the local state to remove the deleted announcement
-            setAnnouncements((prevAnnouncements) => 
-                prevAnnouncements.filter((announcement) => announcement.id !== announcementId)
-            );
-            toast.success("Announcement deleted successfully");
-        } catch (error) {
-            toast.error("Failed to delete announcement");
-        }
-    };
+			await API.delete(
+				`/organisations/${organisation.id}/announcements/${announcementId}`
+			);
+			// Update the local state to remove the deleted announcement
+			setAnnouncements((prevAnnouncements) =>
+				prevAnnouncements.filter(
+					(announcement) => announcement.id !== announcementId
+				)
+			);
+			toast.success("Announcement deleted successfully");
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		} catch (error: any) {
+			toast.error("Failed to delete announcement");
+		}
+	};
 	useEffect(() => {
 		fetchAnnouncements();
 	}, [organisation]); // Re-fetch if organisation changes
@@ -158,39 +169,62 @@ export default function Page() {
 				<div className="texts">
 					<div className="announcement_header">
 						<h2>Announcements</h2>
-						<button onClick={() => postNewAnnouncement()} className="new_announcement_btn">+</button>
+						<button
+							onClick={() => postNewAnnouncement()}
+							className="new_announcement_btn"
+						>
+							+
+						</button>
 					</div>
-					<div style={{display: 'none', flexDirection:"column"}} ref={annoncementDivRef}>
-						<textarea className="announcement_Text_Input" placeholder="Enter your announcement..." value={announcementText} onChange={(e) => setAnnouncementText(e.target.value)}></textarea>
-						<button onClick={() => postAnnouncement()} style={{marginTop:"10px"}}>Post</button>
+					<div
+						style={{ display: "none", flexDirection: "column" }}
+						ref={annoncementDivRef}
+					>
+						<textarea
+							className="announcement_Text_Input"
+							placeholder="Enter your announcement..."
+							value={announcementText}
+							onChange={(e) => setAnnouncementText(e.target.value)}
+						></textarea>
+						<button
+							onClick={() => postAnnouncement()}
+							style={{ marginTop: "10px" }}
+						>
+							Post
+						</button>
 					</div>
 					<div className="announcement_list">
-					{announcements && announcements.length > 0 ? (
-						announcements.map((announcement) => (
-							<div key={announcement.id} className="announcement_item" style={{backgroundColor:"#090912", padding: "4px", marginTop:"8px", borderRadius:"8px"}}>
-								<button style={{}} onClick={()=> deleteAnnouncement(announcement.id)}>delete</button>	
-								<p style={{fontSize:"12px"}}>Posted at: {new Date(announcement.createdAt).toLocaleString()}</p>
-								<h3>{announcement.AnnouncmentText}</h3>
-							</div>
-						))
-					) : (
-						<p>No announcements available.</p>
-					)}
-				</div>
+						{announcements && announcements.length > 0 ? (
+							announcements.map((announcement) => (
+								<div
+									key={announcement.id}
+									className="announcement_item"
+									style={{
+										backgroundColor: "#090912",
+										padding: "4px",
+										marginTop: "8px",
+										borderRadius: "8px",
+									}}
+								>
+									<button
+										style={{}}
+										onClick={() => deleteAnnouncement(announcement.id)}
+									>
+										delete
+									</button>
+									<p style={{ fontSize: "12px" }}>
+										Posted at:{" "}
+										{new Date(announcement.createdAt).toLocaleString()}
+									</p>
+									<h3>{announcement.AnnouncmentText}</h3>
+								</div>
+							))
+						) : (
+							<p>No announcements available.</p>
+						)}
+					</div>
 				</div>
 				{/** Display announcments */}
-			</div>
-			<div className="projects">
-				<div className="texts">
-					<h2>Projects</h2>
-				</div>
-				{/** Display shorcuts to projects */}
-			</div>
-			<div className="chats">
-				<div className="texts">
-					<h2>Chats</h2>
-				</div>
-				{/** Display shorcuts to chats */}
 			</div>
 			{owner && (
 				<div className="danger">
@@ -200,7 +234,6 @@ export default function Page() {
 							Delete organisation
 						</button>
 						<RemoveOrg open={removeOrg} setOpen={setRemoveOrg} />
-						<button>Rename organisation</button>
 					</div>
 				</div>
 			)}
@@ -219,4 +252,3 @@ const memberLoader = async (id: string) => {
 		});
 	}
 };
-

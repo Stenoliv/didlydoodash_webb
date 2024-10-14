@@ -36,8 +36,6 @@ import ChatsPage from "@/pages/private/organisations/chats";
 import ProjectView from "@/pages/private/project";
 import CreateProjectPage from "@/pages/private/project/createdPage";
 import ActiveProjectPage from "@/pages/private/project/activePage";
-import ArchivedProjectPage from "@/pages/private/project/archivedPage";
-import CompletedProjectsPage from "@/pages/private/project/completedPage";
 
 // Whiteboard
 import WhiteboardPage from "./pages/private/whiteboard";
@@ -61,11 +59,9 @@ function App() {
 						{/** Project routes */}
 						<Route path="/projects" element={<ProjectLayout />}>
 							<Route index element={<ActiveProjectPage />} />
+							<Route path="create" element={<CreateProjectPage />} />
 							{/** View a project */}
 							<Route path=":projectID" element={<ProjectView />} />
-							<Route path="archived" element={<ArchivedProjectPage />} />
-							<Route path="create" element={<CreateProjectPage />} />
-							<Route path="completed" element={<CompletedProjectsPage />} />
 						</Route>
 
 						{/** Kanban routes */}

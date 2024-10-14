@@ -108,7 +108,7 @@ export default function Chats() {
 		try {
 			// Check if the message type is 'message.send' and if it belongs to the current room
 			if (lastJsonMessage.type === MessageSend) {
-				setMessages((prev) => [...prev, lastJsonMessage.payload]);
+				setMessages((prev) => [...(prev || []), lastJsonMessage.payload]);
 			}
 			// If type === message.all
 			else if (lastJsonMessage.type === MessageAll) {

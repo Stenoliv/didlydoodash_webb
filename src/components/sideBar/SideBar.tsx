@@ -7,9 +7,7 @@ import { useQuery } from "react-query";
 import styles from "./sidebar.module.css";
 
 import FolderIcon from "@mui/icons-material/Folder";
-import FolderOffRoundedIcon from "@mui/icons-material/FolderOffRounded";
 import FolderOpenRoundedIcon from "@mui/icons-material/FolderOpenRounded";
-import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -189,18 +187,6 @@ export default function SideBar() {
 								text: "Active",
 								icon: <FolderOpenRoundedIcon />,
 								tooltip: "Active projects",
-							},
-							{
-								to: "/projects/completed",
-								text: "Completed",
-								icon: <FolderRoundedIcon />,
-								tooltip: "Completed projects",
-							},
-							{
-								to: "/projects/archived",
-								text: "Archived",
-								icon: <FolderOffRoundedIcon />,
-								tooltip: "Archived projects",
 							},
 						]}
 					/>

@@ -4,6 +4,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { API } from "@/utils/api";
 import { toast } from "react-toastify";
 import { Whiteboard } from "@/utils/types";
+import { useWhiteboards } from "@/stores/whiteboards";
 
 export interface CreataWhiteboardProps {
 	orgId: string;
@@ -17,6 +18,7 @@ export default function CreateWhiteboard(props: CreataWhiteboardProps) {
 	});
 
 	const { orgId, projectId } = props;
+	const { addWhiteboard } = useWhiteboards();
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -34,6 +36,8 @@ export default function CreateWhiteboard(props: CreataWhiteboardProps) {
 		)
 			.then((respones) => {
 				const whiteboard: Whiteboard = respones.data.whiteboard;
+				if (!whiteboard) return;
+				addWhiteboard(whiteboard);
 				toast.success(`Successfully created whiteboard: ${whiteboard.name}`);
 			})
 			.catch((error) => {

@@ -1,5 +1,5 @@
 import { Whiteboard } from "@/utils/types";
-import "./kanbanitem.css";
+import "./whiteboarditem.css";
 import { useNavigate } from "react-router-dom";
 
 export interface WhiteboardItemProps {
@@ -12,7 +12,7 @@ export default function WhiteboardItem(props: WhiteboardItemProps) {
 	const navigate = useNavigate();
 
 	const handleOnClick = () => {
-		navigate(`/whiteboards/${whiteboard.id}`);
+		navigate(`/whiteboard/${whiteboard.id}`);
 	};
 
 	return (

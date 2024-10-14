@@ -1,17 +1,16 @@
-import "./kanbanlist.css";
+import "./whiteboardlist.css";
 import { useQuery } from "react-query";
-import { Kanban, Whiteboard } from "@/utils/types";
-import { useKanbanStore } from "@/stores/kanbans";
+import { Whiteboard } from "@/utils/types";
 import { useProjectStore } from "@/stores/projects";
 import { useOrgStore } from "@/stores/organisation";
 import { toast } from "react-toastify";
 import { API } from "@/utils/api";
-import KanbanItem from "../item/KanbanItem";
 import { useWhiteboards } from "@/stores/whiteboards";
+import WhiteboardItem from "../item/WhiteboardItem";
 
-export default function KanbanList() {
+export default function WhitebaordList() {
 	const { whiteboards, setWhiteboards } = useWhiteboards();
-	useQuery<Whiteboard[], Error>("kanbans", loadKanbans, {
+	useQuery<Whiteboard[], Error>("whiteboards", loadWhiteboards, {
 		onSuccess: (data) => {
 			setWhiteboards(data);
 		},
@@ -19,26 +18,26 @@ export default function KanbanList() {
 
 	return (
 		<div className="kanban-list">
-			{whiteboards && whiteboards.length ? (
+			{whiteboards && Array.isArray(whiteboards) && whiteboards.length > 0 ? (
 				whiteboards.map((whiteboard) => (
-					<White kanban={kanban} key={kanban.id} />
+					<WhiteboardItem whiteboard={whiteboard} key={whiteboard.id} />
 				))
 			) : (
-				<div>No kanbans</div>
+				<div>No whiteboards</div>
 			)}
 		</div>
 	);
 }
 
-const loadKanbans = async () => {
+const loadWhiteboards = async () => {
 	const { organisation } = useOrgStore.getState();
 	const { project } = useProjectStore.getState();
 
 	try {
 		const response = await API.get(
-			`/organisations/${organisation?.id}/projects/${project?.id}/kanbans`
+			`/organisations/${organisation?.id}/projects/${project?.id}/whiteboards`
 		);
-		return response.data.kanbans;
+		return response.data.whiteboards;
 	} catch (error: any) {
 		toast.error(`Failed to load kanbans: ` + error.message, {
 			position: "top-left",
