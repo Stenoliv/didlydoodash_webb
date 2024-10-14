@@ -177,6 +177,8 @@ export const PermaDeleteKanbanItem: WSType = "kanban.item.perma"
  */
 export type Whiteboard = {
 	id: string;
+	createdAt: Date;
+	updatedAt: Date;
 	name: string;
 }
 

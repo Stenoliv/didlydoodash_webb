@@ -2,9 +2,8 @@
 import "./archivelist.css";
 import { useKanbanArchiveStore } from "@/stores/kanbans/archive";
 
-import { ArchiveKanban, WSType } from "@/utils/types";
+import { WSType } from "@/utils/types";
 import ArchiveItem from "../item/ArchiveItem";
-import { useEffect } from "react";
 
 export interface ArchiveListProps {
 	sendMessage: (type: WSType, payload: any) => Promise<void>;
@@ -14,10 +13,6 @@ export default function ArchiveList(props: ArchiveListProps) {
 	const { sendMessage } = props;
 
 	const { open, toggleOpen, archive } = useKanbanArchiveStore();
-
-	useEffect(() => {
-		if (sendMessage) sendMessage(ArchiveKanban, {});
-	}, [archive, sendMessage]);
 
 	return (
 		<div className={`kanban-archive-drawer ${open ? "showing" : ""}`}>

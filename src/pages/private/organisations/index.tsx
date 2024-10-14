@@ -211,7 +211,7 @@ export default function Page() {
 const memberLoader = async (id: string) => {
 	try {
 		if (!id) return;
-		const response = await API.get(`/api/organisations/${id}/members`);
+		const response = await API.get(`/organisations/${id}/members`);
 		return response.data.members;
 	} catch (error: any) {
 		toast.error(`Error loading organisationMembers: ${error?.message}`, {

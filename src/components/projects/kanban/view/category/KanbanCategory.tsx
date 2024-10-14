@@ -94,7 +94,7 @@ export default function KanbanCategoryItem(props: KanbanCategoryProps) {
 							))}
 					{isOver && dragItem && (
 						<KanbanItemComp
-							style={{ opacity: 0.5 }}
+							style={{ opacity: 0.2 }}
 							categoryId={category.id}
 							key={dragItem.id}
 							item={dragItem}

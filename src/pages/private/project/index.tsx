@@ -81,7 +81,7 @@ const loadWhiteboards = async () => {
 
 	try {
 		const response = await API.get(
-			`/api/organisations/${organisation?.id}/projects/${project?.id}/whiteboards`
+			`/organisations/${organisation?.id}/projects/${project?.id}/whiteboards`
 		);
 		return response.data.whiteboards;
 	} catch (error: any) {

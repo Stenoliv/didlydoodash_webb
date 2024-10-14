@@ -20,7 +20,7 @@ export default function SignupPage() {
 	const handleSubmitEvent = (e: FormEvent) => {
 		e.preventDefault();
 		if (input.email !== "" && input.password !== "") {
-			return API.post("/api/auth/signin", { ...input })
+			return API.post("/auth/signin", { ...input })
 				.then((response) => {
 					console.log(response);
 					login(response.data.user);

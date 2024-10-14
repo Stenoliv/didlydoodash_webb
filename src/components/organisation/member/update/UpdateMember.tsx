@@ -31,7 +31,7 @@ export default function UpdateMember(props: UpdateMemberProps) {
 
 	const handleUpdateMember = () => {
 		return API.patch(
-			`/api/organisations/${member.organisationId}/members/${member.user.id}`,
+			`/organisations/${member.organisationId}/members/${member.user.id}`,
 			{ ...input }
 		)
 			.then(() => {
@@ -49,7 +49,7 @@ export default function UpdateMember(props: UpdateMemberProps) {
 
 	const handleRemoveMember = () => {
 		return API.delete(
-			`/api/organisations/${member.organisationId}/members/${member.user.id}`
+			`/organisations/${member.organisationId}/members/${member.user.id}`
 		)
 			.then(() => {
 				toast.success(`Removed ${member.user.username} from the organisation`);

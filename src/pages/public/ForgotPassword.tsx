@@ -11,7 +11,7 @@ export default function ForgotPasswordPage() {
 	const handleSubmitEvent = (e: FormEvent) => {
 		e.preventDefault();
 		if (input.email !== "") {
-			return API.post("/api/auth/forgot", {})
+			return API.post(`/auth/forgot`, {})
 				.then((response) => {
 					console.log(response);
 					toast(`Password reset sent to email!`, {

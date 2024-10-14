@@ -2,10 +2,13 @@ import axios, { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth/store";
 import { toast } from "react-toastify";
 
+export const BASE_URL = "http://localhost:8081"
+
 export const API = axios.create({
+	baseURL: BASE_URL,
     headers: {
         "Content-Type": "application/json",
-    }
+    },
 });
 
 
@@ -22,7 +25,7 @@ const ErrorResponse = async (error: AxiosError<any>): Promise<any> => {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		(error.config.headers as any)._retry = true;
 		try {
-			const response = await axios.get(`/api/auth/refresh`, {
+			const response = await axios.get(`/auth/refresh`, {
 				headers: { Authorization: `Bearer ${tokens?.refresh}` },
 			});
 			// Update the stored access token with the new one

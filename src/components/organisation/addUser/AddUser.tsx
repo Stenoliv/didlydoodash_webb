@@ -22,7 +22,7 @@ export default function AddUser(props: AddUserProps) {
 
 	const userAction = async (user: User | OrgMember) => {
 		user = user as User;
-		API.post(`/api/organisations/${organisation?.id}/members/${user.id}`)
+		API.post(`/organisations/${organisation?.id}/members/${user.id}`)
 			.then(() => {
 				toast.success(`User: ${user.username} added to organisation!`);
 				queryClient.invalidateQueries("members");

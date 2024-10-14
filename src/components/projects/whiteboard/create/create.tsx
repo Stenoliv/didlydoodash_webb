@@ -29,7 +29,7 @@ export default function CreateWhiteboard(props: CreataWhiteboardProps) {
 	const handleCreateWhiteboard = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		return API.post(
-			`/api/organisations/${orgId}/projects/${projectId}/whiteboards`,
+			`/organisations/${orgId}/projects/${projectId}/whiteboards`,
 			{ ...input }
 		)
 			.then((respones) => {
@@ -37,9 +37,12 @@ export default function CreateWhiteboard(props: CreataWhiteboardProps) {
 				toast.success(`Successfully created whiteboard: ${whiteboard.name}`);
 			})
 			.catch((error) => {
-				toast.error(`Failed to create whiteboard: ${error.response.data.message}`, {
-					position: "top-left",
-				});
+				toast.error(
+					`Failed to create whiteboard: ${error.response.data.message}`,
+					{
+						position: "top-left",
+					}
+				);
 			});
 	};
 

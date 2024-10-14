@@ -1,5 +1,6 @@
 import { useAuthStore } from "@/stores/auth/store";
 import { useOrgStore } from "@/stores/organisation";
+import { BASE_URL } from "@/utils/api";
 import { ChatNotification } from "@/utils/types";
 import {
 	useContext,
@@ -29,7 +30,7 @@ const NotificationProvider = ({ children }: NotificationProviderProps) => {
 	const { organisation } = useOrgStore();
 	const [badges, setBadges] = useState<Map<string, number>>(new Map());
 
-	const WS_URL = `ws://localhost:3000/organisations/${organisation?.id}/chats/notifications?token=${tokens?.access}`;
+	const WS_URL = `${BASE_URL}/organisations/${organisation?.id}/chats/notifications?token=${tokens?.access}`;
 
 	useWebSocket(WS_URL, {
 		onMessage: (data) => {

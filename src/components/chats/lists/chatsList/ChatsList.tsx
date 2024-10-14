@@ -101,7 +101,7 @@ const getChats = async () => {
 	const { organisation } = useOrgStore.getState();
 	try {
 		const result = await API.get(
-			`/api/organisations/${organisation?.id}/chats`
+			`/organisations/${organisation?.id}/chats`
 		);
 		return result.data.chats;
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any

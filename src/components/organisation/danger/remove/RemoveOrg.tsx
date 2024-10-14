@@ -20,7 +20,7 @@ export default function RemoveOrg(props: RemoveOrgProps) {
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		return API.delete(`/api/organisations/${organisation?.id}`, {
+		return API.delete(`/organisations/${organisation?.id}`, {
 			data: { ...input },
 		})
 			.then(() => {
@@ -28,7 +28,7 @@ export default function RemoveOrg(props: RemoveOrgProps) {
 					`Organisation ${organisation?.name} was removed successfully`
 				);
 				if (organisation) removeOrganisation(organisation);
-				setOrganisation(undefined);
+				setOrganisation(null);
 			})
 			.catch((error) => {
 				toast.error("Failed to delete organisation: " + error.message, {

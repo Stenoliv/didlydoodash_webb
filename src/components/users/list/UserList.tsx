@@ -77,9 +77,7 @@ export default function UserList(props: UserListProps) {
 
 const userLoader = async (page: number, pageSize: number = 10) => {
 	try {
-		const result = await API.get(
-			`/api/users?page=${page + 1}&limits=${pageSize}`
-		);
+		const result = await API.get(`/users?page=${page + 1}&limits=${pageSize}`);
 		return result.data;
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {

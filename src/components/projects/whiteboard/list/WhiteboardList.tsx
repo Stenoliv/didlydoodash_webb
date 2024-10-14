@@ -1,25 +1,28 @@
 import "./kanbanlist.css";
 import { useQuery } from "react-query";
-import { Kanban } from "@/utils/types";
+import { Kanban, Whiteboard } from "@/utils/types";
 import { useKanbanStore } from "@/stores/kanbans";
 import { useProjectStore } from "@/stores/projects";
 import { useOrgStore } from "@/stores/organisation";
 import { toast } from "react-toastify";
 import { API } from "@/utils/api";
 import KanbanItem from "../item/KanbanItem";
+import { useWhiteboards } from "@/stores/whiteboards";
 
 export default function KanbanList() {
-	const { kanbans, setKanbans } = useKanbanStore();
-	useQuery<Kanban[], Error>("kanbans", loadKanbans, {
+	const { whiteboards, setWhiteboards } = useWhiteboards();
+	useQuery<Whiteboard[], Error>("kanbans", loadKanbans, {
 		onSuccess: (data) => {
-			setKanbans(data);
+			setWhiteboards(data);
 		},
 	});
 
 	return (
 		<div className="kanban-list">
-			{kanbans && kanbans.length ? (
-				kanbans.map((kanban) => <KanbanItem kanban={kanban} key={kanban.id} />)
+			{whiteboards && whiteboards.length ? (
+				whiteboards.map((whiteboard) => (
+					<White kanban={kanban} key={kanban.id} />
+				))
 			) : (
 				<div>No kanbans</div>
 			)}

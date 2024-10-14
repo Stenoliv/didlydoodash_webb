@@ -17,12 +17,12 @@ export interface AddUserProps {
 export default function AddUser(props: AddUserProps) {
 	const { open, setOpen } = props;
 	const { organisation } = useOrgStore();
-	const { chatId, chats, addMember } = useChatStore();
+	const { openChatId, chats, addMember } = useChatStore();
 
 	const [members, setMembers] = useState<OrgMember[]>([]);
 
 	const { isLoading, isError, error } = useQuery<OrgMember[], Error>(
-		["members", organisation, chatId],
+		["members", organisation, openChatId],
 		() => memberLoader(organisation?.id || ""),
 		{
 			onSuccess: (data) => {
@@ -34,11 +34,11 @@ export default function AddUser(props: AddUserProps) {
 	const handleAddMember = (user: User | OrgMember) => {
 		user = user as User;
 		return API.put(
-			`/api/organisations/${organisation?.id}/chats/${chatId}/member/${user.id}`
+			`/organisations/${organisation?.id}/chats/${openChatId}/member/${user.id}`
 		)
 			.then((response) => {
 				toast.success(`User: ${user.username} added to chat!`);
-				if (chatId) addMember(chatId, response.data.member);
+				if (openChatId) addMember(openChatId, response.data.member);
 			})
 			.catch(() => {
 				toast.error(`Failed to add ${user.username} to chat`, {
@@ -62,7 +62,7 @@ export default function AddUser(props: AddUserProps) {
 						.filter(
 							(member) =>
 								!chats
-									.find((chat) => chat.id === chatId)
+									.find((chat) => chat.id === openChatId)
 									?.members.some(
 										(chatMember) => chatMember.member.id === member.user.id
 									) || false
@@ -84,7 +84,7 @@ export default function AddUser(props: AddUserProps) {
 
 const memberLoader = async (id: string) => {
 	try {
-		const response = await API.get(`/api/organisations/${id}/members`);
+		const response = await API.get(`/organisations/${id}/members`);
 		return response.data.members;
 	} catch (error: any) {
 		toast.error("Failed to retrive members: " + error?.message, {

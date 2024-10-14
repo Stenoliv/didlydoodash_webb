@@ -61,9 +61,7 @@ export default function UserList(props: UserListProps) {
 const userLoader = async () => {
 	try {
 		const { organisation } = useOrgStore.getState();
-		const result = await API.get(
-			`/api/organisations/${organisation?.id}/members`
-		);
+		const result = await API.get(`/organisations/${organisation?.id}/members`);
 		return result.data;
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {

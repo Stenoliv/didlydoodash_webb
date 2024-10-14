@@ -36,7 +36,7 @@ export async function projectLoader() {
 	try {
 		const { organisation } = useOrgStore.getState();
 		const response = await API.get(
-			`/api/organisations/${organisation?.id}/projects`
+			`/organisations/${organisation?.id}/projects`
 		);
 		return response.data.projects;
 	} catch (error: any) {

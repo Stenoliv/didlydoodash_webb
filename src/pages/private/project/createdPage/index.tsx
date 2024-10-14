@@ -81,7 +81,7 @@ export default function CreateProjectPage() {
 	const handleCreate = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		return API.post(`/api/organisations/${organisation?.id}/projects`, {
+		return API.post(`/organisations/${organisation?.id}/projects`, {
 			...input,
 		})
 			.then((response) => {

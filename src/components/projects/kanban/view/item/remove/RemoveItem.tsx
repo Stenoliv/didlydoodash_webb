@@ -13,7 +13,10 @@ export default function RemoveItem(props: RemoveItemProps) {
 		<img
 			className="remove-item-icon"
 			src="/icons/trashcan.svg"
-			onClick={() => sendMessage(DeleteKanbanItem, { itemId: item.id })}
+			onClick={(event) => {
+				event.stopPropagation();
+				sendMessage(DeleteKanbanItem, { itemId: item.id });
+			}}
 		/>
 	);
 }

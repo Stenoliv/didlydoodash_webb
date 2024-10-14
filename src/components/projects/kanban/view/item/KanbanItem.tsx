@@ -8,7 +8,7 @@ import {
 } from "@/utils/types";
 import "./kanbanitem.css";
 import RemoveItem from "./remove/RemoveItem";
-import { ChangeEvent, CSSProperties, useState } from "react";
+import { ChangeEvent, CSSProperties, memo, useState } from "react";
 import { useDrag } from "react-dnd";
 import { Modal } from "@mui/material";
 import { useKanbanStore } from "@/stores/kanbans";
@@ -20,7 +20,7 @@ export interface KanbanItemProps {
 	sendMessage: (type: WSType, payload: any) => Promise<void>;
 }
 
-export default function KanbanItemComponent(props: KanbanItemProps) {
+function KanbanItemComponent(props: KanbanItemProps) {
 	const [open, setOpen] = useState<boolean>(false);
 	const [showDueTime, setShowDueTime] = useState<boolean>(false);
 
@@ -44,27 +44,30 @@ export default function KanbanItemComponent(props: KanbanItemProps) {
 		id: item.id,
 	};
 
-	const [{ isDragging }, drag, dragPreview] = useDrag(() => ({
-		type: KanbanDNDTypes.ITEM,
-		item: dragItem,
-		collect: (monitor) => ({
-			isDragging: !!monitor.isDragging(),
+	const [{ isDragging }, drag, dragPreview] = useDrag(
+		() => ({
+			type: KanbanDNDTypes.ITEM,
+			item: dragItem,
+			collect: (monitor) => ({
+				isDragging: !!monitor.isDragging(),
+			}),
 		}),
-	}));
+		[dragItem]
+	);
 
-	const dragStyle: CSSProperties = { display: isDragging ? "none" : "flex" };
+	const dragStyle: CSSProperties = { opacity: isDragging ? 0.5 : 1 };
 
 	return (
 		<>
 			<div
 				ref={dragPreview}
 				className="kanban-item-box"
-				style={{ ...style, ...dragStyle }}
+				style={{ ...dragStyle, ...style }}
 				onClick={() => setOpen(true)}
 			>
 				<div className="kanban-item-header">
 					<div className="kanban-item-actions">
-						<div ref={drag} className="kanban-item-handle">
+						<div ref={drag} className={"kanban-item-handle"}>
 							<img src="/icons/grab.svg" />
 						</div>
 						<RemoveItem item={item} sendMessage={sendMessage} />
@@ -81,7 +84,7 @@ export default function KanbanItemComponent(props: KanbanItemProps) {
 						/>
 					</div>
 					<div className="info-box">
-						{item.priority !== KanbanItemPriority.NONE && (
+						{item.priority && item.priority !== KanbanItemPriority.NONE && (
 							<span className={"priority " + item.priority.toLowerCase()}>
 								Priority: <strong>{item.priority}</strong>
 							</span>
@@ -117,7 +120,6 @@ export default function KanbanItemComponent(props: KanbanItemProps) {
 					</div>
 				</div>
 			</div>
-			{/** Modal to edit kanban item */}
 			<Modal
 				className="edit-kanban-item-modal"
 				component="div"
@@ -243,3 +245,5 @@ function getTimeLeft(dueDate: Date) {
 
 	return result.trim();
 }
+
+export default memo(KanbanItemComponent);

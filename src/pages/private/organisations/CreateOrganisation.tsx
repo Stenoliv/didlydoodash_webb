@@ -25,7 +25,7 @@ export default function CreatePage() {
 	const submitCreate = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		try {
-			return API.post("/api/organisations", { ...input })
+			return API.post("/organisations", { ...input })
 				.then((response) => {
 					console.log(response);
 					const organisation = response.data.organisation as Organisation;

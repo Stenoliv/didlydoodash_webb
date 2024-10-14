@@ -19,7 +19,7 @@ import {
 	WSMessage,
 } from "@/utils/types";
 import AddUser from "./addUser/AddUser";
-import { API } from "@/utils/api";
+import { API, BASE_URL } from "@/utils/api";
 
 export default function Chats() {
 	const { chats, openChatId, selectChat, removeMember } = useChatStore();
@@ -41,7 +41,7 @@ export default function Chats() {
 
 	const handleRemoveUser = (user: User) => {
 		return API.delete(
-			`/api/organisations/${organisation?.id}/chats/${openChatId}/member/${user.id}`
+			`/organisations/${organisation?.id}/chats/${openChatId}/member/${user.id}`
 		)
 			.then((response) => {
 				toast.success(`User ${user.username} removed!`);
@@ -59,7 +59,7 @@ export default function Chats() {
 	};
 
 	// Websocket connection
-	const WS_URL = `ws://localhost:3000/organisations/${organisation?.id}/chats/${openChatId}?token=${tokens?.access}`;
+	const WS_URL = `${BASE_URL}/organisations/${organisation?.id}/chats/${openChatId}?token=${tokens?.access}`;
 	const { sendJsonMessage, lastJsonMessage } = useWebSocket<WSMessage>(WS_URL, {
 		reconnectAttempts: 5,
 		onReconnectStop: (attempts) => {
@@ -90,7 +90,7 @@ export default function Chats() {
 
 	// Update last read message
 	useEffect(() => {
-		if (messages.length > 0) {
+		if (messages && Array.isArray(messages) && messages.length > 0) {
 			const lastMessage = messages[messages.length - 1];
 
 			sendJsonMessage<WSInputMessageRead>({
@@ -107,17 +107,11 @@ export default function Chats() {
 		if (!lastJsonMessage || !lastJsonMessage.type || !openChatId) return;
 		try {
 			// Check if the message type is 'message.send' and if it belongs to the current room
-			if (
-				lastJsonMessage.type === MessageSend &&
-				lastJsonMessage.roomId === openChatId
-			) {
+			if (lastJsonMessage.type === MessageSend) {
 				setMessages((prev) => [...prev, lastJsonMessage.payload]);
 			}
 			// If type === message.all
-			else if (
-				lastJsonMessage.type === MessageAll &&
-				lastJsonMessage.roomId === openChatId
-			) {
+			else if (lastJsonMessage.type === MessageAll) {
 				setMessages(lastJsonMessage.payload);
 			}
 			// If type === message.error
@@ -150,13 +144,14 @@ export default function Chats() {
 						<h2>{openChat?.name}</h2>
 						<p style={{ display: "flex", gap: "15px", alignItems: "center" }}>
 							Members:
-							{openChat?.members.map((member) => (
-								<Tooltip key={member.id} title={`Remove user`}>
-									<span onClick={() => handleRemoveUser(member.member)}>
-										{member.member.username}
-									</span>
-								</Tooltip>
-							))}
+							{openChat &&
+								openChat.members.map((member) => (
+									<Tooltip key={member.id} title={`Remove user`}>
+										<span onClick={() => handleRemoveUser(member.member)}>
+											{member.member.username}
+										</span>
+									</Tooltip>
+								))}
 						</p>
 					</div>
 				</div>
@@ -171,9 +166,10 @@ export default function Chats() {
 				</div>
 			</div>
 			<div className="center">
-				{messages.map((message) => {
-					return <MessageItem key={message.id} message={message} />;
-				})}
+				{messages &&
+					messages.map((message) => {
+						return <MessageItem key={message.id} message={message} />;
+					})}
 				<div id="bottom" ref={endRef}></div>
 			</div>
 			<form className="bottom" onSubmit={handleSend}>

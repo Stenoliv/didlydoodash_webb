@@ -27,8 +27,8 @@ import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/auth/store";
 import { toast } from "react-toastify";
 import ArchiveList from "@/components/projects/kanban/view/archive/list/ArchiveList";
-import { useNavigate } from "react-router-dom";
 import { useKanbanArchiveStore } from "@/stores/kanbans/archive";
+import { BASE_URL } from "@/utils/api";
 
 export default function KanbanView() {
 	const { organisation } = useOrgStore();
@@ -37,21 +37,15 @@ export default function KanbanView() {
 	const { addCategory, removeCategory, updateCategory } = useKanbanStore();
 	const { addItem, moveItem, removeItem, updateItem } = useKanbanStore();
 	const { toggleOpen, setArchive } = useKanbanArchiveStore();
-	const navigate = useNavigate();
 	const { tokens } = useAuthStore();
 
 	const [overlayVisible, setOverlayVisible] = useState(false);
-	const [webSocketURL, setWebSocketURL] = useState<string | null>(null);
 
 	// Websocket Url in react state to handle reconnect manually
-	useEffect(() => {
-		setWebSocketURL(
-			`http://localhost:3000/organisations/${organisation?.id}/projects/${project?.id}/kanbans/${kanban?.id}?token=${tokens?.access}`
-		);
-	}, [kanban?.id, organisation?.id, project?.id, tokens?.access]);
+	const WS_URL = `${BASE_URL}/organisations/${organisation?.id}/projects/${project?.id}/kanbans/${kanban?.id}?token=${tokens?.access}`;
 
 	const { lastJsonMessage, sendJsonMessage, readyState } =
-		useWebSocket<WSKanbanMessage>(webSocketURL, {
+		useWebSocket<WSKanbanMessage>(WS_URL, {
 			onOpen: () => {
 				toast.info("Connected to Kanban");
 				setOverlayVisible(false);
@@ -61,19 +55,22 @@ export default function KanbanView() {
 				setOverlayVisible(true);
 			},
 			retryOnError: true,
-			reconnectAttempts: 10,
+			reconnectAttempts: 3,
 			reconnectInterval: 2500,
-			onReconnectStop: () => setOverlayVisible(true),
 			shouldReconnect: () => true,
+			onReconnectStop: () => setOverlayVisible(true),
 		});
 
 	const sendMessage = useCallback(
 		async (type: WSType, payload: any) => {
-			sendJsonMessage<WSKanbanInput>({
-				type: type,
-				roomId: kanban?.id || "",
-				payload: payload,
-			});
+			sendJsonMessage<WSKanbanInput>(
+				{
+					type: type,
+					roomId: kanban?.id || "",
+					payload: payload,
+				},
+				true
+			);
 		},
 		[sendJsonMessage, kanban]
 	);
@@ -172,18 +169,6 @@ export default function KanbanView() {
 		setArchive,
 	]);
 
-	function handleReconnect(): void {
-		setOverlayVisible(true);
-		setWebSocketURL(
-			`http://localhost:3000/organisations/${organisation?.id}/projects/${project?.id}/kanbans/${kanban?.id}?token=${tokens?.access}`
-		);
-	}
-
-	if (!kanban) {
-		navigate(-1);
-		return;
-	}
-
 	return (
 		<div className="kanban-view">
 			<div className="header">
@@ -221,11 +206,10 @@ export default function KanbanView() {
 					<div className="overlay">
 						<div className="overlay-content">
 							<h2>Connection Lost</h2>
-							<p>You have been disconnected from the Kanban workspace.</p>
-							<button
-								className="reconnect-button"
-								onClick={handleReconnect}
-							></button>
+							<p>
+								You have been disconnected from the Kanban workspace. Try to
+								refresh page!
+							</p>
 						</div>
 					</div>
 				))}

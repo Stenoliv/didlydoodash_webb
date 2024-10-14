@@ -34,7 +34,7 @@ export default function AddChat(props: AddChatProps) {
 
 	const handleAddChat = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		return API.post(`/api/organisations/${organisation?.id}/chats`, {
+		return API.post(`/organisations/${organisation?.id}/chats`, {
 			...input,
 		})
 			.then((response) => {

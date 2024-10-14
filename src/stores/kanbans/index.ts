@@ -109,7 +109,7 @@ export const useKanbanStore = create<KanbanStoreState>()(
                         ...state.kanban.categories.slice(0, categoryIndex),
                         {
                             ...state.kanban.categories[categoryIndex],
-                            items: [...state.kanban.categories[categoryIndex].items, item]
+                            items: [...state.kanban.categories[categoryIndex].items || [], item]
                         },
                         ...state.kanban.categories.slice(categoryIndex + 1)
                     ]
@@ -139,14 +139,13 @@ export const useKanbanStore = create<KanbanStoreState>()(
                 // Add the item to the new category
                 const updatedNewCategory = {
                     ...state.kanban.categories[newCategoryIndex],
-                    items: [...state.kanban.categories[newCategoryIndex].items, item],
+                    items: [...state.kanban.categories[newCategoryIndex].items || [], item],
                 };
 
                 // Update the categories array by replacing the old and new categories
                 const updatedCategories = [...state.kanban.categories];
                 updatedCategories[oldCategoryIndex] = updatedOldCategory;
                 updatedCategories[newCategoryIndex] = updatedNewCategory;
-
                 // Return the updated state
                 return {
                     ...state,

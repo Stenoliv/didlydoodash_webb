@@ -30,10 +30,9 @@ export default function CreateKanban(props: CreataKanbanProps) {
 
 	const handleCreateKanban = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		return API.post(
-			`/api/organisations/${orgId}/projects/${projectId}/kanbans`,
-			{ ...input }
-		)
+		return API.post(`/organisations/${orgId}/projects/${projectId}/kanbans`, {
+			...input,
+		})
 			.then((respones) => {
 				const kanban: Kanban = respones.data.kanban;
 				addKanban(kanban);

@@ -212,7 +212,7 @@ export default function SideBar() {
 
 const organisationLoader = async () => {
 	try {
-		const result = await API.get("/api/organisations");
+		const result = await API.get("/organisations");
 		return result.data.organisations;
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (error: any) {
