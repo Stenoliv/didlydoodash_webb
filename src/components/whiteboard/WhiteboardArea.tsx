@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Stage, Layer, Line, Rect, Arrow, Circle, Text } from "react-konva";
 import { KonvaEventObject } from "konva/lib/Node";
 import styles from "./whiteboard.module.css"
 import { useParams } from "react-router-dom";
+import useWebSocket from "react-use-websocket";
+import { useWhiteboards } from "@/stores/whiteboards";
 
 interface LineData {
   points: number[];
@@ -22,44 +24,26 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ websocketUrl }) => {
   const [strokeColor, setStrokeColor] = useState<string>("#000000");
   const [strokeWidth, setStrokeWidth] = useState<number>(2);
   const [textInput, setTextInput] = useState<string>("");
-  const [ws, setWs] = useState<WebSocket | null>(null);
-  const wsRef = React.useRef<WebSocket | null>(null);
   const isDrawing = useRef(false);
   const startPointRef = useRef<{ x: number; y: number } | null>(null);
   const {whiteboardID}=useParams()
-
-  useEffect(() => {
-    // Create a WebSocket connection if it doesn't already exist
-    const socket = new WebSocket(websocketUrl);
-    wsRef.current = socket; // Keep a reference to the WebSocket
-
-    socket.onopen = () => {
-      console.log("WebSocket connected");
-    };
-
-    socket.onmessage = (event) => {
+  const {whiteboards}=useWhiteboards()
+  if (!whiteboardID) {
+    console.error("No whiteboard ID found in URL");
+  }
+  const{sendMessage, readyState}=useWebSocket(websocketUrl,{onOpen:()=>{
+    console.log("WebSocket connected");
+    console.log("Connecting to WebSocket at:", websocketUrl);}, 
+    onClose:()=>{
+      console.log(`WebSocket closed}`); 
+    },retryOnError:true, 
+    onMessage:(event)=>{
       console.log("Message received:", event.data);
       const message = JSON.parse(event.data);
       const payload = message.payload;
       setLines((prevLines) => [...prevLines, payload]);
-    };
-
-    socket.onerror = (event) => {
-      console.error("WebSocket error:", event);
-    };
-
-    socket.onclose = (event) => {
-      console.log(`WebSocket closed: ${event.code} - ${event.reason}`);
-      setWs(null); // Clear the WebSocket instance on close
-    };
-    setWs(socket);
-
-    return () => {
-      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        wsRef.current.close();
-      }
-    };
-  }, []);
+    }})
+  
   const handleMouseDown = (e: KonvaEventObject<MouseEvent>) => {
     isDrawing.current = true;
     const stage = e.target.getStage();
@@ -147,13 +131,11 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ websocketUrl }) => {
   const handleMouseUp = () => {
     isDrawing.current = false;
 
-    console.log(lines.length);
-
     if (lines.length > 0) {
       const lastLine = lines[lines.length - 1];
       console.log("Sending data:", JSON.stringify(lastLine));
-      if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({roomId: whiteboardID,payload: lastLine} ));
+      if (readyState == WebSocket.OPEN) {
+        sendMessage(JSON.stringify({roomId: whiteboardID,payload: lastLine} ));
       } else {
         console.error("WebSocket is not open, cannot send message");
       }
@@ -243,7 +225,7 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ websocketUrl }) => {
 
   return (
     <div className={styles.whiteboard_container}>
-      <h1 className={styles.whiteboard_PageTitle}>[WBNAME] Whiteboard</h1>
+      <h1 className={styles.whiteboard_PageTitle}>{whiteboards?.find((whiteboard)=> whiteboard.id == whiteboardID)?.name} Whiteboard</h1>
 
       {/* ToolBar */}
       <div className={styles.whiteboard_toolbar}>
