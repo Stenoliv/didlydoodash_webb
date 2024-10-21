@@ -22,12 +22,15 @@ export interface KanbanCategoryProps {
 
 export default function KanbanCategoryItem(props: KanbanCategoryProps) {
 	const { category, sendMessage } = props;
-	const { updateCategoryName, getItem } = useKanbanStore();
+	const { updateCategory, getItem } = useKanbanStore();
 	const [dragItem, setDragItem] = useState<KanbanItem | null>(null);
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-		const { value } = e.target;
-		updateCategoryName(category.id, value);
+		const { name, value } = e.target;
+		updateCategory({
+			...category,
+			[name]: value,
+		} as KanbanCategory);
 		sendMessage(EditKanbanCategory, { id: category.id, name: value });
 	};
 
@@ -58,12 +61,13 @@ export default function KanbanCategoryItem(props: KanbanCategoryProps) {
 		if (!itemOver) return;
 		const item = getItem(itemOver.categoryId, itemOver.id);
 		setDragItem(item);
-	}, [itemOver, getItem]);
+	}, [category, itemOver, getItem]);
 
 	return (
 		<div className="kanban-category-container">
 			<div className="category-header">
 				<input
+					name="name"
 					value={category.name}
 					onChange={handleChange}
 					placeholder="Category name"
@@ -92,15 +96,19 @@ export default function KanbanCategoryItem(props: KanbanCategoryProps) {
 									sendMessage={sendMessage}
 								/>
 							))}
-					{isOver && dragItem && (
-						<KanbanItemComp
-							style={{ opacity: 0.2 }}
-							categoryId={category.id}
-							key={dragItem.id}
-							item={dragItem}
-							sendMessage={sendMessage}
-						/>
-					)}
+					{isOver &&
+						dragItem &&
+						category.items &&
+						Array.isArray(category.items) &&
+						category.items.find((i) => i.id === dragItem.id) == undefined && (
+							<KanbanItemComp
+								style={{ opacity: 0.2 }}
+								categoryId={category.id}
+								key={dragItem.id}
+								item={dragItem}
+								sendMessage={sendMessage}
+							/>
+						)}
 				</div>
 			</div>
 		</div>

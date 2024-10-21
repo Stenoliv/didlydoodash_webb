@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth/store";
 import { toast } from "react-toastify";
 
-export const BASE_URL = "https://didlydoodash.azurewebsites.net";
+export const BASE_URL = "https://didlydoodash.azurewebsites.net"; // "http://localhost:3000"   
 
 export const API = axios.create({
   baseURL: BASE_URL,

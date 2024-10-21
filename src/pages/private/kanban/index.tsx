@@ -37,7 +37,7 @@ export default function KanbanView() {
 	const { addCategory, removeCategory, updateCategory } = useKanbanStore();
 	const { addItem, moveItem, removeItem, updateItem } = useKanbanStore();
 	const { toggleOpen, setArchive } = useKanbanArchiveStore();
-	const { tokens } = useAuthStore();
+	const { tokens, user } = useAuthStore();
 
 	const [overlayVisible, setOverlayVisible] = useState(false);
 
@@ -107,6 +107,11 @@ export default function KanbanView() {
 					addCategory(lastJsonMessage.payload.category);
 					break;
 				case EditKanbanCategory:
+					if (
+						!lastJsonMessage.payload.userId ||
+						lastJsonMessage.payload.userId === user?.id
+					)
+						break;
 					updateCategory(lastJsonMessage.payload.category);
 					break;
 				case DeleteKanbanCategory:
@@ -133,6 +138,11 @@ export default function KanbanView() {
 					);
 					break;
 				case EditKanbanItem:
+					if (
+						!lastJsonMessage.payload.userId ||
+						lastJsonMessage.payload.userId === user?.id
+					)
+						break;
 					updateItem(
 						lastJsonMessage.payload.item.categoryId,
 						lastJsonMessage.payload.item.id,
@@ -167,6 +177,7 @@ export default function KanbanView() {
 		removeItem,
 		updateKanban,
 		setArchive,
+		user?.id,
 	]);
 
 	return (

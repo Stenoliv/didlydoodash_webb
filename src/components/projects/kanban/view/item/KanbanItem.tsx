@@ -44,7 +44,7 @@ function KanbanItemComponent(props: KanbanItemProps) {
 		id: item.id,
 	};
 
-	const [{ isDragging }, drag, dragPreview] = useDrag(
+	const [{ isDragging }, drag] = useDrag(
 		() => ({
 			type: KanbanDNDTypes.ITEM,
 			item: dragItem,
@@ -60,14 +60,14 @@ function KanbanItemComponent(props: KanbanItemProps) {
 	return (
 		<>
 			<div
-				ref={dragPreview}
+				ref={drag}
 				className="kanban-item-box"
 				style={{ ...dragStyle, ...style }}
 				onClick={() => setOpen(true)}
 			>
 				<div className="kanban-item-header">
 					<div className="kanban-item-actions">
-						<div ref={drag} className={"kanban-item-handle"}>
+						<div className={"kanban-item-handle"}>
 							<img src="/icons/grab.svg" />
 						</div>
 						<RemoveItem item={item} sendMessage={sendMessage} />
@@ -75,12 +75,18 @@ function KanbanItemComponent(props: KanbanItemProps) {
 				</div>
 				<div className="kanban-item-content">
 					<div className="title-desc">
-						<input type="text" value={item.title} placeholder="Title" />
+						<input
+							type="text"
+							value={item.title}
+							placeholder="Title"
+							readOnly
+						/>
 						<input
 							className="desc"
 							type="text"
 							value={item.description}
 							placeholder="Description"
+							readOnly
 						/>
 					</div>
 					<div className="info-box">

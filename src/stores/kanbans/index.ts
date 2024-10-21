@@ -55,12 +55,16 @@ export const useKanbanStore = create<KanbanStoreState>()(
         }),
 
         // Category handling
-        addCategory: (category) => set((state) => ({
-            kanban: state.kanban ? { 
+        addCategory: (category) => set((state) => {
+            const newCategory = {...category, items: []}
+            return {
+                ...state,
+                kanban: state.kanban ? { 
                 ...state.kanban, 
-                categories: [...state.kanban.categories, category] 
+                categories: [...state.kanban.categories, newCategory] 
             } : null,
-        })),
+        }
+        }),
         updateCategory: (category) => set((state) => {
             if (!state.kanban) return state;
             const categoryIdx = state.kanban?.categories.findIndex((c) => c.id === category.id);
